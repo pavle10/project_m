@@ -14,4 +14,6 @@ class Controller:
         self._database_manager = DatabaseManager()
 
     def run(self):
-        pass
+        self._view_manager.show_login()
+
+        return self._app.exec_()
