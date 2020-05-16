@@ -71,9 +71,9 @@ class LoginView(QWidget):
         self.password_line.clear()
 
     def failed_login(self):
-        message = QMessageBox.warning(self, strs.FAILED_LOGIN_TITLE, strs.FAILED_LOGIN_MSG)
+        QMessageBox.warning(self, strs.FAILED_LOGIN_TITLE, strs.FAILED_LOGIN_MSG)
 
         self._clear()
 
     def successful_login(self, username):
-        QMessageBox.about(self, strs.SUCCESSFUL_LOGIN_TITLE, strs.SUCCESSFUL_LOGIN_MSG+username)
+        QMessageBox.information(self, strs.SUCCESSFUL_LOGIN_TITLE, strs.SUCCESSFUL_LOGIN_MSG+username)
