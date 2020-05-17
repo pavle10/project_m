@@ -9,6 +9,7 @@ class MainWind(QMainWindow):
 
     def __init__(self, manager, *args, **kwargs):
         super(MainWind, self).__init__(*args, **kwargs)
+        self._view_manager = manager
 
         self._init_ui()
 

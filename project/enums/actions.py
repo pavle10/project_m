@@ -2,4 +2,5 @@ from enum import Enum
 
 
 class Actions(Enum):
-    login = 0
+    show = 0,
+    login = 1

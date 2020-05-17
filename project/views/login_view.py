@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 
 import project.utils.constants as cons
 import project.utils.strings as strs
+from project.enums.actions import Actions
 
 
 class LoginView(QWidget):
@@ -44,8 +45,9 @@ class LoginView(QWidget):
 
         login_button = QPushButton(self)
         login_button.setText(strs.LOGIN_BUTTON)
-        login_button.clicked.connect(lambda x: self.view_manager.login_action(self.username_line.text(),
-                                                                              self.password_line.text()))
+        login_button.clicked.connect(lambda x: self.view_manager.actions(Actions.login,
+                                                                         [self.username_line.text(),
+                                                                          self.password_line.text()]))
         grid_layout.addWidget(login_button, 2, 1)
 
         group_box = QGroupBox(strs.MAIN_LABEL)

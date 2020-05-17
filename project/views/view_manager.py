@@ -1,6 +1,7 @@
 from project.views.login_view import LoginView
 from project.views.main_window import MainWind
 from project.enums.responses import Responses
+from project.enums.actions import Actions
 
 
 class ViewManager:
@@ -10,11 +11,17 @@ class ViewManager:
         self.login = LoginView(self)
         self.main_wind = MainWind(self)
 
-    def show_login(self):
+    def actions(self, action, values=None):
+        if action == Actions.show:
+            self._show_login()
+        elif action == Actions.login:
+            self._login(values)
+
+    def _show_login(self):
         self.login.show()
 
-    def login_action(self, username, password):
-        response = self.controller.login(username, password)
+    def _login(self, values):
+        response = self.controller.actions(Actions.login, values)
 
         if response == Responses.success:
             self.login.successful_login(self.controller.get_username())
