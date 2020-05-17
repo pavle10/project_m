@@ -9,8 +9,12 @@ class ActionManager:
         self.controller = controller
         self._database_manager = DatabaseManager(self)
 
-    def login_action(self, username, password):
-        res = self._database_manager.actions(Actions.login, [username, password])
+    def actions(self, action, values=None):
+        if action == Actions.login:
+            self._login(values)
+
+    def _login(self, values):
+        res = self._database_manager.actions(Actions.login, values)
 
         if res:
             new_user = User(res[0], res[1])
