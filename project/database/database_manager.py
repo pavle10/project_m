@@ -2,6 +2,8 @@ from configparser import ConfigParser
 import psycopg2
 
 from project.utils.constants import DATABASE_CONFIG_PATH
+from project.models.position import Position
+from project.models.employee import Employee
 from project.enums.actions import Actions
 from project.enums.query_type import QueryType
 from project.utils.sql_queries import *
@@ -67,10 +69,12 @@ class DatabaseManager:
     def actions(self, action, values=None):
         if action == Actions.login:
             return self._check_credentials(values)
-        elif action == Actions.init_employees:
+        elif action == Actions.all_employees:
             return self._get_employees()
-        elif action == Actions.init_positions:
+        elif action == Actions.all_positions:
             return self._get_positions()
+        elif action == Actions.add_employee:
+            return self._insert_employee(values)
         elif action == Actions.add_position:
             return self._insert_position(values)
 
@@ -81,13 +85,34 @@ class DatabaseManager:
 
     def _get_employees(self):
         query = SELECT_ALL_EMPLOYEES
+        employees = list()
 
-        return self._execute_query(query, QueryType.select)
+        result = self._execute_query(query, QueryType.select)
+
+        for res in result:
+            employee = Employee(res[0], res[1], res[2], res[3], res[4],
+                                res[5], res[6], res[7], res[8], res[9],
+                                res[10], res[11], res[12], res[13], res[14], res[15])
+            employees.append(employee)
+
+        return employees
 
     def _get_positions(self):
         query = SELECT_ALL_POSITIONS
 
-        return self._execute_query(query, QueryType.select)
+        result = self._execute_query(query, QueryType.select)
+
+        return [Position(pos[0], pos[1], pos[2]) for pos in result]
+
+    def _insert_employee(self, values):
+        insert_query = INSERT_EMPLOYEE
+
+        result = self._execute_query(insert_query, QueryType.insert, values)
+
+        if result:
+            return self._execute_query(SELECT_EMPLOYEE_BY_IDENTITY_NUMBER, QueryType.select, [values[3]])
+
+        return None
 
     def _insert_position(self, values):
         insert_query = INSERT_POSITION
@@ -96,5 +121,7 @@ class DatabaseManager:
         result = self._execute_query(insert_query, QueryType.insert, values)
 
         if result:
-            return self._execute_query(SELECT_pOSITION_BY_NAME, QueryType.select, [values[0]])
+            return self._execute_query(SELECT_POSITION_BY_NAME, QueryType.select, [values[0]])
+
+        return None
 

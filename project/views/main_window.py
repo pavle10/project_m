@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon, QFont
 
 import project.utils.constants as cons
 import project.utils.strings as strs
-from project.views.tabs.add__tab import AddTab
+from project.views.add_tab.add__tab import AddTab
 from project.enums.actions import Actions
 
 
@@ -24,6 +24,7 @@ class MainWind(QMainWindow):
 
         layout = QVBoxLayout()
         tabs = QTabWidget()
+        tabs.resize(cons.MIN_TAB_WIDTH, cons.MIN_TAB_HEIGHT)
         tabs.addTab(AddTab(self._view_manager), strs.ADD_TAB_NAME)
         self.setCentralWidget(tabs)
 

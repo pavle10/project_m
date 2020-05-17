@@ -3,8 +3,8 @@ from PyQt5.QtCore import Qt
 
 import project.utils.strings as strs
 import project.utils.funcs as funcs
-from project.views.tabs.add_employee_view import AddEmployeeView
-from project.views.tabs.add_position_view import AddPositionView
+from project.views.add_tab.add_employee_view import AddEmployeeView
+from project.views.add_tab.add_position_view import AddPositionView
 
 
 class AddTab(QWidget):

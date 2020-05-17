@@ -19,7 +19,9 @@ class ViewManager:
         elif action == Actions.add_position:
             return self._add_position(values)
         elif action == Actions.add_employee:
-            self._add_employee(values)
+            return self._add_employee(values)
+        elif action == Actions.all_positions:
+            return self._get_all_positions()
 
     def _show_login(self):
         self.login.show()
@@ -38,4 +40,7 @@ class ViewManager:
         return self._controller.actions(Actions.add_position, values)
 
     def _add_employee(self, values):
-        pass
+        return self._controller.actions(Actions.add_employee, values)
+
+    def _get_all_positions(self):
+        return self._controller.actions(Actions.all_positions)

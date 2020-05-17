@@ -12,18 +12,16 @@ class Controller:
     def __init__(self):
         self._app = QApplication(sys.argv)
 
-        self._view_manager = ViewManager(self)
         self._action_manager = ActionManager(self)
 
         self._init_models()
 
+        self._view_manager = ViewManager(self)
+
     def _init_models(self):
         self._user = None
-        self._employees = self._action_manager.actions(Actions.init_employees)
-        self._positions = self._action_manager.actions(Actions.init_positions)
-
-        print(f"Positions count: {len(self._positions)}")
-        print(self._positions)
+        self._employees = self._action_manager.actions(Actions.all_employees)
+        self._positions = self._action_manager.actions(Actions.all_positions)
 
     def run(self):
         self._view_manager.actions(Actions.show)
@@ -41,6 +39,10 @@ class Controller:
             return self._login(values)
         elif action == Actions.add_position:
             return self._add_position(values)
+        elif action == Actions.all_positions:
+            return self._get_all_positions()
+        elif action == Actions.add_employee:
+            return self._add_employee(values)
 
     def _login(self, values):
         self._action_manager.actions(Actions.login, values)
@@ -54,3 +56,26 @@ class Controller:
             self._positions.append(response)
             return Responses.success
         return Responses.fail
+
+    def _get_all_positions(self):
+        return [position.name for position in self._positions]
+
+    def _add_employee(self, values):
+        position_id = self._get_position_id(values[6])
+
+        if position_id is not None:
+            values[6] = position_id
+            response = self._action_manager.actions(Actions.add_employee, values)
+
+            if response:
+                self._employees.append(response)
+                return Responses.success
+
+        return Responses.fail
+
+    def _get_position_id(self, name):
+        for position in self._positions:
+            if position.name == name:
+                return position.position_id
+
+        return None

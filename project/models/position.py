@@ -1,7 +1,7 @@
 class Position:
 
-    def __init__(self, id,  name, saturday):
-        self.id = id
+    def __init__(self, position_id, name, saturday):
+        self.position_id = position_id
         self.name = name
         self.saturday = saturday
 
@@ -18,7 +18,7 @@ class Position:
         return self.saturday
 
     def __eq__(self, other):
-        return isinstance(other, Position) and self.id == other.id
+        return isinstance(other, Position) and self.position_id == other.position_id
 
     def __hash__(self):
-        return hash(self.id)
+        return hash(self.position_id)
