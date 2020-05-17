@@ -3,6 +3,8 @@ from PyQt5.QtGui import QIcon, QFont
 
 import project.utils.constants as cons
 import project.utils.strings as strs
+from project.views.tabs.add__tab import AddTab
+from project.enums.actions import Actions
 
 
 class MainWind(QMainWindow):
@@ -20,9 +22,20 @@ class MainWind(QMainWindow):
         self.setFixedSize(cons.MAIN_WIN_WIDTH, cons.MAIN_WIN_HEIGHT)
         self._center()
 
+        layout = QVBoxLayout()
+        tabs = QTabWidget()
+        tabs.addTab(AddTab(self._view_manager), strs.ADD_TAB_NAME)
+        self.setCentralWidget(tabs)
+
+        layout.addWidget(tabs)
+        self.setLayout(layout)
+
     def _center(self):
         frame_geometry = self.frameGeometry()
         screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
         centerPoint = QApplication.desktop().screenGeometry(screen).center()
         frame_geometry.moveCenter(centerPoint)
         self.move(frame_geometry.topLeft())
+
+    def add_position(self, values):
+        self._view_manager.actions(Actions.add_employee, values)
