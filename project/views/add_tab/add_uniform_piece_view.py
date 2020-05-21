@@ -3,6 +3,7 @@ from PyQt5.QtCore import Qt
 
 from project.enums.actions import Actions
 from project.enums.responses import Responses
+import project.utils.funcs as funcs
 
 
 class AddUniformPieceView(QWidget):
@@ -78,9 +79,7 @@ class AddUniformPieceView(QWidget):
         return self._manager.actions(Actions.all_employees)
 
     def _add_uniform_piece(self):
-        chosen_date = f"{self.calendar.selectedDate().year()}-" \
-                      f"{self.calendar.selectedDate().month()}-" \
-                      f"{self.calendar.selectedDate().day()}"
+        chosen_date = funcs.convert_date_to_string(self.calendar.selectedDate())
         values = [self.uniform_box.currentText(), self.employee_box.currentText(), self.size_line.text(),
                   self.quantity_line.text(), self.additional_line.text(), chosen_date]
 

@@ -9,6 +9,7 @@ from project.models.uniform_piece import UniformPiece
 from project.models.child import Child
 from project.models.free_days import FreeDays
 from project.models.wage import Wage
+from project.models.salaries import Salary1
 from project.enums.actions import Actions
 from project.utils.sql_queries import *
 from project.utils.funcs import *
@@ -100,6 +101,8 @@ class DatabaseManager:
             return self._insert_free_days(values)
         elif action == Actions.add_wage:
             return self._insert_wage(values)
+        elif action == Actions.add_salary_1:
+            return self._insert_salary_1(values)
 
     def _check_credentials(self, values):
         query = CHECK_CREDENTIALS
@@ -200,6 +203,11 @@ class DatabaseManager:
 
     def _insert_wage(self, values):
         insert_query = INSERT_WAGE
+
+        return self._execute_query(insert_query, values)
+
+    def _insert_salary_1(self, values):
+        insert_query = INSERT_SALARY_1
 
         return self._execute_query(insert_query, values)
 
