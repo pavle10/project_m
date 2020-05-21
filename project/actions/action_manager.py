@@ -7,6 +7,7 @@ from project.models.uniform import Uniform
 from project.models.uniform_piece import UniformPiece
 from project.models.child import Child
 from project.models.free_days import FreeDays
+from project.models.wage import Wage
 
 
 class ActionManager:
@@ -30,6 +31,8 @@ class ActionManager:
             return self._init_model(Actions.all_children)
         elif action == Actions.all_free_days:
             return self._init_model(Actions.all_free_days)
+        elif action == Actions.all_wages:
+            return self._init_model(Actions.all_wages)
         elif action == Actions.add_position:
             return self._add_position(values)
         elif action == Actions.add_employee:
@@ -42,6 +45,8 @@ class ActionManager:
             return self._add_child(values)
         elif action == Actions.add_free_days:
             return self._add_free_days(values)
+        elif action == Actions.add_wage:
+            return self._add_wage(values)
 
     def _login(self, values):
         res = self._database_manager.actions(Actions.login, values)
@@ -94,3 +99,8 @@ class ActionManager:
         result = self._database_manager.actions(Actions.add_free_days, values)
 
         return FreeDays(result[0], result[1], result[2], result[3], result[4], result[5]) if result else None
+
+    def _add_wage(self, values):
+        result = self._database_manager.actions(Actions.add_wage, values)
+
+        return Wage(result[0], result[1], result[2], result[3], result[4]) if result else None

@@ -9,6 +9,7 @@ from project.views.add_tab.add_uniform_view import AddUniformView
 from project.views.add_tab.add_uniform_piece_view import AddUniformPieceView
 from project.views.add_tab.add_child_view import AddChildView
 from project.views.add_tab.add_free_days_view import AddFreeDaysView
+from project.views.add_tab.add_wage_view import AddWageView
 
 
 class AddTab(QWidget):
@@ -35,6 +36,7 @@ class AddTab(QWidget):
         add_uniform = AddUniformView(self._manager)
         add_uniform_piece = AddUniformPieceView(self._manager)
         add_free_days = AddFreeDaysView(self._manager)
+        add_wage = AddWageView(self._manager)
 
         self.views = list()
         self.views.append(add_employee)
@@ -43,6 +45,7 @@ class AddTab(QWidget):
         self.views.append(add_uniform)
         self.views.append(add_uniform_piece)
         self.views.append(add_free_days)
+        self.views.append(add_wage)
 
         self.splitter = QSplitter(Qt.Horizontal)
         self.splitter.addWidget(scroll_area)

@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon, QFont
 
 import project.utils.constants as cons
 import project.utils.strings as strs
-from project.views.add_tab.add__tab import AddTab
+from project.views.add_tab.add_tab import AddTab
 from project.enums.actions import Actions
 
 

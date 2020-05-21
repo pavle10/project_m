@@ -28,6 +28,8 @@ class ViewManager:
             return self._add_child(values)
         elif action == Actions.add_free_days:
             return self._add_free_days(values)
+        elif action == Actions.add_wage:
+            return self._add_wage(values)
         elif action == Actions.all_positions:
             return self._get_all_positions()
         elif action == Actions.all_employees:
@@ -65,6 +67,9 @@ class ViewManager:
 
     def _add_free_days(self, values):
         return self._controller.actions(Actions.add_free_days, values)
+
+    def _add_wage(self, values):
+        return self._controller.actions(Actions.add_wage, values)
 
     def _get_all_positions(self):
         return self._controller.actions(Actions.all_positions)

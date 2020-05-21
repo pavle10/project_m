@@ -8,6 +8,7 @@ from project.models.uniform import Uniform
 from project.models.uniform_piece import UniformPiece
 from project.models.child import Child
 from project.models.free_days import FreeDays
+from project.models.wage import Wage
 from project.enums.actions import Actions
 from project.utils.sql_queries import *
 from project.utils.funcs import *
@@ -83,6 +84,8 @@ class DatabaseManager:
             return self._get_children()
         elif action == Actions.all_free_days:
             return self._get_all_free_days()
+        elif action == Actions.all_wages:
+            return self._get_all_wages()
         elif action == Actions.add_employee:
             return self._insert_employee(values)
         elif action == Actions.add_position:
@@ -95,6 +98,8 @@ class DatabaseManager:
             return self._insert_child(values)
         elif action == Actions.add_free_days:
             return self._insert_free_days(values)
+        elif action == Actions.add_wage:
+            return self._insert_wage(values)
 
     def _check_credentials(self, values):
         query = CHECK_CREDENTIALS
@@ -155,6 +160,13 @@ class DatabaseManager:
 
         return [FreeDays(res[0], res[1], res[2], res[3], res[4], res[5]) for res in result]
 
+    def _get_all_wages(self):
+        query = SELECT_ALL_WAGES
+
+        result = self._execute_query(query)
+
+        return [Wage(res[0], res[1], res[2], res[3], res[4]) for res in result]
+
     def _insert_employee(self, values):
         insert_query = INSERT_EMPLOYEE
 
@@ -183,6 +195,11 @@ class DatabaseManager:
 
     def _insert_free_days(self, values):
         insert_query = INSERT_FREE_DAYS
+
+        return self._execute_query(insert_query, values)
+
+    def _insert_wage(self, values):
+        insert_query = INSERT_WAGE
 
         return self._execute_query(insert_query, values)
 
