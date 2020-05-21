@@ -6,8 +6,8 @@ from project.models.position import Position
 from project.models.employee import Employee
 from project.models.uniform import Uniform
 from project.models.uniform_piece import UniformPiece
+from project.models.child import Child
 from project.enums.actions import Actions
-from project.enums.query_type import QueryType
 from project.utils.sql_queries import *
 from project.utils.funcs import *
 
@@ -78,6 +78,8 @@ class DatabaseManager:
             return self._get_uniforms()
         elif action == Actions.all_uniform_pieces:
             return self._get_uniform_pieces()
+        elif action == Actions.all_children:
+            return self._get_children()
         elif action == Actions.add_employee:
             return self._insert_employee(values)
         elif action == Actions.add_position:
@@ -86,6 +88,8 @@ class DatabaseManager:
             return self._insert_uniform(values)
         elif action == Actions.add_uniform_piece:
             return self._insert_uniform_piece(values)
+        elif action == Actions.add_child:
+            return self._insert_child(values)
 
     def _check_credentials(self, values):
         query = CHECK_CREDENTIALS
@@ -132,6 +136,13 @@ class DatabaseManager:
 
         return uniform_pieces
 
+    def _get_children(self):
+        query = SELECT_ALL_CHILDREN
+
+        result = self._execute_query(query)
+
+        return [Child(res[0], res[1], res[2], res[3], res[4]) for res in result]
+
     def _insert_employee(self, values):
         insert_query = INSERT_EMPLOYEE
 
@@ -150,6 +161,11 @@ class DatabaseManager:
 
     def _insert_uniform_piece(self, values):
         insert_query = INSERT_UNIFORM_PIECE
+
+        return self._execute_query(insert_query, values)
+
+    def _insert_child(self, values):
+        insert_query = INSERT_CHILD
 
         return self._execute_query(insert_query, values)
 

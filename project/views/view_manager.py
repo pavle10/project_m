@@ -24,6 +24,8 @@ class ViewManager:
             return self._add_uniform(values)
         elif action == Actions.add_uniform_piece:
             return self._add_uniform_piece(values)
+        elif action == Actions.add_child:
+            return self._add_child(values)
         elif action == Actions.all_positions:
             return self._get_all_positions()
         elif action == Actions.all_employees:
@@ -55,6 +57,9 @@ class ViewManager:
 
     def _add_uniform_piece(self, values):
         return self._controller.actions(Actions.add_uniform_piece, values)
+
+    def _add_child(self, values):
+        return self._controller.actions(Actions.add_child, values)
 
     def _get_all_positions(self):
         return self._controller.actions(Actions.all_positions)

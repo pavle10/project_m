@@ -5,6 +5,7 @@ from project.models.position import Position
 from project.models.employee import Employee
 from project.models.uniform import Uniform
 from project.models.uniform_piece import UniformPiece
+from project.models.child import Child
 
 
 class ActionManager:
@@ -24,6 +25,8 @@ class ActionManager:
             return self._init_model(Actions.all_uniforms)
         elif action == Actions.all_uniform_pieces:
             return self._init_model(Actions.all_uniform_pieces)
+        elif action == Actions.all_children:
+            return self._init_model(Actions.all_children)
         elif action == Actions.add_position:
             return self._add_position(values)
         elif action == Actions.add_employee:
@@ -32,6 +35,8 @@ class ActionManager:
             return self._add_uniform(values)
         elif action == Actions.add_uniform_piece:
             return self._add_uniform_piece(values)
+        elif action == Actions.add_child:
+            return self._add_child(values)
 
     def _login(self, values):
         res = self._database_manager.actions(Actions.login, values)
@@ -74,3 +79,8 @@ class ActionManager:
         new_uniform_piece = UniformPiece(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
 
         return new_uniform_piece
+
+    def _add_child(self, values):
+        result = self._database_manager.actions(Actions.add_child, values)
+
+        return Child(result[0], result[1], result[2], result[3], result[4]) if result else None

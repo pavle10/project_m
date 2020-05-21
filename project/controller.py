@@ -24,6 +24,7 @@ class Controller:
         self._positions = self._action_manager.actions(Actions.all_positions)
         self._uniforms = self._action_manager.actions(Actions.all_uniforms)
         self._uniform_pieces = self._action_manager.actions(Actions.all_uniform_pieces)
+        self._children = self._action_manager.actions(Actions.all_children)
 
     def run(self):
         self._view_manager.actions(Actions.show)
@@ -47,6 +48,8 @@ class Controller:
             return self._add_uniform(values)
         elif action == Actions.add_uniform_piece:
             return self._add_uniform_piece(values)
+        elif action == Actions.add_child:
+            return self._add_child(values)
         elif action == Actions.all_positions:
             return self._get_all_positions()
         elif action == Actions.all_employees:
@@ -105,6 +108,22 @@ class Controller:
 
         return Responses.fail
 
+    def _add_child(self, values):
+        mother_id = self._get_employee_id(values[2])
+        father_id = self._get_employee_id(values[3])
+
+        if not (mother_id is None and father_id is None):
+            values[2] = mother_id
+            values[3] = father_id
+
+            response = self._action_manager.actions(Actions.add_child, values)
+
+            if response:
+                self._children.append(response)
+                return Responses.success
+
+        return Responses.fail
+
     def _get_all_positions(self):
         return [position.get_name() for position in self._positions]
 
@@ -120,7 +139,12 @@ class Controller:
                 for employee in self._employees]
 
     def _get_employee_id(self, value):
-        identity_number = value.split(' ')[2]
+        values = value.split(' ')
+
+        if len(values) != 3:
+            return None
+
+        identity_number = values[2]
 
         for employee in self._employees:
             if employee.get_identity_number() == identity_number:
