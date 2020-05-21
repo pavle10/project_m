@@ -5,6 +5,7 @@ import project.utils.strings as strs
 import project.utils.funcs as funcs
 from project.views.add_tab.add_employee_view import AddEmployeeView
 from project.views.add_tab.add_position_view import AddPositionView
+from project.views.add_tab.add_uniform_view import AddUniformView
 
 
 class AddTab(QWidget):
@@ -27,10 +28,12 @@ class AddTab(QWidget):
 
         add_position = AddPositionView(self._manager)
         add_employee = AddEmployeeView(self._manager)
+        add_uniform = AddUniformView(self._manager)
 
         self.views = list()
         self.views.append(add_employee)
         self.views.append(add_position)
+        self.views.append(add_uniform)
 
         self.splitter = QSplitter(Qt.Horizontal)
         self.splitter.addWidget(scroll_area)

@@ -3,6 +3,7 @@ from project.enums.actions import Actions
 from project.models.user import User
 from project.models.position import Position
 from project.models.employee import Employee
+from project.models.uniform import Uniform
 
 
 class ActionManager:
@@ -18,10 +19,14 @@ class ActionManager:
             return self._init_model(Actions.all_employees)
         elif action == Actions.all_positions:
             return self._init_model(Actions.all_positions)
+        elif action == Actions.all_uniforms:
+            return self._init_model(Actions.all_uniforms)
         elif action == Actions.add_position:
             return self._add_position(values)
         elif action == Actions.add_employee:
             return self._add_employee(values)
+        elif action == Actions.add_uniform:
+            return self._add_uniform(values)
 
     def _login(self, values):
         res = self._database_manager.actions(Actions.login, values)
@@ -49,3 +54,8 @@ class ActionManager:
                                 result[10], result[11], result[12], result[13], result[14], result[15])
 
         return new_employee
+
+    def _add_uniform(self, values):
+        result = self._database_manager.actions(Actions.add_uniform, values)
+
+        return Uniform(result[0], result[1]) if result else None

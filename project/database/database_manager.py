@@ -4,6 +4,7 @@ import psycopg2
 from project.utils.constants import DATABASE_CONFIG_PATH
 from project.models.position import Position
 from project.models.employee import Employee
+from project.models.uniform import Uniform
 from project.enums.actions import Actions
 from project.enums.query_type import QueryType
 from project.utils.sql_queries import *
@@ -73,10 +74,14 @@ class DatabaseManager:
             return self._get_employees()
         elif action == Actions.all_positions:
             return self._get_positions()
+        elif action == Actions.all_uniforms:
+            return self._get_uniforms()
         elif action == Actions.add_employee:
             return self._insert_employee(values)
         elif action == Actions.add_position:
             return self._insert_position(values)
+        elif action == Actions.add_uniform:
+            return self._insert_uniform(values)
 
     def _check_credentials(self, values):
         query = CHECK_CREDENTIALS
@@ -104,6 +109,13 @@ class DatabaseManager:
 
         return [Position(pos[0], pos[1], pos[2]) for pos in result]
 
+    def _get_uniforms(self):
+        query = SELECT_ALL_UNIFOMRS
+
+        result = self._execute_query(query, QueryType.select)
+
+        return [Uniform(uni[0], uni[1]) for uni in result]
+
     def _insert_employee(self, values):
         insert_query = INSERT_EMPLOYEE
 
@@ -124,4 +136,12 @@ class DatabaseManager:
             return self._execute_query(SELECT_POSITION_BY_NAME, QueryType.select, [values[0]])
 
         return None
+
+    def _insert_uniform(self, values):
+        insert_query = INSERT_UNIFORM
+
+        result = self._execute_query(insert_query, QueryType.insert, values)
+
+        if result:
+            return self._execute_query(SELECT_UNIFORM_BY_NAME, QueryType.select, [values[0]])
 

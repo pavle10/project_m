@@ -22,6 +22,7 @@ class Controller:
         self._user = None
         self._employees = self._action_manager.actions(Actions.all_employees)
         self._positions = self._action_manager.actions(Actions.all_positions)
+        self._uniforms = self._action_manager.actions(Actions.all_uniforms)
 
     def run(self):
         self._view_manager.actions(Actions.show)
@@ -39,10 +40,12 @@ class Controller:
             return self._login(values)
         elif action == Actions.add_position:
             return self._add_position(values)
-        elif action == Actions.all_positions:
-            return self._get_all_positions()
         elif action == Actions.add_employee:
             return self._add_employee(values)
+        elif action == Actions.add_uniform:
+            return self._add_uniform(values)
+        elif action == Actions.all_positions:
+            return self._get_all_positions()
 
     def _login(self, values):
         self._action_manager.actions(Actions.login, values)
@@ -57,9 +60,6 @@ class Controller:
             return Responses.success
         return Responses.fail
 
-    def _get_all_positions(self):
-        return [position.name for position in self._positions]
-
     def _add_employee(self, values):
         position_id = self._get_position_id(values[6])
 
@@ -72,6 +72,18 @@ class Controller:
                 return Responses.success
 
         return Responses.fail
+
+    def _add_uniform(self, values):
+        response = self._action_manager.actions(Actions.add_uniform, values)
+
+        if response:
+            self._uniforms.append(response)
+            return Responses.success
+
+        return Responses.fail
+
+    def _get_all_positions(self):
+        return [position.name for position in self._positions]
 
     def _get_position_id(self, name):
         for position in self._positions:
