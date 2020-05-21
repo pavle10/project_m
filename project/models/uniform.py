@@ -1,8 +1,11 @@
 class Uniform:
 
-    def __init__(self, position_id, name):
-        self.position_id = position_id
+    def __init__(self, uniform_id, name):
+        self.uniform_id = uniform_id
         self.name = name
+
+    def get_uniform_id(self):
+        return self.uniform_id
 
     def set_name(self, new_name):
         self.name = new_name
@@ -11,7 +14,7 @@ class Uniform:
         return self.name
 
     def __eq__(self, other):
-        return isinstance(other, Uniform) and self.position_id == other.position_id
+        return isinstance(other, Uniform) and self.uniform_id == other.uniform_id
 
     def __hash__(self):
-        return hash(self.position_id)
+        return hash(self.uniform_id)

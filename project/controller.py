@@ -23,6 +23,7 @@ class Controller:
         self._employees = self._action_manager.actions(Actions.all_employees)
         self._positions = self._action_manager.actions(Actions.all_positions)
         self._uniforms = self._action_manager.actions(Actions.all_uniforms)
+        self._uniform_pieces = self._action_manager.actions(Actions.all_uniform_pieces)
 
     def run(self):
         self._view_manager.actions(Actions.show)
@@ -44,8 +45,14 @@ class Controller:
             return self._add_employee(values)
         elif action == Actions.add_uniform:
             return self._add_uniform(values)
+        elif action == Actions.add_uniform_piece:
+            return self._add_uniform_piece(values)
         elif action == Actions.all_positions:
             return self._get_all_positions()
+        elif action == Actions.all_employees:
+            return self._get_all_employees()
+        elif action == Actions.all_uniforms:
+            return self._get_all_uniforms()
 
     def _login(self, values):
         self._action_manager.actions(Actions.login, values)
@@ -82,12 +89,51 @@ class Controller:
 
         return Responses.fail
 
+    def _add_uniform_piece(self, values):
+        uniform_id = self._get_uniform_id(values[0])
+        employee_id = self._get_employee_id(values[1])
+
+        if uniform_id is not None and employee_id is not None:
+            values[0] = uniform_id
+            values[1] = employee_id
+
+            response = self._action_manager.actions(Actions.add_uniform_piece, values)
+
+            if response:
+                self._uniform_pieces.append(response)
+                return Responses.success
+
+        return Responses.fail
+
     def _get_all_positions(self):
-        return [position.name for position in self._positions]
+        return [position.get_name() for position in self._positions]
 
     def _get_position_id(self, name):
         for position in self._positions:
             if position.name == name:
                 return position.position_id
+
+        return None
+
+    def _get_all_employees(self):
+        return [(employee.get_first_name(), employee.get_last_name(), employee.get_identity_number())
+                for employee in self._employees]
+
+    def _get_employee_id(self, value):
+        identity_number = value.split(' ')[2]
+
+        for employee in self._employees:
+            if employee.get_identity_number() == identity_number:
+                return employee.get_employee_id()
+
+        return None
+
+    def _get_all_uniforms(self):
+        return [uniform.get_name() for uniform in self._uniforms]
+
+    def _get_uniform_id(self, name):
+        for uniform in self._uniforms:
+            if uniform.get_name() == name:
+                return uniform.get_uniform_id()
 
         return None

@@ -6,6 +6,7 @@ import project.utils.funcs as funcs
 from project.views.add_tab.add_employee_view import AddEmployeeView
 from project.views.add_tab.add_position_view import AddPositionView
 from project.views.add_tab.add_uniform_view import AddUniformView
+from project.views.add_tab.add_uniform_piece_view import AddUniformPieceView
 
 
 class AddTab(QWidget):
@@ -29,11 +30,13 @@ class AddTab(QWidget):
         add_position = AddPositionView(self._manager)
         add_employee = AddEmployeeView(self._manager)
         add_uniform = AddUniformView(self._manager)
+        add_uniform_piece = AddUniformPieceView(self._manager)
 
         self.views = list()
         self.views.append(add_employee)
         self.views.append(add_position)
         self.views.append(add_uniform)
+        self.views.append(add_uniform_piece)
 
         self.splitter = QSplitter(Qt.Horizontal)
         self.splitter.addWidget(scroll_area)

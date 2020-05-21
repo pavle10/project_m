@@ -34,6 +34,18 @@ class Employee:
         self.mobile_number = mobile_number
         self.situation = situation
 
+    def get_employee_id(self):
+        return self.employee_id
+
+    def get_first_name(self):
+        return self.first_name
+
+    def get_last_name(self):
+        return self.last_name
+
+    def get_identity_number(self):
+        return self.identity_number
+
     def __eq__(self, other):
         return isinstance(other, Employee) and self.employee_id == other.employee_id
 

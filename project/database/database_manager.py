@@ -5,6 +5,7 @@ from project.utils.constants import DATABASE_CONFIG_PATH
 from project.models.position import Position
 from project.models.employee import Employee
 from project.models.uniform import Uniform
+from project.models.uniform_piece import UniformPiece
 from project.enums.actions import Actions
 from project.enums.query_type import QueryType
 from project.utils.sql_queries import *
@@ -33,7 +34,7 @@ class DatabaseManager:
 
         return db
 
-    def _execute_query(self, query, query_type, values=None):
+    def _execute_query(self, query, values=None):
         result = None
         conn = None
 
@@ -48,11 +49,10 @@ class DatabaseManager:
             else:
                 cur.execute(query)
 
-            if query_type == QueryType.select:
-                if cur.rowcount == 1:
-                    result = cur.fetchone()
-                elif cur.rowcount > 1:
-                    result = cur.fetchall()
+            if cur.rowcount == 1:
+                result = cur.fetchone()
+            elif cur.rowcount > 1:
+                result = cur.fetchall()
             else:
                 result = cur.statusmessage
 
@@ -76,23 +76,27 @@ class DatabaseManager:
             return self._get_positions()
         elif action == Actions.all_uniforms:
             return self._get_uniforms()
+        elif action == Actions.all_uniform_pieces:
+            return self._get_uniform_pieces()
         elif action == Actions.add_employee:
             return self._insert_employee(values)
         elif action == Actions.add_position:
             return self._insert_position(values)
         elif action == Actions.add_uniform:
             return self._insert_uniform(values)
+        elif action == Actions.add_uniform_piece:
+            return self._insert_uniform_piece(values)
 
     def _check_credentials(self, values):
         query = CHECK_CREDENTIALS
 
-        return self._execute_query(query, QueryType.select, values)
+        return self._execute_query(query, values)
 
     def _get_employees(self):
         query = SELECT_ALL_EMPLOYEES
         employees = list()
 
-        result = self._execute_query(query, QueryType.select)
+        result = self._execute_query(query)
 
         for res in result:
             employee = Employee(res[0], res[1], res[2], res[3], res[4],
@@ -105,43 +109,47 @@ class DatabaseManager:
     def _get_positions(self):
         query = SELECT_ALL_POSITIONS
 
-        result = self._execute_query(query, QueryType.select)
+        result = self._execute_query(query)
 
         return [Position(pos[0], pos[1], pos[2]) for pos in result]
 
     def _get_uniforms(self):
-        query = SELECT_ALL_UNIFOMRS
+        query = SELECT_ALL_UNIFORMS
 
-        result = self._execute_query(query, QueryType.select)
+        result = self._execute_query(query)
 
         return [Uniform(uni[0], uni[1]) for uni in result]
+
+    def _get_uniform_pieces(self):
+        query = SELECT_ALL_UNIFORM_PIECES
+        uniform_pieces = list()
+
+        result = self._execute_query(query)
+
+        for res in result:
+            uniform_piece = UniformPiece(res[0], res[1], res[2], res[3], res[4], res[5], res[6])
+            uniform_pieces.append(uniform_piece)
+
+        return uniform_pieces
 
     def _insert_employee(self, values):
         insert_query = INSERT_EMPLOYEE
 
-        result = self._execute_query(insert_query, QueryType.insert, values)
-
-        if result:
-            return self._execute_query(SELECT_EMPLOYEE_BY_IDENTITY_NUMBER, QueryType.select, [values[3]])
-
-        return None
+        return self._execute_query(insert_query, values)
 
     def _insert_position(self, values):
         insert_query = INSERT_POSITION
         values[1] = convert_saturday(values[1])
 
-        result = self._execute_query(insert_query, QueryType.insert, values)
-
-        if result:
-            return self._execute_query(SELECT_POSITION_BY_NAME, QueryType.select, [values[0]])
-
-        return None
+        return self._execute_query(insert_query, values)
 
     def _insert_uniform(self, values):
         insert_query = INSERT_UNIFORM
 
-        result = self._execute_query(insert_query, QueryType.insert, values)
+        return self._execute_query(insert_query, values)
 
-        if result:
-            return self._execute_query(SELECT_UNIFORM_BY_NAME, QueryType.select, [values[0]])
+    def _insert_uniform_piece(self, values):
+        insert_query = INSERT_UNIFORM_PIECE
+
+        return self._execute_query(insert_query, values)
 
