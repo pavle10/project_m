@@ -58,6 +58,8 @@ class Controller:
             return self._add_wage(values)
         elif action == Actions.add_salary_1:
             return self._add_salary_1(values)
+        elif action == Actions.add_salary_2:
+            return self._add_salary_2(values)
         elif action == Actions.all_positions:
             return self._get_all_positions()
         elif action == Actions.all_employees:
@@ -76,6 +78,7 @@ class Controller:
         if response:
             self._positions.append(response)
             return Responses.success
+
         return Responses.fail
 
     def _add_employee(self, values):
@@ -173,6 +176,29 @@ class Controller:
 
         return Responses.fail
 
+    def _add_salary_2(self, values):
+        employee_id = self._get_employee_id(values[0])
+
+        if employee_id is None:
+            return Responses.fail
+
+        wage = self._get_employee_wage(employee_id)
+
+        if wage is None:
+            return Responses.fail
+
+        values[0] = employee_id
+        values[3] = wage.get_day()
+        values[5] = wage.get_hour()
+        values[7] = wage.get_meal()
+
+        response = self._action_manager.actions(Actions.add_salary_2, values)
+
+        if response:
+            return Responses.success
+
+        return Responses.fail
+
     def _get_all_positions(self):
         return [position.get_name() for position in self._positions]
 
@@ -208,5 +234,12 @@ class Controller:
         for uniform in self._uniforms:
             if uniform.get_name() == name:
                 return uniform.get_uniform_id()
+
+        return None
+
+    def _get_employee_wage(self, employee_id):
+        for wage in self._wages:
+            if wage.get_employee_id() == employee_id:
+                return wage
 
         return None

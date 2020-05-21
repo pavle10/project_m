@@ -11,6 +11,7 @@ from project.views.add_tab.add_child_view import AddChildView
 from project.views.add_tab.add_free_days_view import AddFreeDaysView
 from project.views.add_tab.add_wage_view import AddWageView
 from project.views.add_tab.add_salary_1_view import AddSalary1View
+from project.views.add_tab.add_salary_2_view import AddSalary2View
 
 
 class AddTab(QWidget):
@@ -39,6 +40,7 @@ class AddTab(QWidget):
         add_free_days = AddFreeDaysView(self._manager)
         add_wage = AddWageView(self._manager)
         add_salary_1 = AddSalary1View(self._manager)
+        add_salary_2 = AddSalary2View(self._manager)
 
         self.views = list()
         self.views.append(add_employee)
@@ -49,6 +51,7 @@ class AddTab(QWidget):
         self.views.append(add_free_days)
         self.views.append(add_wage)
         self.views.append(add_salary_1)
+        self.views.append(add_salary_2)
 
         self.splitter = QSplitter(Qt.Horizontal)
         self.splitter.addWidget(scroll_area)
@@ -62,7 +65,7 @@ class AddTab(QWidget):
         item = self.options_list.currentItem()
         index = int(self.options_list.indexFromItem(item).row())
 
-        self.splitter.replaceWidget(1, self.views[index % len(self.views)])
+        self.splitter.replaceWidget(1, self.views[index])
 
 
 

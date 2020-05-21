@@ -8,7 +8,7 @@ from project.models.uniform_piece import UniformPiece
 from project.models.child import Child
 from project.models.free_days import FreeDays
 from project.models.wage import Wage
-from project.models.salaries import Salary1
+from project.models.salaries import Salary1, Salary2
 
 
 class ActionManager:
@@ -50,6 +50,8 @@ class ActionManager:
             return self._add_wage(values)
         elif action == Actions.add_salary_1:
             return self._add_salary_1(values)
+        elif action == Actions.add_salary_2:
+            return self._add_salary_2(values)
 
     def _login(self, values):
         res = self._database_manager.actions(Actions.login, values)
@@ -112,4 +114,15 @@ class ActionManager:
         result = self._database_manager.actions(Actions.add_salary_1, values)
 
         return Salary1(result[0], result[1], result[2], result[3], result[4]) if result else None
+
+    def _add_salary_2(self, values):
+        result = self._database_manager.actions(Actions.add_salary_2, values)
+
+        if result is None:
+            return result
+
+        new_salary = Salary2(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7],
+                             result[8], result[9], result[10], result[11], result[12])
+
+        return new_salary
 
