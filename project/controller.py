@@ -25,6 +25,7 @@ class Controller:
         self._uniforms = self._action_manager.actions(Actions.all_uniforms)
         self._uniform_pieces = self._action_manager.actions(Actions.all_uniform_pieces)
         self._children = self._action_manager.actions(Actions.all_children)
+        self._all_free_days = self._action_manager.actions(Actions.all_free_days)
 
     def run(self):
         self._view_manager.actions(Actions.show)
@@ -50,6 +51,8 @@ class Controller:
             return self._add_uniform_piece(values)
         elif action == Actions.add_child:
             return self._add_child(values)
+        elif action == Actions.add_free_days:
+            return self._add_free_days(values)
         elif action == Actions.all_positions:
             return self._get_all_positions()
         elif action == Actions.all_employees:
@@ -120,6 +123,20 @@ class Controller:
 
             if response:
                 self._children.append(response)
+                return Responses.success
+
+        return Responses.fail
+
+    def _add_free_days(self, values):
+        employee_id = self._get_employee_id(values[0])
+
+        if employee_id is not None:
+            values[0] = employee_id
+
+            response = self._action_manager.actions(Actions.add_free_days, values)
+
+            if response:
+                self._all_free_days.append(response)
                 return Responses.success
 
         return Responses.fail

@@ -9,8 +9,10 @@ class Actions(Enum):
     add_uniform = 4,
     add_uniform_piece = 5,
     add_child = 6,
-    all_positions = 7,
-    all_employees = 8,
-    all_uniforms = 9,
-    all_uniform_pieces = 10,
-    all_children = 11
+    add_free_days = 7,
+    all_positions = 8,
+    all_employees = 9,
+    all_uniforms = 10,
+    all_uniform_pieces = 11,
+    all_children = 12
+    all_free_days = 13
