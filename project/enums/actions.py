@@ -21,4 +21,6 @@ class Actions(Enum):
     all_free_days = 16,
     all_wages = 17,
     all_salaries_1 = 18,
-    all_salaries_2 = 19
+    all_salaries_2 = 19,
+    employee_salaries_2 = 20,
+    delete_salary_2 = 21

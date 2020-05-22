@@ -52,11 +52,15 @@ class ActionManager:
             return self._add_salary_1(values)
         elif action == Actions.add_salary_2:
             return self._add_salary_2(values)
+        elif action == Actions.employee_salaries_2:
+            return self._get_employee_salaries_2(values)
+        elif action == Actions.delete_salary_2:
+            return self._delete_salary_2(values)
 
     def _login(self, values):
         res = self._database_manager.actions(Actions.login, values)
 
-        if res:
+        if isinstance(res, tuple):
             new_user = User(res[0], res[1])
             self.controller.set_user(new_user)
 
@@ -125,4 +129,17 @@ class ActionManager:
                              result[8], result[9], result[10], result[11], result[12])
 
         return new_salary
+
+    def _get_employee_salaries_2(self, values):
+        result = self._database_manager.actions(Actions.employee_salaries_2, values)
+
+        if isinstance(result, tuple):
+            result = [result]
+
+        return result
+
+    def _delete_salary_2(self, values):
+        result = self._database_manager.actions(Actions.delete_salary_2, values)
+
+        return result
 

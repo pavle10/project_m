@@ -66,6 +66,10 @@ class Controller:
             return self._get_all_employees()
         elif action == Actions.all_uniforms:
             return self._get_all_uniforms()
+        elif action == Actions.employee_salaries_2:
+            return self._get_employee_salaries_2(values)
+        elif action == Actions.delete_salary_2:
+            return self._delete_salary_2(values)
 
     def _login(self, values):
         self._action_manager.actions(Actions.login, values)
@@ -243,3 +247,21 @@ class Controller:
                 return wage
 
         return None
+
+    def _get_employee_salaries_2(self, values):
+        employee_id = self._get_employee_id(values[0])
+
+        if employee_id is not None:
+            values[0] = employee_id
+
+            response = self._action_manager.actions(Actions.employee_salaries_2, values)
+
+            if response:
+                return response
+
+        return Responses.fail
+
+    def _delete_salary_2(self, values):
+        response = self._action_manager.actions(Actions.delete_salary_2, values)
+
+        return Responses.success if not response.endswith('0') else Responses.fail

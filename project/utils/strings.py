@@ -13,7 +13,7 @@ LOGIN_BUTTON = "Uloguj se"
 # Main window
 ADD_TAB_NAME = "Dodaj"
 UPDATE_DELETE_TAB_NAME = "Izmeni/Izbriši"
-SHOW_TAB_NAME = "Prikazi"
+PRESENT_TAB_NAME = "Prikazi"
 REPORTS_TAB_NAME = "Izveštaji"
 
 EMPLOYEE = "Zaposleni"

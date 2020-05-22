@@ -67,6 +67,9 @@ class AddTab(QWidget):
 
         self.splitter.replaceWidget(1, self.views[index])
 
+    def get_name(self):
+        return self._name
+
 
 
 

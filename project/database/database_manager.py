@@ -10,6 +10,7 @@ from project.models.child import Child
 from project.models.free_days import FreeDays
 from project.models.wage import Wage
 from project.enums.actions import Actions
+from project.enums.query_type import QueryType
 from project.utils.sql_queries import *
 from project.utils.funcs import *
 
@@ -36,7 +37,7 @@ class DatabaseManager:
 
         return db
 
-    def _execute_query(self, query, values=None):
+    def _execute_query(self, query, values=None, query_type=QueryType.select):
         result = None
         conn = None
 
@@ -51,12 +52,13 @@ class DatabaseManager:
             else:
                 cur.execute(query)
 
-            if cur.rowcount == 1:
-                result = cur.fetchone()
-            elif cur.rowcount > 1:
-                result = cur.fetchall()
-            else:
+            if query_type == QueryType.delete:
                 result = cur.statusmessage
+            else:
+                if cur.rowcount == 1:
+                    result = cur.fetchone()
+                elif cur.rowcount > 1:
+                    result = cur.fetchall()
 
             conn.commit()
 
@@ -104,6 +106,10 @@ class DatabaseManager:
             return self._insert_salary_1(values)
         elif action == Actions.add_salary_2:
             return self._insert_salary_2(values)
+        elif action == Actions.employee_salaries_2:
+            return self._select_employee_salaries_2(values)
+        elif action == Actions.delete_salary_2:
+            return self._delete_salary_2(values)
 
     def _check_credentials(self, values):
         query = CHECK_CREDENTIALS
@@ -216,4 +222,14 @@ class DatabaseManager:
         insert_query = INSERT_SALARY_2
 
         return self._execute_query(insert_query, values)
+
+    def _select_employee_salaries_2(self, values):
+        select_query = SELECT_EMPLOYEE_SALARIES_2
+
+        return self._execute_query(select_query, values)
+
+    def _delete_salary_2(self, values):
+        delete_query = DELETE_SALARY_2
+
+        return self._execute_query(delete_query, values, QueryType.delete)
 
