@@ -9,8 +9,7 @@ from project.models.uniform_piece import UniformPiece
 from project.models.child import Child
 from project.models.free_days import FreeDays
 from project.models.wage import Wage
-from project.enums.actions import Actions
-from project.enums.query_type import QueryType
+from project.utils.enums import Actions, QueryType
 from project.utils.sql_queries import *
 from project.utils.funcs import *
 

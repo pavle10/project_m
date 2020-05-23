@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QPixmap, QFont
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import *
 
 import project.utils.constants as cons
 import project.utils.strings as strs
-from project.enums.actions import Actions
+from project.utils.enums import Actions
 
 
 class LoginView(QWidget):

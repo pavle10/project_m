@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
-from project.enums.actions import Actions
-from project.enums.responses import Responses
+from project.utils.enums import Actions, Responses
 import project.utils.funcs as funcs
 
 

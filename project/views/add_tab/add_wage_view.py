@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import *
 
-from project.enums.actions import Actions
-from project.enums.responses import Responses
+from project.utils.enums import Actions, Responses
 
 
 class AddWageView(QWidget):

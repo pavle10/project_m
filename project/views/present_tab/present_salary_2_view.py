@@ -1,10 +1,5 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
-
 from project.views.present_tab.present_dialogs import *
-from project.enums.actions import Actions
-from project.enums.responses import Responses
-import project.utils.funcs as funcs
+from project.utils.enums import Actions, Responses
 
 
 class PresentSalary2View(QWidget):

@@ -1,5 +1,5 @@
 from project.database.database_manager import DatabaseManager
-from project.enums.actions import Actions
+from project.utils.enums import Actions
 from project.models.user import User
 from project.models.position import Position
 from project.models.employee import Employee

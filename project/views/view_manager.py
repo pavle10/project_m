@@ -1,7 +1,6 @@
 from project.views.login_view import LoginView
 from project.views.main_window import MainWind
-from project.enums.responses import Responses
-from project.enums.actions import Actions
+from project.utils.enums import Actions, Responses
 
 
 class ViewManager:

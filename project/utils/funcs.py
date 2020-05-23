@@ -1,4 +1,4 @@
-from project.enums.levels import Levels
+from project.utils.enums import Levels
 import project.utils.strings as strs
 
 

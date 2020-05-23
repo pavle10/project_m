@@ -24,3 +24,20 @@ class Actions(Enum):
     all_salaries_2 = 19,
     employee_salaries_2 = 20,
     delete_salary_2 = 21
+
+
+class Levels(Enum):
+    everything = 0
+    no_salary_2 = 1
+
+
+class QueryType(Enum):
+    select = 0,
+    insert = 1,
+    update = 2,
+    delete = 3
+
+
+class Responses(Enum):
+    fail = 0,
+    success = 1

@@ -3,8 +3,7 @@ from PyQt5.QtWidgets import QApplication
 
 from project.views.view_manager import ViewManager
 from project.actions.action_manager import ActionManager
-from project.enums.responses import Responses
-from project.enums.actions import Actions
+from project.utils.enums import Actions, Responses
 
 
 class Controller:
