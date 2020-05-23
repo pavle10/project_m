@@ -4,12 +4,7 @@
 # Application level
 WINDOWS_TITLE = "Zaposleni i plate"
 EMPTY = "Prazno"
-
-# Login window
-MAIN_LABEL = "Logovanje"
-USERNAME_LABEL = "Korisničko ime:"
-PASSWORD_LABEL = "Lozinka:"
-LOGIN_BUTTON = "Uloguj se"
+ALL = "Svi"
 
 # Main window
 ADD_TAB_NAME = "Dodaj"
@@ -26,6 +21,25 @@ FREE_DAY = "Slobodni dani"
 WAGE = "Dnevnice"
 SALARY_1 = "Plata 1"
 SALARY_2 = "Plata 2"
+
+# ===== LABELS  =====
+MAIN_LBL = "Logovanje"
+USERNAME_LBL = "Korisničko ime:"
+PASSWORD_LBL = "Lozinka:"
+EMPLOYEE_LBL = "Zaposleni:"
+FROM_DATE_LBL = "Od datuma:"
+TO_DATE_LBL = "Do datuma:"
+
+# ===== BUTTONS =====
+LOGIN_BTN = "Uloguj se"
+ADD_BTN = "Dodaj"
+UPDATE_BTN = "Promeni"
+DELETE_BTN = "Obriši"
+PRINT_BTN = "Štampaj"
+
+# ===== HEADERS =====
+PRESENT_SALARY_2_HDR = ["Datum", "Radnih dana", "Vrednost radnog dana", "Radnih sati", "Vrednost radnog sata", "Obroka",
+                        "Vrednost obroka", "Rate", "Dana odmora", "Vrednost dana odmora", "Fiksno"]
 
 # ===== MESSAGES =====
 
@@ -44,6 +58,8 @@ DATABASE_ERROR_MSG = "DB error: {error}"
 # Present tab views
 PRESENT_MSG = "Prikaz poruka"
 MUST_SELECT_ONE_ROW_MSG = "Mora biti obeležen tačno jedan red!"
+SALARY_2_UPD_SUCC_MSG = "Uspešno je promenjena plata 2!"
+SALARY_2_UPD_FAIL_MSG = "Nije uspešno promenjena plata 2! Probajte ponovo."
 SALARY_2_DEL_SUCC_MSG = "Uspešno je izbrisana plata 2!"
 SALARY_2_DEL_FAIL_MSG = "Nije uspešno izbrisana plata 2! Probajte ponovo."
 SALARY_2_DEL_DIALOG_MSG = "Da li si sigurna da želiš da izbrišeš ovaj red?"

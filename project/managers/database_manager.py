@@ -1,4 +1,5 @@
 from configparser import ConfigParser
+from collections import deque
 import psycopg2
 
 from project.utils.constants import DATABASE_CONFIG_PATH, DEFAULT_SECTION
@@ -48,6 +49,8 @@ class DatabaseManager:
             return self._execute_query(sql.INSERT_SALARY_2, QueryType.insert, values)
         elif action == Actions.employee_salaries_2:
             return self._execute_query(sql.SELECT_EMPLOYEE_SALARIES_2, QueryType.select, values)
+        elif action == Actions.update_salary_2:
+            return self._update_salary_2(values)
         elif action == Actions.delete_salary_2:
             return self._execute_query(sql.DELETE_SALARY_2, QueryType.delete, values)
 
@@ -78,7 +81,7 @@ class DatabaseManager:
 
             cur.execute(query, values) if values else cur.execute(query)
 
-            if query_type == QueryType.delete:
+            if query_type in [QueryType.update, QueryType.delete]:
                 result = cur.statusmessage
             else:
                 if cur.rowcount == 1:
@@ -99,3 +102,9 @@ class DatabaseManager:
                 conn.close()
 
         return result
+
+    def _update_salary_2(self, values):
+        values_deq = deque(values)
+        values_deq.rotate(-1)
+
+        return self._execute_query(sql.UPDATE_SALARY_2, QueryType.update, list(values_deq))

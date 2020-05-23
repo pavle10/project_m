@@ -23,7 +23,8 @@ class Actions(Enum):
     all_salaries_1 = 18,
     all_salaries_2 = 19,
     employee_salaries_2 = 20,
-    delete_salary_2 = 21
+    update_salary_2 = 21,
+    delete_salary_2 = 22
 
 
 class Levels(Enum):

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 
 from project.utils.enums import Actions, Responses
+from project.utils import strings as strs
 
 
 class AddChildView(QWidget):
@@ -40,7 +41,7 @@ class AddChildView(QWidget):
         father_label.setBuddy(self.father_box)
 
         add_button = QPushButton(self)
-        add_button.setText("Dodaj")
+        add_button.setText(strs.ADD_BTN)
         add_button.clicked.connect(self._add_child)
 
         layout = QVBoxLayout()

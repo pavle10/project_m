@@ -25,7 +25,7 @@ class LoginView(QWidget):
         grid_layout = QGridLayout()
 
         username_label = QLabel(self)
-        username_label.setText(strs.USERNAME_LABEL)
+        username_label.setText(strs.USERNAME_LBL)
         username_label.setFont(QFont("Times", pointSize=13, weight=QFont.Normal))
         grid_layout.addWidget(username_label, 0, 0)
 
@@ -34,7 +34,7 @@ class LoginView(QWidget):
         grid_layout.addWidget(self.username_line, 0, 1)
 
         password_label = QLabel(self)
-        password_label.setText(strs.PASSWORD_LABEL)
+        password_label.setText(strs.PASSWORD_LBL)
         password_label.setFont(QFont("Times", pointSize=13, weight=QFont.Normal))
         grid_layout.addWidget(password_label, 1, 0)
 
@@ -44,13 +44,13 @@ class LoginView(QWidget):
         grid_layout.addWidget(self.password_line, 1, 1)
 
         login_button = QPushButton(self)
-        login_button.setText(strs.LOGIN_BUTTON)
+        login_button.setText(strs.LOGIN_BTN)
         login_button.clicked.connect(lambda x: self.view_manager.actions(Actions.login,
                                                                          [self.username_line.text(),
                                                                           self.password_line.text()]))
         grid_layout.addWidget(login_button, 2, 1)
 
-        group_box = QGroupBox(strs.MAIN_LABEL)
+        group_box = QGroupBox(strs.MAIN_LBL)
         group_box.setFont(QFont("Times", pointSize=15, weight=QFont.Normal))
         group_box.setLayout(grid_layout)
         group_box.setFixedSize(400, 400)

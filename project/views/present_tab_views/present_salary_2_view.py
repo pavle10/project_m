@@ -1,4 +1,4 @@
-from PyQt5 import QtGui
+from PyQt5.QtCore import Qt
 
 from project.views.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
@@ -18,7 +18,7 @@ class PresentSalary2View(QWidget):
 
     def _init_ui(self):
         employee_label = QLabel(self)
-        employee_label.setText("Zaposleni*:")
+        employee_label.setText(f"*{strs.EMPLOYEE_LBL}")
         self.employee_box = QComboBox()
         self.employee_box.insertItem(0, strs.EMPTY)
         for index, employee in enumerate(self._get_employees()):
@@ -26,35 +26,54 @@ class PresentSalary2View(QWidget):
         self.employee_box.currentTextChanged.connect(self._change_label)
         employee_label.setBuddy(self.employee_box)
 
+        start_date_label = QLabel(self)
+        start_date_label.setText(strs.FROM_DATE_LBL)
+        self.start_date_line = QDateEdit(self)
+        self.start_date_line.setDate(cons.DEFAULT_START_DATE)
+        self.start_date_line.setDisplayFormat(cons.DATE_FORMAT_PYQT)
+        start_date_label.setBuddy(self.start_date_line)
+
+        end_date_label = QLabel(self)
+        end_date_label.setText(strs.TO_DATE_LBL)
+        self.end_date_line = QDateEdit(self)
+        self.end_date_line.setDate(cons.DEFAULT_END_DATE)
+        self.end_date_line.setDisplayFormat(cons.DATE_FORMAT_PYQT)
+        end_date_label.setBuddy(self.end_date_line)
+
+        fields_layout = QFormLayout()
+        fields_layout.addRow(employee_label, self.employee_box)
+        fields_layout.addRow(start_date_label, self.start_date_line)
+        fields_layout.addRow(end_date_label, self.end_date_line)
+
         self.table = QTableWidget()
-        self.table.setColumnCount(11)
-        self.table.setHorizontalHeaderLabels(["Datum", "Radnih dana", "Vrednost radnog dana", "Radnih sati",
-                                              "Vrednost radnog sata", "Obroka", "Vrednost obroka", "Rate",
-                                              "Dana odmora", "Vrednost dana odmora", "Fiksno"])
+        self.table.setColumnCount(len(strs.PRESENT_SALARY_2_HDR))
+        self.table.setHorizontalHeaderLabels(strs.PRESENT_SALARY_2_HDR)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidget(self.table)
 
         update_button = QPushButton(self)
-        update_button.setText("Promeni")
+        update_button.setText(strs.UPDATE_BTN)
         update_button.clicked.connect(self._update_salary)
 
         delete_button = QPushButton(self)
-        delete_button.setText("Obriši")
+        delete_button.setText(strs.DELETE_BTN)
         delete_button.clicked.connect(self._delete_salary)
 
         print_button = QPushButton(self)
-        print_button.setText("Štampaj")
+        print_button.setText(strs.PRINT_BTN)
         print_button.clicked.connect(self._print_salary)
 
+        buttons_layout = QHBoxLayout()
+        buttons_layout.addWidget(update_button)
+        buttons_layout.addWidget(delete_button)
+        buttons_layout.addWidget(print_button)
+
         layout = QVBoxLayout()
-        layout.addWidget(employee_label)
-        layout.addWidget(self.employee_box)
+        layout.addLayout(fields_layout)
         layout.addWidget(self.scroll_area)
-        layout.addWidget(update_button)
-        layout.addWidget(delete_button)
-        layout.addWidget(print_button)
+        layout.addLayout(buttons_layout)
         self.setLayout(layout)
 
     def _get_employees(self):
@@ -62,12 +81,13 @@ class PresentSalary2View(QWidget):
 
     def _change_label(self):
         # Get data
-        values = [self.employee_box.currentText()]
+        values = [[self.employee_box.currentText()], self.start_date_line.date(), self.end_date_line.date()]
 
         self._salaries = self._manager.actions(Actions.employee_salaries_2, values)
 
-        if self._salaries == Responses.fail:
+        if self._salaries is None:
             self.table.clear()
+            self.table.setRowCount(0)
         else:
             self.table.setRowCount(len(self._salaries))
 
@@ -75,26 +95,39 @@ class PresentSalary2View(QWidget):
             for row, salary in enumerate(self._salaries):
                 for column, item in enumerate(salary[2:]):
                     if column == 0:
-                        date = item.strftime(cons.DATE_FORMAT)
+                        date = item.strftime(cons.DATE_FORMAT_PYTHON)
                         self.table.setItem(row, column, QTableWidgetItem(date))
                     else:
                         self.table.setItem(row, column, QTableWidgetItem(str(item)))
 
+    def keyReleaseEvent(self, event):
+
+        if event.key() in [Qt.Key_Enter, Qt.Key_Return] and isinstance(self.focusWidget(), QDateEdit):
+            self._change_label()
+
     def _update_salary(self):
         row_index = self._check_selection()
 
-        if row_index:
-            values = [self._salaries[row_index][0]]
+        if row_index is not None:
+            values = self._salaries[row_index]
 
             dialog = UpdateRowDialog(values)
-            decision = dialog.exec()
+            if dialog.exec():
+                new_values = dialog.get_value()
 
-            print(decision)
+                response = self._manager.actions(Actions.update_salary_2, new_values)
+
+                if response == Responses.success:
+                    QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_2_UPD_SUCC_MSG)
+                    self._salaries[row_index] = new_values
+                    self._change_label()
+                else:
+                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_2_UPD_FAIL_MSG)
 
     def _delete_salary(self):
         row_index = self._check_selection()
 
-        if row_index:
+        if row_index is not None:
             dialog = DeleteRowDialog(self)
 
             if dialog.exec():

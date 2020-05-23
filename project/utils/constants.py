@@ -1,4 +1,6 @@
 import os
+import datetime
+from dateutil.relativedelta import relativedelta
 
 # Paths
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__ + "/../../"))
@@ -21,4 +23,10 @@ DIALOG_WIDTH = 300
 DIALOG_HEIGHT = 150
 
 # Style
-DATE_FORMAT = "%d.%m.%y."
+DATE_FORMAT_PYTHON = "%d.%m.%y."
+DATE_FORMAT_PYQT = "dd.MM.yyyy."
+
+# Misc
+DEFAULT_START_DATE = (datetime.datetime.now() - relativedelta(years=1)).date()
+DEFAULT_END_DATE = datetime.datetime.now().date()
+
