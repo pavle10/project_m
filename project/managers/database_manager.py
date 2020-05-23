@@ -9,7 +9,7 @@ from project.utils import strings as strs, sql_queries as sql
 class DatabaseManager:
 
     def __init__(self):
-        self.db = self._read_config()
+        self._read_config()
 
     def actions(self, action, values=None):
         if action == Actions.login:
@@ -56,17 +56,15 @@ class DatabaseManager:
 
         parser.read(DATABASE_CONFIG_PATH)
 
-        db = {}
-
         if parser.has_section(section):
             params = parser.items(section)
-            for param in params:
-                db[param[0]] = param[1]
+
+            db = {param[0]: param[1] for param in params}
         else:
             # TODO Write error to a log
             raise Exception(strs.SECTION_NOT_FOUND_MSG.format(section=section))
 
-        return db
+        self.db = db
 
     def _execute_query(self, query, query_type, values=None):
         result = None
@@ -78,10 +76,7 @@ class DatabaseManager:
 
             cur = conn.cursor()
 
-            if values:
-                cur.execute(query, values)
-            else:
-                cur.execute(query)
+            cur.execute(query, values) if values else cur.execute(query)
 
             if query_type == QueryType.delete:
                 result = cur.statusmessage
