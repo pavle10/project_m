@@ -86,7 +86,7 @@ class PresentSalary2View(QWidget):
         self._salaries = self._manager.actions(Actions.employee_salaries_2, values)
 
         if self._salaries is None:
-            self.table.clear()
+            self.table.clearContents()
             self.table.setRowCount(0)
         else:
             self.table.setRowCount(len(self._salaries))

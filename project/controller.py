@@ -267,7 +267,7 @@ class Controller:
             if response:
                 return [salary for salary in response if start_date <= salary[2] <= end_date]
 
-        return Responses.fail
+        return None
 
     def _update_salary_2(self, values):
         response = self._action_manager.actions(Actions.update_salary_2, values)
