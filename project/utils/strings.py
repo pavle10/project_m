@@ -46,6 +46,7 @@ PRESENT_MSG = "Prikaz poruka"
 MUST_SELECT_ONE_ROW_MSG = "Mora biti obeležen tačno jedan red!"
 SALARY_2_DEL_SUCC_MSG = "Uspešno je izbrisana plata 2!"
 SALARY_2_DEL_FAIL_MSG = "Nije uspešno izbrisana plata 2! Probajte ponovo."
+SALARY_2_DEL_DIALOG_MSG = "Da li si sigurna da želiš da izbrišeš ovaj red?"
 
 # Other
 NOT_IMPLEMENTED_MSG = "Nije implementirano!"

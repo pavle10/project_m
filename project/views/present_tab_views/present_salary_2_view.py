@@ -1,3 +1,5 @@
+from PyQt5 import QtGui
+
 from project.views.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
 from project.utils import strings as strs, constants as cons
@@ -29,6 +31,7 @@ class PresentSalary2View(QWidget):
         self.table.setHorizontalHeaderLabels(["Datum", "Radnih dana", "Vrednost radnog dana", "Radnih sati",
                                               "Vrednost radnog sata", "Obroka", "Vrednost obroka", "Rate",
                                               "Dana odmora", "Vrednost dana odmora", "Fiksno"])
+        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidget(self.table)
@@ -78,19 +81,23 @@ class PresentSalary2View(QWidget):
                         self.table.setItem(row, column, QTableWidgetItem(str(item)))
 
     def _update_salary(self):
-        QMessageBox.warning(self, strs.PRESENT_MSG, strs.NOT_IMPLEMENTED_MSG)
+        row_index = self._check_selection()
+
+        if row_index:
+            values = [self._salaries[row_index][0]]
+
+            dialog = UpdateRowDialog(values)
+            decision = dialog.exec()
+
+            print(decision)
 
     def _delete_salary(self):
-        # TODO Implement all checks
-        selected_ranges = self.table.selectedRanges()
+        row_index = self._check_selection()
 
-        if len(self.table.selectedItems()) != 11 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
-            QMessageBox.warning(self, strs.PRESENT_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
-        else:
+        if row_index:
             dialog = DeleteRowDialog(self)
 
             if dialog.exec():
-                row_index = selected_ranges[0].topRow()
                 values = [self._salaries[row_index][0]]
 
                 response = self._manager.actions(Actions.delete_salary_2, values)
@@ -104,6 +111,17 @@ class PresentSalary2View(QWidget):
 
     def _print_salary(self):
         QMessageBox.warning(self, strs.PRESENT_MSG, strs.NOT_IMPLEMENTED_MSG)
+
+    def _check_selection(self):
+        selected_ranges = self.table.selectedRanges()
+
+        if len(self.table.selectedItems()) != 11 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
+            QMessageBox.warning(self, strs.PRESENT_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
+            self.table.clearSelection()
+
+            return None
+
+        return selected_ranges[0].topRow()
 
     def get_name(self):
         return self._name
