@@ -17,6 +17,7 @@ def convert_date_to_string(date):
     return f"{date.year()}-{date.month()}-{date.day()}"
 
 
+# TODO Delete this function when fix the add tab view
 def data_manipulation_options():
     options = [strs.EMPLOYEE, strs.POSITION, strs.CHILD, strs.UNIFORM, strs.UNIFORM_PIECE,
                strs.FREE_DAY, strs.WAGE, strs.SALARY_1, strs.SALARY_2]

@@ -7,10 +7,8 @@ RESOURCES_PATH = os.path.join(ROOT_PATH, "resources")
 ICONS_PATH = os.path.join(RESOURCES_PATH, "icons")
 APP_ICON_PATH = os.path.join(ICONS_PATH, "app_icon.png")
 
-IMAGES_PATH = os.path.join(RESOURCES_PATH, "images")
-LOGIN_IMG_PATH = os.path.join(IMAGES_PATH, "login_3.png")
-
 DATABASE_CONFIG_PATH = os.path.join(RESOURCES_PATH, "database.ini")
+DEFAULT_SECTION = "postgresql"
 
 # Sizes
 LOGIN_WIN_WIDTH = 600

@@ -26,8 +26,14 @@ WAGE = "Dnevnice"
 SALARY_1 = "Plata 1"
 SALARY_2 = "Plata 2"
 
-# Messages
+# ===== MESSAGES =====
+
+# Login
 SUCCESSFUL_LOGIN_TITLE = "Uspešno logovanje"
 SUCCESSFUL_LOGIN_MSG = "Ulogovani ste kao korisnik "
 FAILED_LOGIN_TITLE = "Neuspešno logovanje"
 FAILED_LOGIN_MSG = "Pogrešno korisničko ime i/ili lozinka!"
+
+# Database
+SECTION_NOT_FOUND_MSG = "Section {section} not found!"
+DATABASE_ERROR_MSG = "DB error: {error}"

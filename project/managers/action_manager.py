@@ -1,5 +1,6 @@
 from project.managers.database_manager import DatabaseManager
 from project.utils.enums import Actions
+from project.utils import funcs
 from project.models.user import User
 from project.models.position import Position
 from project.models.employee import Employee
@@ -15,25 +16,25 @@ class ActionManager:
 
     def __init__(self, controller):
         self.controller = controller
-        self._database_manager = DatabaseManager(self)
+        self._database_manager = DatabaseManager()
 
     def actions(self, action, values=None):
         if action == Actions.login:
             self._login(values)
         elif action == Actions.all_employees:
-            return self._init_model(Actions.all_employees)
+            return self._get_employees()
         elif action == Actions.all_positions:
-            return self._init_model(Actions.all_positions)
+            return self._get_positions()
         elif action == Actions.all_uniforms:
-            return self._init_model(Actions.all_uniforms)
+            return self._get_uniforms()
         elif action == Actions.all_uniform_pieces:
-            return self._init_model(Actions.all_uniform_pieces)
+            return self._get_uniform_pieces()
         elif action == Actions.all_children:
-            return self._init_model(Actions.all_children)
+            return self._get_all_children()
         elif action == Actions.all_free_days:
-            return self._init_model(Actions.all_free_days)
+            return self._get_all_free_days()
         elif action == Actions.all_wages:
-            return self._init_model(Actions.all_wages)
+            return self._get_wages()
         elif action == Actions.add_position:
             return self._add_position(values)
         elif action == Actions.add_employee:
@@ -58,16 +59,63 @@ class ActionManager:
             return self._delete_salary_2(values)
 
     def _login(self, values):
-        res = self._database_manager.actions(Actions.login, values)
+        result = self._database_manager.actions(Actions.login, values)
 
-        if isinstance(res, tuple):
-            new_user = User(res[0], res[1])
+        if isinstance(result, tuple):
+            new_user = User(result[0], result[1])
             self.controller.set_user(new_user)
 
-    def _init_model(self, action):
-        return self._database_manager.actions(action)
+    def _get_employees(self):
+        employees = list()
+
+        result = self._database_manager.actions(Actions.all_employees)
+
+        for entry in result:
+            employee = Employee(entry[0], entry[1], entry[2], entry[3], entry[4],
+                                entry[5], entry[6], entry[7], entry[8], entry[9],
+                                entry[10], entry[11], entry[12], entry[13], entry[14], entry[15])
+            employees.append(employee)
+
+        return employees
+
+    def _get_positions(self):
+        result = self._database_manager.actions(Actions.all_positions)
+
+        return [Position(entry[0], entry[1], entry[2]) for entry in result]
+
+    def _get_uniforms(self):
+        result = self._database_manager.actions(Actions.all_uniforms)
+
+        return [Uniform(entry[0], entry[1]) for entry in result]
+
+    def _get_uniform_pieces(self):
+        uniform_pieces = list()
+
+        result = self._database_manager.actions(Actions.all_uniform_pieces)
+
+        for entry in result:
+            uniform_piece = UniformPiece(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6])
+            uniform_pieces.append(uniform_piece)
+
+        return uniform_pieces
+
+    def _get_all_children(self):
+        result = self._database_manager.actions(Actions.all_children)
+
+        return [Child(entry[0], entry[1], entry[2], entry[3], entry[4]) for entry in result]
+
+    def _get_all_free_days(self):
+        result = self._database_manager.actions(Actions.all_free_days)
+
+        return [FreeDays(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5]) for entry in result]
+
+    def _get_wages(self):
+        result = self._database_manager.actions(Actions.all_wages)
+
+        return [Wage(entry[0], entry[1], entry[2], entry[3], entry[4]) for entry in result]
 
     def _add_position(self, values):
+        values[1] = funcs.convert_saturday(values[1])
         result = self._database_manager.actions(Actions.add_position, values)
 
         return Position(result[0], result[1], result[2]) if result else None

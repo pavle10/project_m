@@ -41,3 +41,7 @@ class QueryType(Enum):
 class Responses(Enum):
     fail = 0,
     success = 1
+
+
+class Errors(Enum):
+    database = 0
