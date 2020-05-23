@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import QApplication
 from project.managers.view_manager import ViewManager
 from project.managers.action_manager import ActionManager
 from project.utils.enums import Actions, Responses
-from project.models.user import User
 
 
 class Controller:
@@ -74,12 +73,12 @@ class Controller:
     def _login(self, values):
         response = self._action_manager.actions(Actions.login, values)
 
-        if isinstance(response, User):
-            self._user = response
-
+        if response is None:
             return Responses.success
 
-        return Responses.fail
+        self._user = response
+
+        return Responses.success
 
     def _add_position(self, values):
         response = self._action_manager.actions(Actions.add_position, values)

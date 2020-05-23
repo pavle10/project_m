@@ -63,6 +63,8 @@ class ActionManager:
         if isinstance(result, tuple):
             return User(result[0], result[1])
 
+        return None
+
     def _get_employees(self):
         employees = list()
 
