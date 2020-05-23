@@ -14,13 +14,12 @@ from project.models.salaries import Salary1, Salary2
 
 class ActionManager:
 
-    def __init__(self, controller):
-        self.controller = controller
+    def __init__(self):
         self._database_manager = DatabaseManager()
 
     def actions(self, action, values=None):
         if action == Actions.login:
-            self._login(values)
+            return self._login(values)
         elif action == Actions.all_employees:
             return self._get_employees()
         elif action == Actions.all_positions:
@@ -62,8 +61,7 @@ class ActionManager:
         result = self._database_manager.actions(Actions.login, values)
 
         if isinstance(result, tuple):
-            new_user = User(result[0], result[1])
-            self.controller.set_user(new_user)
+            return User(result[0], result[1])
 
     def _get_employees(self):
         employees = list()
