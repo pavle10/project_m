@@ -1,4 +1,4 @@
-from project.database.database_manager import DatabaseManager
+from project.managers.database_manager import DatabaseManager
 from project.utils.enums import Actions
 from project.models.user import User
 from project.models.position import Position

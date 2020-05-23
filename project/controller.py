@@ -1,8 +1,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 
-from project.views.view_manager import ViewManager
-from project.actions.action_manager import ActionManager
+from project.managers.view_manager import ViewManager
+from project.managers.action_manager import ActionManager
 from project.utils.enums import Actions, Responses
 
 

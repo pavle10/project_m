@@ -3,8 +3,8 @@ from PyQt5.QtGui import QIcon
 
 import project.utils.constants as cons
 import project.utils.strings as strs
-from project.views.add_tab.add_tab import AddTab
-from project.views.present_tab.present_tab import PresentTab
+from project.views.add_tab_view import AddTab
+from project.views.present_tab_view import PresentTab
 from project.utils.enums import Actions
 
 

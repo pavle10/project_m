@@ -1,4 +1,4 @@
-from project.views.present_tab.present_dialogs import *
+from project.views.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
 
 

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
 import project.utils.strings as strs
-from project.views.present_tab.present_salary_2_view import PresentSalary2View
+from project.views.present_tab_views.present_salary_2_view import PresentSalary2View
 
 
 class PresentTab(QWidget):

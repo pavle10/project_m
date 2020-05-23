@@ -3,15 +3,15 @@ from PyQt5.QtCore import Qt
 
 import project.utils.strings as strs
 import project.utils.funcs as funcs
-from project.views.add_tab.add_employee_view import AddEmployeeView
-from project.views.add_tab.add_position_view import AddPositionView
-from project.views.add_tab.add_uniform_view import AddUniformView
-from project.views.add_tab.add_uniform_piece_view import AddUniformPieceView
-from project.views.add_tab.add_child_view import AddChildView
-from project.views.add_tab.add_free_days_view import AddFreeDaysView
-from project.views.add_tab.add_wage_view import AddWageView
-from project.views.add_tab.add_salary_1_view import AddSalary1View
-from project.views.add_tab.add_salary_2_view import AddSalary2View
+from project.views.add_tab_views.add_employee_view import AddEmployeeView
+from project.views.add_tab_views.add_position_view import AddPositionView
+from project.views.add_tab_views.add_uniform_view import AddUniformView
+from project.views.add_tab_views.add_uniform_piece_view import AddUniformPieceView
+from project.views.add_tab_views.add_child_view import AddChildView
+from project.views.add_tab_views.add_free_days_view import AddFreeDaysView
+from project.views.add_tab_views.add_wage_view import AddWageView
+from project.views.add_tab_views.add_salary_1_view import AddSalary1View
+from project.views.add_tab_views.add_salary_2_view import AddSalary2View
 
 
 class AddTab(QWidget):

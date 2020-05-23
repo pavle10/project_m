@@ -1,5 +1,5 @@
 from project.views.login_view import LoginView
-from project.views.main_window import MainWind
+from project.views.main_window_view import MainWind
 from project.utils.enums import Actions, Responses
 
 
