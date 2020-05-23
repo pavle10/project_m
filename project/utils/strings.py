@@ -3,6 +3,7 @@
 
 # Application level
 WINDOWS_TITLE = "Zaposleni i plate"
+EMPTY = "Prazno"
 
 # Login window
 MAIN_LABEL = "Logovanje"
@@ -37,3 +38,14 @@ FAILED_LOGIN_MSG = "Pogrešno korisničko ime i/ili lozinka!"
 # Database
 SECTION_NOT_FOUND_MSG = "Section {section} not found!"
 DATABASE_ERROR_MSG = "DB error: {error}"
+
+# Views
+
+# Present tab views
+PRESENT_MSG = "Prikaz poruka"
+MUST_SELECT_ONE_ROW_MSG = "Mora biti obeležen tačno jedan red!"
+SALARY_2_DEL_SUCC_MSG = "Uspešno je izbrisana plata 2!"
+SALARY_2_DEL_FAIL_MSG = "Nije uspešno izbrisana plata 2! Probajte ponovo."
+
+# Other
+NOT_IMPLEMENTED_MSG = "Nije implementirano!"

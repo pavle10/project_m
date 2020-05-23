@@ -1,5 +1,6 @@
 from project.views.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
+from project.utils import strings as strs, constants as cons
 
 
 class PresentSalary2View(QWidget):
@@ -17,7 +18,7 @@ class PresentSalary2View(QWidget):
         employee_label = QLabel(self)
         employee_label.setText("Zaposleni*:")
         self.employee_box = QComboBox()
-        self.employee_box.insertItem(0, "Prazno")
+        self.employee_box.insertItem(0, strs.EMPTY)
         for index, employee in enumerate(self._get_employees()):
             self.employee_box.insertItem(index+1, f"{employee[0]} {employee[1]} {employee[2]}")
         self.employee_box.currentTextChanged.connect(self._change_label)
@@ -71,19 +72,20 @@ class PresentSalary2View(QWidget):
             for row, salary in enumerate(self._salaries):
                 for column, item in enumerate(salary[2:]):
                     if column == 0:
-                        date = item.strftime("%d.%m.%y.")
+                        date = item.strftime(cons.DATE_FORMAT)
                         self.table.setItem(row, column, QTableWidgetItem(date))
                     else:
                         self.table.setItem(row, column, QTableWidgetItem(str(item)))
 
     def _update_salary(self):
-        QMessageBox.warning(self, "Nije implementirano", "Treba da se implementira!")
+        QMessageBox.warning(self, strs.PRESENT_MSG, strs.NOT_IMPLEMENTED_MSG)
 
     def _delete_salary(self):
+        # TODO Implement all checks
         selected_ranges = self.table.selectedRanges()
 
         if len(self.table.selectedItems()) != 11 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
-            QMessageBox.warning(self, "Losa selekcija", "Mora biti tacno jedan red obelezen!")
+            QMessageBox.warning(self, strs.PRESENT_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
         else:
             dialog = DeleteRowDialog(self)
 
@@ -94,14 +96,14 @@ class PresentSalary2View(QWidget):
                 response = self._manager.actions(Actions.delete_salary_2, values)
 
                 if response == Responses.success:
-                    QMessageBox.information(self, "Prikaz poruka", "Uspešno je izbrisana plata 2!")
+                    QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_2_DEL_SUCC_MSG)
                     self._salaries.remove(self._salaries[row_index])
                     self._change_label()
                 else:
-                    QMessageBox.warning(self, "Prikaz poruka", "Nije uspešno izbrisana plata 2! Probajte ponovo.")
+                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_2_DEL_FAIL_MSG)
 
     def _print_salary(self):
-        QMessageBox.warning(self, "Nije implementirano", "Treba da se implementira!")
+        QMessageBox.warning(self, strs.PRESENT_MSG, strs.NOT_IMPLEMENTED_MSG)
 
     def get_name(self):
         return self._name
