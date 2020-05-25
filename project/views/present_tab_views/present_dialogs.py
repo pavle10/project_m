@@ -24,6 +24,35 @@ class DeleteRowDialog(QDialog):
         self.setLayout(layout)
 
 
+class UpdateUniformDialog(QDialog):
+
+    def __init__(self, selected_data, *args, **kwargs):
+        super(UpdateUniformDialog, self).__init__(*args, **kwargs)
+        self.data = selected_data
+
+        self.setWindowTitle(strs.PRESENT_MSG)
+
+        name_label = QLabel(self)
+        name_label.setText(strs.PRESENT_UNIFORM_HDR[0])
+        self.name_line = QLineEdit(self)
+        self.name_line.setText(selected_data[0])
+        name_label.setBuddy(self.name_line)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QFormLayout()
+        layout.addRow(name_label, self.name_line)
+        layout.addRow(button_box)
+        self.setLayout(layout)
+
+    def get_value(self):
+        self.data[1] = self.name_line.text()
+
+        return self.data
+
+
 class UpdateUniformPieceDialog(QDialog):
 
     def __init__(self, selected_data, uniforms, *args, **kwargs):

@@ -7,11 +7,11 @@ class Uniform:
     def get_uniform_id(self):
         return self.uniform_id
 
-    def set_name(self, new_name):
-        self.name = new_name
-
     def get_name(self):
         return self.name
+
+    def set_name(self, new_name):
+        self.name = new_name
 
     def __eq__(self, other):
         return isinstance(other, Uniform) and self.uniform_id == other.uniform_id

@@ -56,6 +56,8 @@ class ActionManager:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_uniform:
+            return self._update_uniform(values)
         elif action == Actions.update_uniform_piece:
             return self._update_uniform_piece(values)
         elif action == Actions.update_free_days:
@@ -66,6 +68,8 @@ class ActionManager:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_uniform:
+            return self._delete_uniform(values)
         elif action == Actions.delete_uniform_piece:
             return self._delete_uniform_piece(values)
         elif action == Actions.delete_free_days:
@@ -214,6 +218,11 @@ class ActionManager:
 
         return result
 
+    def _update_uniform(self, values):
+        result = self._database_manager.actions(Actions.update_uniform, values)
+
+        return result
+
     def _update_uniform_piece(self, values):
         result = self._database_manager.actions(Actions.update_uniform_piece, values)
 
@@ -236,6 +245,11 @@ class ActionManager:
 
     def _update_salary_2(self, values):
         result = self._database_manager.actions(Actions.update_salary_2, values)
+
+        return result
+
+    def _delete_uniform(self, values):
+        result = self._database_manager.actions(Actions.delete_uniform, values)
 
         return result
 

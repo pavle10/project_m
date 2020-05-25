@@ -49,6 +49,8 @@ class ViewManager:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_uniform:
+            return self._controller.actions(Actions.update_uniform, values)
         elif action == Actions.update_uniform_piece:
             return self._controller.actions(Actions.update_uniform_piece, values)
         elif action == Actions.update_free_days:
@@ -59,6 +61,8 @@ class ViewManager:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_uniform:
+            return self._controller.actions(Actions.delete_uniform, values)
         elif action == Actions.delete_uniform_piece:
             return self._controller.actions(Actions.delete_uniform_piece, values)
         elif action == Actions.delete_free_days:
@@ -90,7 +94,10 @@ class ViewManager:
         return self._controller.actions(Actions.add_employee, values)
 
     def _add_uniform(self, values):
-        return self._controller.actions(Actions.add_uniform, values)
+        # TODO Update present uniform view
+        response = self._controller.actions(Actions.add_uniform, values)
+
+        return response
 
     def _add_uniform_piece(self, values):
         return self._controller.actions(Actions.add_uniform_piece, values)

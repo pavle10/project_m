@@ -51,6 +51,8 @@ class DatabaseManager:
             return self._execute_query(sql.SELECT_EMPLOYEE_SALARIES_1, QueryType.select, values)
         elif action == Actions.employee_salaries_2:
             return self._execute_query(sql.SELECT_EMPLOYEE_SALARIES_2, QueryType.select, values)
+        elif action == Actions.update_uniform:
+            return self._update_query(sql.UPDATE_UNIFORM, values)
         elif action == Actions.update_uniform_piece:
             return self._update_query(sql.UPDATE_UNIFORM_PIECE, values)
         elif action == Actions.update_free_days:
@@ -61,8 +63,9 @@ class DatabaseManager:
             return self._update_query(sql.UPDATE_SALARY_1, values)
         elif action == Actions.update_salary_2:
             return self._update_query(sql.UPDATE_SALARY_2, values)
+        elif action == Actions.delete_uniform:
+            return self._execute_query(sql.DELETE_UNIFORM, QueryType.delete, values)
         elif action == Actions.delete_uniform_piece:
-            print(values)
             return self._execute_query(sql.DELETE_UNIFORM_PIECE, QueryType.delete, values)
         elif action == Actions.delete_free_days:
             return self._execute_query(sql.DELETE_FREE_DAYS, QueryType.delete, values)

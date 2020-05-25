@@ -77,6 +77,8 @@ class Controller:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_uniform:
+            return self._update_uniform(values)
         elif action == Actions.update_uniform_piece:
             return self._update_uniform_piece(values)
         elif action == Actions.update_free_days:
@@ -87,6 +89,8 @@ class Controller:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_uniform:
+            return self._delete_uniform(values)
         elif action == Actions.delete_uniform_piece:
             return self._delete_uniform_piece(values)
         elif action == Actions.delete_free_days:
@@ -358,6 +362,22 @@ class Controller:
 
         return None
 
+    def _update_uniform(self, values):
+        uniform_id = self._get_uniform_id(values[0])
+
+        if uniform_id is not None:
+            values[0] = uniform_id
+            response = self._action_manager.actions(Actions.update_uniform, values)
+
+            if not response.endswith('0'):
+                for uniform in self._uniforms:
+                    if uniform.get_uniform_id() == uniform_id:
+                        uniform.set_name(values[1])
+
+                        return Responses.success
+
+        return Responses.fail
+
     def _update_uniform_piece(self, values):
         response = self._action_manager.actions(Actions.update_uniform_piece, values)
 
@@ -413,6 +433,23 @@ class Controller:
         response = self._action_manager.actions(Actions.update_salary_2, values)
 
         return Responses.success if not response.endswith('0') else Responses.fail
+
+    def _delete_uniform(self, values):
+        uniform_id = self._get_uniform_id(values[0])
+
+        if uniform_id is not None:
+            values[0] = uniform_id
+
+            response = self._action_manager.actions(Actions.delete_uniform, values)
+
+            if not response.endswith('0'):
+                for uniform in self._uniforms:
+                    if uniform.get_uniform_id() == uniform_id:
+                        self._uniforms.remove(uniform)
+
+                        return Responses.success
+
+        return Responses.fail
 
     def _delete_uniform_piece(self, values):
         response = self._action_manager.actions(Actions.delete_uniform_piece, values)

@@ -38,6 +38,7 @@ DELETE_BTN = "Obriši"
 PRINT_BTN = "Štampaj"
 
 # ===== HEADERS =====
+PRESENT_UNIFORM_HDR = ["Naziv"]
 PRESENT_UNIFORM_PIECE_HDR = ["Naziv", "Veličina", "Količina", "Dodatno", "Datum"]
 PRESENT_FREE_DAYS_HDR = ["Početak", "Završetak", "Ukupno dana", "Razlog"]
 PRESENT_WAGE_HDR = ["Dan", "Sat", "Obrok"]
@@ -64,10 +65,15 @@ PRESENT_MSG = "Prikaz poruka"
 MUST_SELECT_ONE_ROW_MSG = "Mora biti obeležen tačno jedan red!"
 DELETE_DIALOG_MSG = "Da li si sigurna da želiš da izbrišeš ovaj red?"
 
-UNIFORM_PIECE_UPD_SUCC_MSG = "Uspešno je promenjen odevni komad!"
-UNIFORM_PIECE_UPD_FAIL_MSG = "Nije uspešno promenjen odevni komad! Probajte ponovo."
-UNIFORM_PIECE_DEL_SUCC_MSG = "Uspešno je izbrisan odevni komad!"
-UNIFORM_PIECE_DEL_FAIL_MSG = "Nije uspešno izbrisan odevni komad! Probajte ponovo."
+UNIFORM_UPD_SUCC_MSG = "Uspešno je promenjen odevni komad!"
+UNIFORM_UPD_FAIL_MSG = "Nije uspešno promenjen odevni komad! Probajte ponovo."
+UNIFORM_DEL_SUCC_MSG = "Uspešno je izbrisan odevni komad!"
+UNIFORM_DEL_FAIL_MSG = "Nije uspešno izbrisan odevni komad! Probajte ponovo."
+
+UNIFORM_PIECE_UPD_SUCC_MSG = "Uspešno je promenjeno zaduženje odeće!"
+UNIFORM_PIECE_UPD_FAIL_MSG = "Nije uspešno promenjeno zaduženje odeće! Probajte ponovo."
+UNIFORM_PIECE_DEL_SUCC_MSG = "Uspešno je izbrisano zaduženje odeće!"
+UNIFORM_PIECE_DEL_FAIL_MSG = "Nije uspešno izbrisano zaduženje odeće! Probajte ponovo."
 
 FREE_DAYS_UPD_SUCC_MSG = "Uspešno su promenjeni slobodni dani!"
 FREE_DAYS_UPD_FAIL_MSG = "Nisu uspešno promenjeni slobodni dani! Probajte ponovo."
