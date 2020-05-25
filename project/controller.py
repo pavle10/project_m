@@ -65,14 +65,20 @@ class Controller:
             return self._get_all_employees()
         elif action == Actions.all_uniforms:
             return self._get_all_uniforms()
+        elif action == Actions.employee_wage:
+            return self._get_employee_wage(self._get_employee_id(values[0]))
         elif action == Actions.employee_salaries_1:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_wage:
+            return self._update_wage(values)
         elif action == Actions.update_salary_1:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_wage:
+            return self._delete_wage(values)
         elif action == Actions.delete_salary_1:
             return self._delete_salary_1(values)
         elif action == Actions.delete_salary_2:
@@ -290,6 +296,20 @@ class Controller:
 
         return None
 
+    def _update_wage(self, values):
+        response = self._action_manager.actions(Actions.update_wage, values)
+
+        if not response.endswith('0'):
+            for wage in self._wages:
+                if wage.get_wage_id() == values[0]:
+                    wage.set_day(values[2])
+                    wage.set_hour(values[3])
+                    wage.set_meal(values[4])
+
+                    return Responses.success
+
+        return Responses.fail
+
     def _update_salary_1(self, values):
         response = self._action_manager.actions(Actions.update_salary_1, values)
 
@@ -299,6 +319,16 @@ class Controller:
         response = self._action_manager.actions(Actions.update_salary_2, values)
 
         return Responses.success if not response.endswith('0') else Responses.fail
+
+    def _delete_wage(self, values):
+        response = self._action_manager.actions(Actions.delete_wage, [values[0]])
+
+        if not response.endswith('0'):
+            self._wages.remove(self._get_employee_wage(values[1]))
+
+            return Responses.success
+
+        return Responses.fail
 
     def _delete_salary_1(self, values):
         response = self._action_manager.actions(Actions.delete_salary_1, values)

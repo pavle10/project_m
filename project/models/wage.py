@@ -16,11 +16,20 @@ class Wage:
     def get_day(self):
         return self.day
 
+    def set_day(self, value):
+        self.day = value
+
     def get_hour(self):
         return self.hour
 
+    def set_hour(self, value):
+        self.hour = value
+
     def get_meal(self):
         return self.meal
+
+    def set_meal(self, value):
+        self.meal = value
 
     def __eq__(self, other):
         return isinstance(other, Wage) and self.wage_id == other.wage_id

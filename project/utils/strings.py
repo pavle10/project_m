@@ -38,6 +38,7 @@ DELETE_BTN = "Obriši"
 PRINT_BTN = "Štampaj"
 
 # ===== HEADERS =====
+PRESENT_WAGE_HDR = ["Dan", "Sat", "Obrok"]
 PRESENT_SALARY_1_HDR = ["Neto", "Bruto", "Datum"]
 PRESENT_SALARY_2_HDR = ["Datum", "Radnih dana", "Vrednost radnog dana", "Radnih sati", "Vrednost radnog sata", "Obroka",
                         "Vrednost obroka", "Rate", "Dana odmora", "Vrednost dana odmora", "Fiksno"]
@@ -60,6 +61,11 @@ DATABASE_ERROR_MSG = "DB error: {error}"
 PRESENT_MSG = "Prikaz poruka"
 MUST_SELECT_ONE_ROW_MSG = "Mora biti obeležen tačno jedan red!"
 DELETE_DIALOG_MSG = "Da li si sigurna da želiš da izbrišeš ovaj red?"
+
+WAGE_UPD_SUCC_MSG = "Uspešno je promenjena dnevnica!"
+WAGE_UPD_FAIL_MSG = "Nije uspešno promenjena dnevnica! Probajte ponovo."
+WAGE_DEL_SUCC_MSG = "Uspešno je izbrisana dnevnica!"
+WAGE_DEL_FAIL_MSG = "Nije uspešno izbrisana dnevnica! Probajte ponovo."
 
 SALARY_1_UPD_SUCC_MSG = "Uspešno je promenjena plata 1!"
 SALARY_1_UPD_FAIL_MSG = "Nije uspešno promenjena plata 1! Probajte ponovo."

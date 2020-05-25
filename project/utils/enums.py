@@ -22,12 +22,15 @@ class Actions(Enum):
     all_wages = 17,
     all_salaries_1 = 18,
     all_salaries_2 = 19,
-    employee_salaries_1 = 20,
-    employee_salaries_2 = 21,
-    update_salary_1 = 22,
-    update_salary_2 = 23,
-    delete_salary_1 = 24,
-    delete_salary_2 = 25
+    employee_wage = 20,
+    employee_salaries_1 = 21,
+    employee_salaries_2 = 22,
+    update_wage = 23,
+    update_salary_1 = 24,
+    update_salary_2 = 25,
+    delete_wage = 26,
+    delete_salary_1 = 27,
+    delete_salary_2 = 28
 
 
 class Levels(Enum):
