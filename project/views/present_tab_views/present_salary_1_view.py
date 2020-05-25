@@ -5,10 +5,10 @@ from project.utils.enums import Actions, Responses
 from project.utils import strings as strs, constants as cons
 
 
-class PresentSalary2View(QWidget):
+class PresentSalary1View(QWidget):
 
     def __init__(self, name, manager, *args, **kwargs):
-        super(PresentSalary2View, self).__init__(*args, **kwargs)
+        super(PresentSalary1View, self).__init__(*args, **kwargs)
         self._name = name
         self._manager = manager
 
@@ -46,8 +46,8 @@ class PresentSalary2View(QWidget):
         fields_layout.addRow(end_date_label, self.end_date_line)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(len(strs.PRESENT_SALARY_2_HDR))
-        self.table.setHorizontalHeaderLabels(strs.PRESENT_SALARY_2_HDR)
+        self.table.setColumnCount(len(strs.PRESENT_SALARY_1_HDR))
+        self.table.setHorizontalHeaderLabels(strs.PRESENT_SALARY_1_HDR)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
 
         self.scroll_area = QScrollArea(self)
@@ -83,8 +83,9 @@ class PresentSalary2View(QWidget):
         # Get data
         values = [[self.employee_box.currentText()], self.start_date_line.date(), self.end_date_line.date()]
 
-        self._salaries = self._manager.actions(Actions.employee_salaries_2, values)
+        self._salaries = self._manager.actions(Actions.employee_salaries_1, values)
 
+        print(self._salaries)
         if self._salaries is None:
             self.table.clearContents()
             self.table.setRowCount(0)
@@ -94,7 +95,7 @@ class PresentSalary2View(QWidget):
             # Data rows
             for row, salary in enumerate(self._salaries):
                 for column, item in enumerate(salary[2:]):
-                    if column == 0:
+                    if column == 2:
                         date = item.strftime(cons.DATE_FORMAT_PYTHON)
                         self.table.setItem(row, column, QTableWidgetItem(date))
                     else:
@@ -110,18 +111,19 @@ class PresentSalary2View(QWidget):
 
         if row_index is not None:
             values = self._salaries[row_index]
+            print(values)
 
             dialog = UpdateSalary1RowDialog(values)
             if dialog.exec():
                 new_values = dialog.get_value()
 
-                response = self._manager.actions(Actions.update_salary_2, new_values)
+                response = self._manager.actions(Actions.update_salary_1, new_values)
 
                 if response == Responses.success:
-                    QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_2_UPD_SUCC_MSG)
+                    QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_1_UPD_SUCC_MSG)
                     self._change_label()
                 else:
-                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_2_UPD_FAIL_MSG)
+                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_1_UPD_FAIL_MSG)
 
     def _delete_salary(self):
         row_index = self._check_selection()
@@ -132,13 +134,13 @@ class PresentSalary2View(QWidget):
             if dialog.exec():
                 values = [self._salaries[row_index][0]]
 
-                response = self._manager.actions(Actions.delete_salary_2, values)
+                response = self._manager.actions(Actions.delete_salary_1, values)
 
                 if response == Responses.success:
-                    QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_2_DEL_SUCC_MSG)
+                    QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_1_DEL_SUCC_MSG)
                     self._change_label()
                 else:
-                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_2_DEL_FAIL_MSG)
+                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_1_DEL_FAIL_MSG)
 
     def _print_salary(self):
         QMessageBox.warning(self, strs.PRESENT_MSG, strs.NOT_IMPLEMENTED_MSG)
@@ -146,7 +148,7 @@ class PresentSalary2View(QWidget):
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
 
-        if len(self.table.selectedItems()) != 11 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
+        if len(self.table.selectedItems()) != 3 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
             QMessageBox.warning(self, strs.PRESENT_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
             self.table.clearSelection()
 
@@ -156,3 +158,4 @@ class PresentSalary2View(QWidget):
 
     def get_name(self):
         return self._name
+

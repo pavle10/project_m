@@ -47,10 +47,16 @@ class DatabaseManager:
             return self._execute_query(sql.INSERT_SALARY_1, QueryType.insert, values)
         elif action == Actions.add_salary_2:
             return self._execute_query(sql.INSERT_SALARY_2, QueryType.insert, values)
+        elif action == Actions.employee_salaries_1:
+            return self._execute_query(sql.SELECT_EMPLOYEE_SALARIES_1, QueryType.select, values)
         elif action == Actions.employee_salaries_2:
             return self._execute_query(sql.SELECT_EMPLOYEE_SALARIES_2, QueryType.select, values)
+        elif action == Actions.update_salary_1:
+            return self._update_query(sql.UPDATE_SALARY_1, values)
         elif action == Actions.update_salary_2:
-            return self._update_salary_2(values)
+            return self._update_query(sql.UPDATE_SALARY_2, values)
+        elif action == Actions.delete_salary_1:
+            return self._execute_query(sql.DELETE_SALARY_1, QueryType.delete, values)
         elif action == Actions.delete_salary_2:
             return self._execute_query(sql.DELETE_SALARY_2, QueryType.delete, values)
 
@@ -103,8 +109,8 @@ class DatabaseManager:
 
         return result
 
-    def _update_salary_2(self, values):
+    def _update_query(self, query, values):
         values_deq = deque(values)
         values_deq.rotate(-1)
 
-        return self._execute_query(sql.UPDATE_SALARY_2, QueryType.update, list(values_deq))
+        return self._execute_query(query, QueryType.update, list(values_deq))

@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
 import project.utils.strings as strs
+from .present_tab_views.present_salary_1_view import PresentSalary1View
 from project.views.present_tab_views.present_salary_2_view import PresentSalary2View
 
 
@@ -15,9 +16,11 @@ class PresentTab(QWidget):
         self._init_ui()
 
     def _init_ui(self):
+        present_salary_1_view = PresentSalary1View(strs.SALARY_1, self._manager)
         present_salary_2_view = PresentSalary2View(strs.SALARY_2, self._manager)
 
         self.views = list()
+        self.views.append(present_salary_1_view)
         self.views.append(present_salary_2_view)
 
         self.options_list = QListWidget(self)

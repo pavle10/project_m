@@ -65,10 +65,16 @@ class Controller:
             return self._get_all_employees()
         elif action == Actions.all_uniforms:
             return self._get_all_uniforms()
+        elif action == Actions.employee_salaries_1:
+            return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_salary_1:
+            return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_salary_1:
+            return self._delete_salary_1(values)
         elif action == Actions.delete_salary_2:
             return self._delete_salary_2(values)
 
@@ -254,6 +260,21 @@ class Controller:
 
         return None
 
+    def _get_employee_salaries_1(self, values):
+        employee_id = self._get_employee_id(values[0][0])
+
+        if employee_id is not None:
+            values[0][0] = employee_id
+            start_date = values[1]
+            end_date = values[2]
+
+            response = self._action_manager.actions(Actions.employee_salaries_1, values[0])
+
+            if response:
+                return [salary for salary in response if start_date <= salary[4] <= end_date]
+
+        return None
+
     def _get_employee_salaries_2(self, values):
         employee_id = self._get_employee_id(values[0][0])
 
@@ -269,8 +290,18 @@ class Controller:
 
         return None
 
+    def _update_salary_1(self, values):
+        response = self._action_manager.actions(Actions.update_salary_1, values)
+
+        return Responses.success if not response.endswith('0') else Responses.fail
+
     def _update_salary_2(self, values):
         response = self._action_manager.actions(Actions.update_salary_2, values)
+
+        return Responses.success if not response.endswith('0') else Responses.fail
+
+    def _delete_salary_1(self, values):
+        response = self._action_manager.actions(Actions.delete_salary_1, values)
 
         return Responses.success if not response.endswith('0') else Responses.fail
 

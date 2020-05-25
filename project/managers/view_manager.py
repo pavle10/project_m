@@ -39,10 +39,16 @@ class ViewManager:
             return self._get_all_employees()
         elif action == Actions.all_uniforms:
             return self._get_all_uniforms()
+        elif action == Actions.employee_salaries_1:
+            return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_salary_1:
+            return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_salary_1:
+            return self._delete_salary_1(values)
         elif action == Actions.delete_salary_2:
             return self._delete_salary_2(values)
 
@@ -95,11 +101,20 @@ class ViewManager:
     def _get_all_uniforms(self):
         return self._controller.actions(Actions.all_uniforms)
 
+    def _get_employee_salaries_1(self, values):
+        return self._controller.actions(Actions.employee_salaries_1, values)
+
     def _get_employee_salaries_2(self, values):
         return self._controller.actions(Actions.employee_salaries_2, values)
 
+    def _update_salary_1(self, values):
+        return self._controller.actions(Actions.update_salary_1, values)
+
     def _update_salary_2(self, values):
         return self._controller.actions(Actions.update_salary_2, values)
+
+    def _delete_salary_1(self, values):
+        return self._controller.actions(Actions.delete_salary_1, values)
 
     def _delete_salary_2(self, values):
         return self._controller.actions(Actions.delete_salary_2, values)
