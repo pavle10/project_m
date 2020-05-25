@@ -14,17 +14,29 @@ class FreeDays:
     def get_employee_id(self):
         return self.employee_id
 
-    def get_start_daye(self):
+    def get_start_date(self):
         return self.start_date
+
+    def set_start_date(self, value):
+        self.start_date = value
 
     def get_end_date(self):
         return self.end_date
 
+    def set_end_date(self, value):
+        self.end_date = value
+
     def get_total_days(self):
         return self.total_days
 
+    def set_total_days(self, value):
+        self.total_days = value
+
     def get_reason(self):
         return self.reason
+
+    def set_reason(self, value):
+        self.reason = value
 
     def __eq__(self, other):
         return isinstance(other, FreeDays) and self.free_days_id == other.free_days_id

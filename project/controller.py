@@ -65,18 +65,24 @@ class Controller:
             return self._get_all_employees()
         elif action == Actions.all_uniforms:
             return self._get_all_uniforms()
+        elif action == Actions.employee_free_days:
+            return self._get_employee_free_days(values)
         elif action == Actions.employee_wage:
             return self._get_employee_wage(self._get_employee_id(values[0]))
         elif action == Actions.employee_salaries_1:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_free_days:
+            return self._update_free_days(values)
         elif action == Actions.update_wage:
             return self._update_wage(values)
         elif action == Actions.update_salary_1:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_free_days:
+            return self._delete_free_days(values)
         elif action == Actions.delete_wage:
             return self._delete_wage(values)
         elif action == Actions.delete_salary_1:
@@ -241,10 +247,14 @@ class Controller:
         if len(values) != 3:
             return None
 
+        first_name = values[0]
+        last_name = values[1]
         identity_number = values[2]
 
         for employee in self._employees:
-            if employee.get_identity_number() == identity_number:
+            if employee.get_first_name() == first_name and\
+                    employee.get_last_name() == last_name and\
+                    employee.get_identity_number() == identity_number:
                 return employee.get_employee_id()
 
         return None
@@ -258,6 +268,22 @@ class Controller:
                 return uniform.get_uniform_id()
 
         return None
+
+    def _get_employee_free_days(self, values):
+        employee_id = self._get_employee_id(values[0])
+        result = list()
+
+        if employee_id is not None:
+            start_date = values[1]
+            end_date = values[2]
+
+            for free_days in self._all_free_days:
+                if free_days.get_employee_id() == employee_id \
+                        and start_date <= free_days.get_start_date() \
+                        and free_days.get_end_date() <= end_date:
+                    result.append(free_days)
+
+        return result
 
     def _get_employee_wage(self, employee_id):
         for wage in self._wages:
@@ -296,6 +322,21 @@ class Controller:
 
         return None
 
+    def _update_free_days(self, values):
+        response = self._action_manager.actions(Actions.update_free_days, values)
+
+        if not response.endswith('0'):
+            for free_days in self._all_free_days:
+                if free_days.get_free_days_id() == values[0]:
+                    free_days.set_start_date = values[2]
+                    free_days.set_end_date = values[3]
+                    free_days.set_total_days = values[4]
+                    free_days.set_reason = values[5]
+
+                    return Responses.success
+
+        return Responses.fail
+
     def _update_wage(self, values):
         response = self._action_manager.actions(Actions.update_wage, values)
 
@@ -319,6 +360,18 @@ class Controller:
         response = self._action_manager.actions(Actions.update_salary_2, values)
 
         return Responses.success if not response.endswith('0') else Responses.fail
+
+    def _delete_free_days(self, values):
+        response = self._action_manager.actions(Actions.delete_free_days, values)
+
+        if not response.endswith('0'):
+            for free_days in self._all_free_days:
+                if free_days.get_free_days_id() == values[0]:
+                    self._all_free_days.remove(free_days)
+
+                    return Responses.success
+
+        return Responses.fail
 
     def _delete_wage(self, values):
         response = self._action_manager.actions(Actions.delete_wage, [values[0]])

@@ -39,18 +39,24 @@ class ViewManager:
             return self._get_all_employees()
         elif action == Actions.all_uniforms:
             return self._get_all_uniforms()
+        elif action == Actions.employee_free_days:
+            return self._get_employee_free_days(values)
         elif action == Actions.employee_wage:
             return self._get_employee_wage(values)
         elif action == Actions.employee_salaries_1:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_free_days:
+            return self._controller.actions(Actions.update_free_days, values)
         elif action == Actions.update_wage:
             return self._update_wage(values)
         elif action == Actions.update_salary_1:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_free_days:
+            return self._controller.actions(Actions.delete_free_days, values)
         elif action == Actions.delete_wage:
             return self._delete_wage(values)
         elif action == Actions.delete_salary_1:
@@ -106,6 +112,9 @@ class ViewManager:
 
     def _get_all_uniforms(self):
         return self._controller.actions(Actions.all_uniforms)
+
+    def _get_employee_free_days(self, values):
+        return self._controller.actions(Actions.employee_free_days, values)
 
     def _get_employee_wage(self, values):
         return self._controller.actions(Actions.employee_wage, values)

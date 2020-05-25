@@ -1,8 +1,6 @@
-from PyQt5.QtCore import Qt
-
 from project.views.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
-from project.utils import strings as strs, constants as cons
+from project.utils import strings as strs
 
 
 class PresentWageView(QWidget):

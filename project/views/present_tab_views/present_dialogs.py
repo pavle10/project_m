@@ -24,6 +24,52 @@ class DeleteRowDialog(QDialog):
         self.setLayout(layout)
 
 
+class UpdateFreeDaysRowDialog(QDialog):
+
+    def __init__(self, selected_data, *args, **kwargs):
+        super(UpdateFreeDaysRowDialog, self).__init__(*args, **kwargs)
+        self.data = selected_data
+
+        self.setWindowTitle(strs.PRESENT_MSG)
+
+        start_date_label = QLabel(self)
+        start_date_label.setText(strs.PRESENT_FREE_DAYS_HDR[0])
+        self.start_date_line = QDateEdit(self)
+        self.start_date_line.setDate(selected_data[2])
+        start_date_label.setBuddy(self.start_date_line)
+
+        end_date_label = QLabel(self)
+        end_date_label.setText(strs.PRESENT_FREE_DAYS_HDR[1])
+        self.end_date_line = QDateEdit(self)
+        self.end_date_line.setDate(selected_data[3])
+        end_date_label.setBuddy(self.end_date_line)
+
+        reason_label = QLabel(self)
+        reason_label.setText(strs.PRESENT_FREE_DAYS_HDR[2])
+        self.reason_line = QLineEdit(self)
+        self.reason_line.setText(selected_data[5])
+        reason_label.setBuddy(self.reason_line)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QFormLayout()
+        layout.addRow(start_date_label, self.start_date_line)
+        layout.addRow(end_date_label, self.end_date_line)
+        layout.addRow(reason_label, self.reason_line)
+        layout.addRow(button_box)
+        self.setLayout(layout)
+
+    def get_value(self):
+        self.data[2] = self.start_date_line.date().toPyDate()
+        self.data[3] = self.end_date_line.date().toPyDate()
+        self.data[4] = (self.data[3] - self.data[2]).days
+        self.data[5] = self.reason_line.text()
+
+        return self.data
+
+
 class UpdateWageRowDialog(QDialog):
 
     def __init__(self, selected_data, *args, **kwargs):

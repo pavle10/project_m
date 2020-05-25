@@ -56,12 +56,16 @@ class ActionManager:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_free_days:
+            return self._update_free_days(values)
         elif action == Actions.update_wage:
             return self._update_wage(values)
         elif action == Actions.update_salary_1:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_free_days:
+            return self._delete_free_days(values)
         elif action == Actions.delete_wage:
             return self._delete_wage(values)
         elif action == Actions.delete_salary_1:
@@ -206,6 +210,11 @@ class ActionManager:
 
         return result
 
+    def _update_free_days(self, values):
+        result = self._database_manager.actions(Actions.update_free_days, values)
+
+        return result
+
     def _update_wage(self, values):
         result = self._database_manager.actions(Actions.update_wage, values)
 
@@ -218,6 +227,11 @@ class ActionManager:
 
     def _update_salary_2(self, values):
         result = self._database_manager.actions(Actions.update_salary_2, values)
+
+        return result
+
+    def _delete_free_days(self, values):
+        result = self._database_manager.actions(Actions.delete_free_days, values)
 
         return result
 

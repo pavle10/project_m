@@ -51,12 +51,16 @@ class DatabaseManager:
             return self._execute_query(sql.SELECT_EMPLOYEE_SALARIES_1, QueryType.select, values)
         elif action == Actions.employee_salaries_2:
             return self._execute_query(sql.SELECT_EMPLOYEE_SALARIES_2, QueryType.select, values)
+        elif action == Actions.update_free_days:
+            return self._update_query(sql.UPDATE_FREE_DAYS, values)
         elif action == Actions.update_wage:
             return self._update_query(sql.UPDATE_WAGE, values)
         elif action == Actions.update_salary_1:
             return self._update_query(sql.UPDATE_SALARY_1, values)
         elif action == Actions.update_salary_2:
             return self._update_query(sql.UPDATE_SALARY_2, values)
+        elif action == Actions.delete_free_days:
+            return self._execute_query(sql.DELETE_FREE_DAYS, QueryType.delete, values)
         elif action == Actions.delete_wage:
             return self._execute_query(sql.DELETE_WAGE, QueryType.delete, values)
         elif action == Actions.delete_salary_1:
