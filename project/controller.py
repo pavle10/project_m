@@ -27,6 +27,8 @@ class Controller:
         self._all_free_days = self._action_manager.actions(Actions.all_free_days)
         self._wages = self._action_manager.actions(Actions.all_wages)
 
+        self._update_uniform_pieces_name()
+
     def run(self):
         self._view_manager.actions(Actions.show)
 
@@ -65,6 +67,8 @@ class Controller:
             return self._get_all_employees()
         elif action == Actions.all_uniforms:
             return self._get_all_uniforms()
+        elif action == Actions.employee_uniform_pieces:
+            return self._get_employee_uniform_pieces(values)
         elif action == Actions.employee_free_days:
             return self._get_employee_free_days(values)
         elif action == Actions.employee_wage:
@@ -73,6 +77,8 @@ class Controller:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_uniform_piece:
+            return self._update_uniform_piece(values)
         elif action == Actions.update_free_days:
             return self._update_free_days(values)
         elif action == Actions.update_wage:
@@ -81,6 +87,8 @@ class Controller:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_uniform_piece:
+            return self._delete_uniform_piece(values)
         elif action == Actions.delete_free_days:
             return self._delete_free_days(values)
         elif action == Actions.delete_wage:
@@ -89,6 +97,13 @@ class Controller:
             return self._delete_salary_1(values)
         elif action == Actions.delete_salary_2:
             return self._delete_salary_2(values)
+
+    def _update_uniform_pieces_name(self):
+        for piece in self._uniform_pieces:
+            for uniform in self._uniforms:
+                if uniform.get_uniform_id() == piece.get_uniform_id():
+                    piece.set_uniform_name(uniform.get_name())
+                    break
 
     def _login(self, values):
         response = self._action_manager.actions(Actions.login, values)
@@ -260,7 +275,7 @@ class Controller:
         return None
 
     def _get_all_uniforms(self):
-        return [uniform.get_name() for uniform in self._uniforms]
+        return self._uniforms
 
     def _get_uniform_id(self, name):
         for uniform in self._uniforms:
@@ -268,6 +283,27 @@ class Controller:
                 return uniform.get_uniform_id()
 
         return None
+
+    def _get_uniform_name(self, uniform_id):
+        for uniform in self._uniforms:
+            if uniform.get_uniform_id() == uniform_id:
+                return uniform.get_name()
+
+        return ""
+
+    def _get_employee_uniform_pieces(self, values):
+        employee_id = self._get_employee_id(values[0])
+        result = list()
+
+        if employee_id is not None:
+            start_date = values[1]
+            end_date = values[2]
+
+            for piece in self._uniform_pieces:
+                if piece.get_employee_id() == employee_id and start_date <= piece.get_date() <= end_date:
+                    result.append(piece)
+
+        return result
 
     def _get_employee_free_days(self, values):
         employee_id = self._get_employee_id(values[0])
@@ -322,16 +358,33 @@ class Controller:
 
         return None
 
+    def _update_uniform_piece(self, values):
+        response = self._action_manager.actions(Actions.update_uniform_piece, values)
+
+        if not response.endswith('0'):
+            for uniform_piece in self._uniform_pieces:
+                if uniform_piece.get_uniform_piece_id() == values[0]:
+                    uniform_piece.set_uniform_id(values[1])
+                    uniform_piece.set_uniform_name(self._get_uniform_name(values[1]))
+                    uniform_piece.set_size(values[3])
+                    uniform_piece.set_quantity(values[4])
+                    uniform_piece.set_additional(values[5])
+                    uniform_piece.set_date(values[6])
+
+                    return Responses.success
+
+        return Responses.fail
+
     def _update_free_days(self, values):
         response = self._action_manager.actions(Actions.update_free_days, values)
 
         if not response.endswith('0'):
             for free_days in self._all_free_days:
                 if free_days.get_free_days_id() == values[0]:
-                    free_days.set_start_date = values[2]
-                    free_days.set_end_date = values[3]
-                    free_days.set_total_days = values[4]
-                    free_days.set_reason = values[5]
+                    free_days.set_start_date(values[2])
+                    free_days.set_end_date(values[3])
+                    free_days.set_total_days(values[4])
+                    free_days.set_reason(values[5])
 
                     return Responses.success
 
@@ -360,6 +413,18 @@ class Controller:
         response = self._action_manager.actions(Actions.update_salary_2, values)
 
         return Responses.success if not response.endswith('0') else Responses.fail
+
+    def _delete_uniform_piece(self, values):
+        response = self._action_manager.actions(Actions.delete_uniform_piece, values)
+
+        if not response.endswith('0'):
+            for uniform_piece in self._uniform_pieces:
+                if uniform_piece.get_uniform_piece_id() == values[0]:
+                    self._uniform_pieces.remove(uniform_piece)
+
+                    return Responses.success
+
+        return Responses.fail
 
     def _delete_free_days(self, values):
         response = self._action_manager.actions(Actions.delete_free_days, values)

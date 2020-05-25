@@ -24,6 +24,75 @@ class DeleteRowDialog(QDialog):
         self.setLayout(layout)
 
 
+class UpdateUniformPieceDialog(QDialog):
+
+    def __init__(self, selected_data, uniforms, *args, **kwargs):
+        super(UpdateUniformPieceDialog, self).__init__(*args, **kwargs)
+        self.data = selected_data
+        self.uniforms = uniforms
+
+        self.setWindowTitle(strs.PRESENT_MSG)
+
+        uniform_label = QLabel(self)
+        uniform_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[0])
+        self.uniform_box = QComboBox()
+        current_index = 0
+        for index, uniform in enumerate(self.uniforms):
+            self.uniform_box.insertItem(index, uniform.get_name())
+            if uniform.get_uniform_id() == selected_data[1]:
+                current_index = index
+        self.uniform_box.setCurrentIndex(current_index)
+        uniform_label.setBuddy(self.uniform_box)
+
+        size_label = QLabel(self)
+        size_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[1])
+        self.size_line = QLineEdit(self)
+        self.size_line.setText(str(selected_data[3]))
+        size_label.setBuddy(self.size_line)
+
+        quantity_label = QLabel(self)
+        quantity_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[2])
+        self.quantity_line = QLineEdit(self)
+        self.quantity_line.setText(str(selected_data[4]))
+        quantity_label.setBuddy(self.quantity_line)
+
+        additional_label = QLabel(self)
+        additional_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[3])
+        self.additional_line = QLineEdit(self)
+        self.additional_line.setText(selected_data[5])
+        additional_label.setBuddy(self.additional_line)
+
+        date_label = QLabel(self)
+        date_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[4])
+        self.date_line = QDateEdit(self)
+        self.date_line.setDate(selected_data[6])
+        date_label.setBuddy(self.date_line)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QFormLayout()
+        layout.addRow(uniform_label, self.uniform_box)
+        layout.addRow(size_label, self.size_line)
+        layout.addRow(quantity_label, self.quantity_line)
+        layout.addRow(additional_label, self.additional_line)
+        layout.addRow(date_label, self.date_line)
+        layout.addRow(button_box)
+        self.setLayout(layout)
+
+    def get_value(self):
+        uniform = self.uniforms[self.uniform_box.currentIndex()]
+
+        self.data[1] = uniform.get_uniform_id()
+        self.data[3] = self.size_line.text()
+        self.data[4] = self.quantity_line.text()
+        self.data[5] = self.additional_line.text()
+        self.data[6] = self.date_line.date().toPyDate()
+
+        return self.data
+
+
 class UpdateFreeDaysRowDialog(QDialog):
 
     def __init__(self, selected_data, *args, **kwargs):

@@ -18,7 +18,7 @@ class AddUniformPieceView(QWidget):
         uniform_label.setText("Radno odelo:")
         self.uniform_box = QComboBox()
         for index, uniform in enumerate(self._get_uniforms()):
-            self.uniform_box.insertItem(index, f"{uniform}")
+            self.uniform_box.insertItem(index, f"{uniform.get_name()}")
             uniform_label.setBuddy(self.uniform_box)
 
         employee_label = QLabel(self)
