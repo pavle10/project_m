@@ -119,7 +119,6 @@ class PresentSalary2View(QWidget):
 
                 if response == Responses.success:
                     QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_2_UPD_SUCC_MSG)
-                    self._salaries[row_index] = new_values
                     self._change_label()
                 else:
                     QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_2_UPD_FAIL_MSG)
@@ -137,7 +136,6 @@ class PresentSalary2View(QWidget):
 
                 if response == Responses.success:
                     QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_2_DEL_SUCC_MSG)
-                    self._salaries.remove(self._salaries[row_index])
                     self._change_label()
                 else:
                     QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_2_DEL_FAIL_MSG)
