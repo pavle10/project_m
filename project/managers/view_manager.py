@@ -37,6 +37,8 @@ class ViewManager:
             return self._get_all_positions()
         elif action == Actions.all_employees:
             return self._get_all_employees()
+        elif action == Actions.all_children:
+            return self._controller.actions(Actions.all_children)
         elif action == Actions.all_uniforms:
             return self._get_all_uniforms()
         elif action == Actions.employee_uniform_pieces:
@@ -49,6 +51,8 @@ class ViewManager:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_child:
+            return self._controller.actions(Actions.update_child, values)
         elif action == Actions.update_uniform:
             return self._controller.actions(Actions.update_uniform, values)
         elif action == Actions.update_uniform_piece:
@@ -61,6 +65,8 @@ class ViewManager:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_child:
+            return self._controller.actions(Actions.delete_child, values)
         elif action == Actions.delete_uniform:
             return self._controller.actions(Actions.delete_uniform, values)
         elif action == Actions.delete_uniform_piece:

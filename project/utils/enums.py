@@ -27,18 +27,20 @@ class Actions(Enum):
     employee_wage = 22,
     employee_salaries_1 = 23,
     employee_salaries_2 = 24,
-    update_uniform = 25,
-    update_uniform_piece = 26,
-    update_free_days = 27,
-    update_wage = 28,
-    update_salary_1 = 29,
-    update_salary_2 = 30,
-    delete_uniform = 31,
-    delete_uniform_piece = 32,
-    delete_free_days = 33,
-    delete_wage = 34,
-    delete_salary_1 = 35,
-    delete_salary_2 = 36
+    update_child = 25,
+    update_uniform = 26,
+    update_uniform_piece = 27,
+    update_free_days = 28,
+    update_wage = 29,
+    update_salary_1 = 30,
+    update_salary_2 = 31,
+    delete_child = 32,
+    delete_uniform = 33,
+    delete_uniform_piece = 34,
+    delete_free_days = 35,
+    delete_wage = 36,
+    delete_salary_1 = 37,
+    delete_salary_2 = 38
 
 
 class Levels(Enum):

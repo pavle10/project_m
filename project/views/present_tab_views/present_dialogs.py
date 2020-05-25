@@ -24,6 +24,63 @@ class DeleteRowDialog(QDialog):
         self.setLayout(layout)
 
 
+class UpdateChildDialog(QDialog):
+
+    def __init__(self, selected_data, employees, *args, **kwargs):
+        super(UpdateChildDialog, self).__init__(*args, **kwargs)
+        self.data = selected_data
+
+        self.setWindowTitle(strs.PRESENT_MSG)
+
+        identity_number_label = QLabel(self)
+        identity_number_label.setText(strs.PRESENT_CHILD_HDR[0])
+        self.identity_number_line = QLineEdit(self)
+        self.identity_number_line.setText(selected_data[1])
+        identity_number_label.setBuddy(self.identity_number_line)
+
+        birth_year_label = QLabel(self)
+        birth_year_label.setText(strs.PRESENT_CHILD_HDR[1])
+        self.birth_year_line = QLineEdit(self)
+        self.birth_year_line.setText(str(selected_data[2]))
+        birth_year_label.setBuddy(self.birth_year_line)
+
+        mother_label = QLabel(self)
+        mother_label.setText(strs.PRESENT_CHILD_HDR[2])
+        self.mother_box = QComboBox()
+        self.mother_box.insertItem(0, "")
+        for index, employee in enumerate(employees):
+            self.mother_box.insertItem(index + 1, f"{employee[0]} {employee[1]} {employee[2]}")
+        mother_label.setBuddy(self.mother_box)
+
+        father_label = QLabel(self)
+        father_label.setText(strs.PRESENT_CHILD_HDR[3])
+        self.father_box = QComboBox()
+        self.father_box.insertItem(0, "")
+        for index, employee in enumerate(employees):
+            self.father_box.insertItem(index + 1, f"{employee[0]} {employee[1]} {employee[2]}")
+            father_label.setBuddy(self.father_box)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QFormLayout()
+        layout.addRow(identity_number_label, self.identity_number_line)
+        layout.addRow(birth_year_label, self.birth_year_line)
+        layout.addRow(mother_label, self.mother_box)
+        layout.addRow(father_label, self.father_box)
+        layout.addRow(button_box)
+        self.setLayout(layout)
+
+    def get_value(self):
+        self.data[1] = self.identity_number_line.text()
+        self.data[2] = self.birth_year_line.text()
+        self.data[3] = self.mother_box.currentText()
+        self.data[4] = self.father_box.currentText()
+
+        return self.data
+
+
 class UpdateUniformDialog(QDialog):
 
     def __init__(self, selected_data, *args, **kwargs):

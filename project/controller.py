@@ -28,6 +28,7 @@ class Controller:
         self._wages = self._action_manager.actions(Actions.all_wages)
 
         self._update_uniform_pieces_name()
+        self._update_children_parents()
 
     def run(self):
         self._view_manager.actions(Actions.show)
@@ -65,6 +66,8 @@ class Controller:
             return self._get_all_positions()
         elif action == Actions.all_employees:
             return self._get_all_employees()
+        elif action == Actions.all_children:
+            return self._get_all_children()
         elif action == Actions.all_uniforms:
             return self._get_all_uniforms()
         elif action == Actions.employee_uniform_pieces:
@@ -77,6 +80,8 @@ class Controller:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_child:
+            return self._update_child(values)
         elif action == Actions.update_uniform:
             return self._update_uniform(values)
         elif action == Actions.update_uniform_piece:
@@ -89,6 +94,8 @@ class Controller:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_child:
+            return self._delete_child(values)
         elif action == Actions.delete_uniform:
             return self._delete_uniform(values)
         elif action == Actions.delete_uniform_piece:
@@ -108,6 +115,21 @@ class Controller:
                 if uniform.get_uniform_id() == piece.get_uniform_id():
                     piece.set_uniform_name(uniform.get_name())
                     break
+
+    def _update_children_parents(self):
+        for child in self._children:
+            mother_id = child.get_mother_id()
+            father_id = child.get_father_id()
+
+            for employee in self._employees:
+                if employee.get_employee_id() == mother_id:
+                    child.set_mother_name(f"{employee.get_first_name()} "
+                                          f"{employee.get_last_name()} "
+                                          f"{employee.get_identity_number()}")
+                elif employee.get_employee_id() == father_id:
+                    child.set_father_name(f"{employee.get_first_name()} "
+                                          f"{employee.get_last_name()} "
+                                          f"{employee.get_identity_number()}")
 
     def _login(self, values):
         response = self._action_manager.actions(Actions.login, values)
@@ -278,6 +300,17 @@ class Controller:
 
         return None
 
+    def _get_all_children(self):
+        return self._children
+
+    def _get_child_id(self, values):
+        for child in self._children:
+            if (child.get_identity_number() == values[0] and child.get_birth_year() == values[1]
+               and child.get_mother_name() == values[2] and child.get_father_name() == values[3]):
+                return child.get_child_id()
+
+        return None
+
     def _get_all_uniforms(self):
         return self._uniforms
 
@@ -362,6 +395,33 @@ class Controller:
 
         return None
 
+    def _update_child(self, values):
+        print(values[0][1:])
+        child_id = self._get_child_id(values[0][1:])
+
+        print(child_id)
+
+        if child_id is not None:
+            values[1][0] = child_id
+            response = self._action_manager.actions(Actions.update_child, values[1])
+
+            if not response.endswith('0'):
+                mother_id = self._get_employee_id(values[1][3])
+                father_id = self._get_employee_id(values[1][4])
+
+                for child in self._children:
+                    if child.get_child_id() == child_id:
+                        child.set_identity_number(values[1][1])
+                        child.set_birth_year(values[1][2])
+                        child.set_mother_id(mother_id)
+                        child.set_mother_name(values[1][3])
+                        child.set_father_id(father_id)
+                        child.set_father_name(values[1][4])
+
+                        return Responses.success
+
+        return Responses.fail
+
     def _update_uniform(self, values):
         uniform_id = self._get_uniform_id(values[0])
 
@@ -433,6 +493,21 @@ class Controller:
         response = self._action_manager.actions(Actions.update_salary_2, values)
 
         return Responses.success if not response.endswith('0') else Responses.fail
+
+    def _delete_child(self, values):
+        child_id = self._get_child_id(values)
+
+        if child_id is not None:
+            response = self._action_manager.actions(Actions.delete_child, [child_id])
+
+            if not response.endswith('0'):
+                for child in self._children:
+                    if child.get_child_id() == child_id:
+                        self._children.remove(child)
+
+                        return Responses.success
+
+        return Responses.fail
 
     def _delete_uniform(self, values):
         uniform_id = self._get_uniform_id(values[0])

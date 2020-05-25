@@ -1,5 +1,3 @@
-from PyQt5.QtCore import Qt
-
 from project.views.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
 from project.utils import strings as strs
@@ -19,7 +17,6 @@ class PresentUniformView(QWidget):
         self.table.setColumnCount(len(strs.PRESENT_UNIFORM_HDR))
         self.table.setHorizontalHeaderLabels(strs.PRESENT_UNIFORM_HDR)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
-
         self.update_table()
 
         self.scroll_area = QScrollArea(self)
