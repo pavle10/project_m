@@ -124,6 +124,8 @@ SALARY_1_UPD_FAIL_MSG = "Nije uspešno promenjena plata 1! Probajte ponovo."
 SALARY_1_DEL_SUCC_MSG = "Uspešno je izbrisana plata 1!"
 SALARY_1_DEL_FAIL_MSG = "Nije uspešno izbrisana plata 1! Probajte ponovo."
 
+SALARY_2_ADD_SUCC_MSG = "Nova plata 2 je uspešno dodata!"
+SALARY_2_ADD_FAIL_MSG = "Nova plata 2 nije uspešno dodata! Probajte opet."
 SALARY_2_UPD_SUCC_MSG = "Uspešno je promenjena plata 2!"
 SALARY_2_UPD_FAIL_MSG = "Nije uspešno promenjena plata 2! Probajte ponovo."
 SALARY_2_DEL_SUCC_MSG = "Uspešno je izbrisana plata 2!"

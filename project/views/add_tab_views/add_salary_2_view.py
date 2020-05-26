@@ -1,8 +1,8 @@
+import datetime
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
 
 from project.utils.enums import Actions, Responses
-import project.utils.funcs as funcs
+from project.utils import funcs as funcs, strings as strs, constants as cons
 
 
 class AddSalary2View(QWidget):
@@ -16,86 +16,76 @@ class AddSalary2View(QWidget):
 
     def _init_ui(self):
         employee_label = QLabel(self)
-        employee_label.setText("Zaposleni*:")
+        employee_label.setText(f"*{strs.EMPLOYEE}:")
         self.employee_box = QComboBox()
         for index, employee in enumerate(self._get_employees()):
             self.employee_box.insertItem(index, funcs.employee_unique_name(employee))
         employee_label.setBuddy(self.employee_box)
 
         day_label = QLabel(self)
-        day_label.setText("Radnih dana:")
+        day_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[1]}:")
         self.day_line = QLineEdit(self)
         day_label.setBuddy(self.day_line)
 
         hour_label = QLabel(self)
-        hour_label.setText("Radnih sati:")
+        hour_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[3]}:")
         self.hour_line = QLineEdit(self)
         hour_label.setBuddy(self.hour_line)
 
         meal_label = QLabel(self)
-        meal_label.setText("Obroka:")
+        meal_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[5]}:")
         self.meal_line = QLineEdit(self)
         meal_label.setBuddy(self.meal_line)
 
         payment_label = QLabel(self)
-        payment_label.setText("Rate:")
+        payment_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[7]}:")
         self.payment_line = QLineEdit(self)
         payment_label.setBuddy(self.payment_line)
 
         vacation_label = QLabel(self)
-        vacation_label.setText("Dana odmora:")
+        vacation_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[8]}:")
         self.vacation_line = QLineEdit(self)
         vacation_label.setBuddy(self.vacation_line)
 
         vacation_value_label = QLabel(self)
-        vacation_value_label.setText("Odmor vrednost:")
+        vacation_value_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[9]}:")
         self.vacation_value_line = QLineEdit(self)
         vacation_value_label.setBuddy(self.vacation_value_line)
 
         fix_label = QLabel(self)
-        fix_label.setText("Fiksno:")
+        fix_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[10]}:")
         self.fix_line = QLineEdit(self)
         fix_label.setBuddy(self.fix_line)
 
         date_label = QLabel(self)
-        date_label.setText("Datum*:")
-        self.calendar = QCalendarWidget(self)
-        self.calendar.setFirstDayOfWeek(Qt.Monday)
-        self.calendar.showToday()
-        self.calendar.setGridVisible(True)
-        date_label.setBuddy(self.calendar)
+        date_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[0]}:")
+        self.date_line = QDateEdit(self)
+        self.date_line.setDate(datetime.datetime.now().date())
+        self.date_line.setDisplayFormat(cons.DATE_FORMAT_PYQT)
+        date_label.setBuddy(self.date_line)
 
         add_button = QPushButton(self)
-        add_button.setText("Dodaj")
+        add_button.setText(strs.ADD_BTN)
         add_button.clicked.connect(self._add_salary)
 
-        layout = QVBoxLayout()
-        layout.addWidget(employee_label)
-        layout.addWidget(self.employee_box)
-        layout.addWidget(day_label)
-        layout.addWidget(self.day_line)
-        layout.addWidget(hour_label)
-        layout.addWidget(self.hour_line)
-        layout.addWidget(meal_label)
-        layout.addWidget(self.meal_line)
-        layout.addWidget(payment_label)
-        layout.addWidget(self.payment_line)
-        layout.addWidget(vacation_label)
-        layout.addWidget(self.vacation_line)
-        layout.addWidget(vacation_value_label)
-        layout.addWidget(self.vacation_value_line)
-        layout.addWidget(fix_label)
-        layout.addWidget(self.fix_line)
-        layout.addWidget(date_label)
-        layout.addWidget(self.calendar)
-        layout.addWidget(add_button)
+        layout = QFormLayout()
+        layout.addRow(employee_label, self.employee_box)
+        layout.addRow(day_label, self.day_line)
+        layout.addRow(hour_label, self.hour_line)
+        layout.addRow(meal_label, self.meal_line)
+        layout.addRow(payment_label, self.payment_line)
+        layout.addRow(vacation_label, self.vacation_line)
+        layout.addRow(vacation_value_label, self.vacation_value_line)
+        layout.addRow(fix_label, self.fix_line)
+        layout.addRow(date_label, self.date_line)
+        layout.addRow(add_button)
         self.setLayout(layout)
 
     def _get_employees(self):
         return self._manager.actions(Actions.all_employees)
 
     def _add_salary(self):
-        chosen_date = funcs.convert_date_to_string(self.calendar.selectedDate())
+        chosen_date = self.date_line.date().toPyDate()
         values = [self.employee_box.currentText(), chosen_date, self.day_line.text(), None, self.hour_line.text(),
                   None, self.meal_line.text(), None, self.payment_line.text(), self.vacation_line.text(),
                   self.vacation_value_line.text(), self.fix_line.text()]
@@ -103,6 +93,6 @@ class AddSalary2View(QWidget):
         response = self._manager.actions(Actions.add_salary_2, values)
 
         if response == Responses.success:
-            QMessageBox.information(self, "Dodavanje plate 2", "Nova plata 2 je uspešno dodata!")
+            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.SALARY_2_ADD_SUCC_MSG)
         elif response == Responses.fail:
-            QMessageBox.warning(self, "Dodavanje plate 2", "Nova plata 2 nije uspešno dodata! Probajte opet.")
+            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.SALARY_2_ADD_FAIL_MSG)
