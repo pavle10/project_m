@@ -1,8 +1,9 @@
+import datetime
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
 from project.utils.enums import Actions, Responses
-import project.utils.funcs as funcs
+from project.utils import funcs as funcs, strings as strs, constants as cons
 
 
 class AddUniformPieceView(QWidget):
@@ -15,60 +16,53 @@ class AddUniformPieceView(QWidget):
 
     def _init_ui(self):
         uniform_label = QLabel(self)
-        uniform_label.setText("Radno odelo:")
+        uniform_label.setText(f"*{strs.UNIFORM}:")
         self.uniform_box = QComboBox()
         for index, uniform in enumerate(self._get_uniforms()):
             self.uniform_box.insertItem(index, f"{uniform.get_name()}")
             uniform_label.setBuddy(self.uniform_box)
 
         employee_label = QLabel(self)
-        employee_label.setText("Zaposleni:")
+        employee_label.setText(f"*{strs.EMPLOYEE}:")
         self.employee_box = QComboBox()
         for index, employee in enumerate(self._get_employees()):
             self.employee_box.insertItem(index, funcs.employee_unique_name(employee))
         employee_label.setBuddy(self.employee_box)
 
         size_label = QLabel(self)
-        size_label.setText("Veličina:")
+        size_label.setText(f"*{strs.PRESENT_UNIFORM_PIECE_HDR[1]}:")
         self.size_line = QLineEdit(self)
         size_label.setBuddy(self.size_line)
 
         quantity_label = QLabel(self)
-        quantity_label.setText("Količina:")
+        quantity_label.setText(f"*{strs.PRESENT_UNIFORM_PIECE_HDR[2]}:")
         self.quantity_line = QLineEdit(self)
         quantity_label.setBuddy(self.quantity_line)
 
         additional_label = QLabel(self)
-        additional_label.setText("Dodatno:")
+        additional_label.setText(f"{strs.PRESENT_UNIFORM_PIECE_HDR[3]}:")
         self.additional_line = QLineEdit(self)
         additional_label.setBuddy(self.additional_line)
 
         date_label = QLabel(self)
-        date_label.setText("Datum:")
-        self.calendar = QCalendarWidget(self)
-        self.calendar.setFirstDayOfWeek(Qt.Monday)
-        self.calendar.showToday()
-        self.calendar.setGridVisible(True)
-        date_label.setBuddy(self.calendar)
+        date_label.setText(f"*{strs.PRESENT_UNIFORM_PIECE_HDR[4]}:")
+        self.date_line = QDateEdit(self)
+        self.date_line.setDate(datetime.datetime.now().date())
+        self.date_line.setDisplayFormat(cons.DATE_FORMAT_PYQT)
+        date_label.setBuddy(self.date_line)
 
         add_button = QPushButton(self)
-        add_button.setText("Dodaj")
+        add_button.setText(strs.ADD_BTN)
         add_button.clicked.connect(self._add_uniform_piece)
 
-        layout = QVBoxLayout()
-        layout.addWidget(uniform_label)
-        layout.addWidget(self.uniform_box)
-        layout.addWidget(employee_label)
-        layout.addWidget(self.employee_box)
-        layout.addWidget(size_label)
-        layout.addWidget(self.size_line)
-        layout.addWidget(quantity_label)
-        layout.addWidget(self.quantity_line)
-        layout.addWidget(additional_label)
-        layout.addWidget(self.additional_line)
-        layout.addWidget(date_label)
-        layout.addWidget(self.calendar)
-        layout.addWidget(add_button)
+        layout = QFormLayout()
+        layout.addRow(uniform_label, self.uniform_box)
+        layout.addRow(employee_label, self.employee_box)
+        layout.addRow(size_label, self.size_line)
+        layout.addRow(quantity_label, self.quantity_line)
+        layout.addRow(additional_label, self.additional_line)
+        layout.addRow(date_label, self.date_line)
+        layout.addRow(add_button)
         self.setLayout(layout)
 
     def _get_uniforms(self):
@@ -78,13 +72,13 @@ class AddUniformPieceView(QWidget):
         return self._manager.actions(Actions.all_employees)
 
     def _add_uniform_piece(self):
-        chosen_date = funcs.convert_date_to_string(self.calendar.selectedDate())
+        chosen_date = self.date_line.date().toPyDate()
         values = [self.uniform_box.currentText(), self.employee_box.currentText(), self.size_line.text(),
                   self.quantity_line.text(), self.additional_line.text(), chosen_date]
 
         response = self._manager.actions(Actions.add_uniform_piece, values)
 
         if response == Responses.success:
-            QMessageBox.information(self, "Popis odela", "Nova jedinica je uspešno dodata!")
+            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.UNIFORM_PIECE_ADD_SUCC_MSG)
         elif response == Responses.fail:
-            QMessageBox.warning(self, "Popis odela", "Nova jedinica nije uspešno dodata! Probajte opet.")
+            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.UNIFORM_PIECE_ADD_FAIL_MSG)

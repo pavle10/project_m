@@ -100,6 +100,8 @@ UNIFORM_UPD_FAIL_MSG = "Nije uspešno promenjen odevni komad! Probajte ponovo."
 UNIFORM_DEL_SUCC_MSG = "Uspešno je izbrisan odevni komad!"
 UNIFORM_DEL_FAIL_MSG = "Nije uspešno izbrisan odevni komad! Probajte ponovo."
 
+UNIFORM_PIECE_ADD_SUCC_MSG = "Novo zaduženje odeće je uspešno dodato!"
+UNIFORM_PIECE_ADD_FAIL_MSG = "Novo zaduženje odeće nije uspešno dodato! Probajte opet."
 UNIFORM_PIECE_UPD_SUCC_MSG = "Uspešno je promenjeno zaduženje odeće!"
 UNIFORM_PIECE_UPD_FAIL_MSG = "Nije uspešno promenjeno zaduženje odeće! Probajte ponovo."
 UNIFORM_PIECE_DEL_SUCC_MSG = "Uspešno je izbrisano zaduženje odeće!"
