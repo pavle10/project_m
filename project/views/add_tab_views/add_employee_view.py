@@ -46,7 +46,7 @@ class AddEmployeeView(QWidget):
         position_label.setText("Radno mesto:")
         self.position_box = QComboBox()
         for index, position in enumerate(self._get_positions()):
-            self.position_box.insertItem(index, position)
+            self.position_box.insertItem(index, position.get_name())
         position_label.setBuddy(self.position_box)
 
         saint_day_label = QLabel(self)

@@ -81,6 +81,8 @@ class Controller:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_position:
+            return self._update_position(values)
         elif action == Actions.update_child:
             return self._update_child(values)
         elif action == Actions.update_uniform:
@@ -95,6 +97,8 @@ class Controller:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_position:
+            return self._delete_position(values)
         elif action == Actions.delete_child:
             return self._delete_child(values)
         elif action == Actions.delete_uniform:
@@ -266,12 +270,12 @@ class Controller:
         return Responses.fail
 
     def _get_all_positions(self):
-        return [position.get_name() for position in self._positions]
+        return self._positions
 
     def _get_position_id(self, name):
         for position in self._positions:
-            if position.name == name:
-                return position.position_id
+            if position.get_name() == name:
+                return position.get_position_id()
 
         return None
 
@@ -394,6 +398,23 @@ class Controller:
 
         return None
 
+    def _update_position(self, values):
+        position_id = self._get_position_id(values[0])
+
+        if position_id is not None:
+            values[1][0] = position_id
+            response = self._action_manager.actions(Actions.update_position, values[1])
+
+            if not response.endswith('0'):
+                for position in self._positions:
+                    if position.get_name() == values[0]:
+                        position.set_name(values[1][1])
+                        position.set_saturday(values[1][2])
+
+                        return Responses.success
+
+        return Responses.fail
+
     def _update_child(self, values):
         mother_id = self._get_employee_id(values[4])
         father_id = self._get_employee_id(values[6])
@@ -486,6 +507,23 @@ class Controller:
         response = self._action_manager.actions(Actions.update_salary_2, values)
 
         return Responses.success if not response.endswith('0') else Responses.fail
+
+    def _delete_position(self, values):
+        position_id = self._get_position_id(values[0])
+
+        if position_id is not None:
+            values[0] = position_id
+            response = self._action_manager.actions(Actions.delete_position, values)
+            print(response)
+
+            if not response.endswith('0'):
+                for position in self._positions:
+                    if position.get_position_id() == position_id:
+                        self._positions.remove(position)
+
+                        return Responses.success
+
+        return Responses.fail
 
     def _delete_child(self, values):
         response = self._action_manager.actions(Actions.delete_child, values)

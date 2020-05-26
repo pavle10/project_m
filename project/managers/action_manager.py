@@ -56,6 +56,8 @@ class ActionManager:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_position:
+            return self._update_position(values)
         elif action == Actions.update_child:
             return self._update_child(values)
         elif action == Actions.update_uniform:
@@ -70,6 +72,8 @@ class ActionManager:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_position:
+            return self._delete_position(values)
         elif action == Actions.delete_child:
             return self._delete_child(values)
         elif action == Actions.delete_uniform:
@@ -222,6 +226,11 @@ class ActionManager:
 
         return result
 
+    def _update_position(self, values):
+        result = self._database_manager.actions(Actions.update_position, values)
+
+        return result
+
     def _update_child(self, values):
         result = self._database_manager.actions(Actions.update_child, values)
 
@@ -254,6 +263,11 @@ class ActionManager:
 
     def _update_salary_2(self, values):
         result = self._database_manager.actions(Actions.update_salary_2, values)
+
+        return result
+
+    def _delete_position(self, values):
+        result = self._database_manager.actions(Actions.delete_position, values)
 
         return result
 

@@ -5,6 +5,8 @@
 WINDOWS_TITLE = "Zaposleni i plate"
 EMPTY = "Prazno"
 ALL = "Svi"
+YES = "Da"
+NO = "Ne"
 
 # Main window
 ADD_TAB_NAME = "Dodaj"
@@ -38,6 +40,7 @@ DELETE_BTN = "Obriši"
 PRINT_BTN = "Štampaj"
 
 # ===== HEADERS =====
+PRESENT_POSITION_HDR = ["Naziv", "Radna subota"]
 PRESENT_CHILD_HDR = ["JMBG", "Godina rodjenja", "Majka", "Otac"]
 PRESENT_UNIFORM_HDR = ["Naziv"]
 PRESENT_UNIFORM_PIECE_HDR = ["Naziv", "Veličina", "Količina", "Dodatno", "Datum"]
@@ -66,8 +69,13 @@ PRESENT_MSG = "Prikaz poruka"
 MUST_SELECT_ONE_ROW_MSG = "Mora biti obeležen tačno jedan red!"
 DELETE_DIALOG_MSG = "Da li si sigurna da želiš da izbrišeš ovaj red?"
 
+POSITION_UPD_SUCC_MSG = "Uspešno su promenjeni podaci o poziciji!"
+POSITION_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o poziciji! Probajte ponovo."
+POSITION_DEL_SUCC_MSG = "Uspešno je izbrisana pozicija!"
+POSITION_DEL_FAIL_MSG = "Nije uspešno izbrisana pozicija! Probajte ponovo."
+
 CHILD_UPD_SUCC_MSG = "Uspešno su promenjeni podaci o detetu!"
-CHILD_UPD_FAIL_MSG = "Nisu promenjeni podaci o detetu! Probajte ponovo."
+CHILD_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o detetu! Probajte ponovo."
 CHILD_DEL_SUCC_MSG = "Uspešno su izbrisani podaci o detetu!"
 CHILD_DEL_FAIL_MSG = "Nisu uspešno izbrisani podaci o detetu! Probajte ponovo."
 

@@ -10,7 +10,7 @@ def convert_level(value):
 
 
 def convert_saturday(value):
-    return True if value == "Da" else False
+    return True if value == strs.YES else False
 
 
 def convert_date_to_string(date):

@@ -5,11 +5,17 @@ class Position:
         self.name = name
         self.saturday = saturday
 
+    def get_position_id(self):
+        return self.position_id
+
     def set_name(self, new_name):
         self.name = new_name
 
     def get_name(self):
         return self.name
+
+    def set_saturday(self, value):
+        self.saturday = value
 
     def change_saturday(self):
         self.saturday = not self.saturday

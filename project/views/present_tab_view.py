@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
 import project.utils.strings as strs
+from project.views.present_tab_views.present_position_view import PresentPositionView
 from project.views.present_tab_views.present_child_view import PresentChildView
 from project.views.present_tab_views.present_uniform_view import PresentUniformView
 from project.views.present_tab_views.present_uniform_piece_view import PresentUniformPieceView
@@ -21,6 +22,7 @@ class PresentTab(QWidget):
         self._init_ui()
 
     def _init_ui(self):
+        present_position_view = PresentPositionView(strs.POSITION, self._manager)
         present_child_view = PresentChildView(strs.CHILD, self._manager)
         present_uniform_view = PresentUniformView(strs.UNIFORM, self._manager)
         present_uniform_piece_view = PresentUniformPieceView(strs.UNIFORM_PIECE, self._manager)
@@ -30,6 +32,7 @@ class PresentTab(QWidget):
         present_salary_2_view = PresentSalary2View(strs.SALARY_2, self._manager)
 
         self.views = list()
+        self.views.append(present_position_view)
         self.views.append(present_child_view)
         self.views.append(present_uniform_view)
         self.views.append(present_uniform_piece_view)

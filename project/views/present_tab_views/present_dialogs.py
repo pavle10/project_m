@@ -24,6 +24,45 @@ class DeleteRowDialog(QDialog):
         self.setLayout(layout)
 
 
+class UpdatePositionDialog(QDialog):
+
+    def __init__(self, selected_data, *args, **kwargs):
+        super(UpdatePositionDialog, self).__init__(*args, **kwargs)
+        self.data = selected_data
+
+        self.setWindowTitle(strs.PRESENT_MSG)
+
+        name_label = QLabel(self)
+        name_label.setText(strs.PRESENT_CHILD_HDR[0])
+        self.name_line = QLineEdit(self)
+        self.name_line.setText(selected_data[1])
+        name_label.setBuddy(self.name_line)
+
+        saturday_label = QLabel(self)
+        saturday_label.setText(strs.PRESENT_POSITION_HDR[1])
+        self.saturday = QComboBox()
+        self.saturday.addItem(strs.YES)
+        self.saturday.addItem(strs.NO)
+        self.saturday.setCurrentIndex(selected_data[2])
+        saturday_label.setBuddy(self.saturday)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QFormLayout()
+        layout.addRow(name_label, self.name_line)
+        layout.addRow(saturday_label, self.saturday)
+        layout.addRow(button_box)
+        self.setLayout(layout)
+
+    def get_value(self):
+        self.data[1] = self.name_line.text()
+        self.data[2] = funcs.convert_saturday(self.saturday.currentText())
+
+        return self.data
+
+
 class UpdateChildDialog(QDialog):
 
     def __init__(self, selected_data, employees, *args, **kwargs):
