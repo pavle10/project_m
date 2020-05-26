@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication
 from project.managers.view_manager import ViewManager
 from project.managers.action_manager import ActionManager
 from project.utils.enums import Actions, Responses
+from project.utils import funcs
 
 
 class Controller:
@@ -123,13 +124,9 @@ class Controller:
 
             for employee in self._employees:
                 if employee.get_employee_id() == mother_id:
-                    child.set_mother_name(f"{employee.get_first_name()} "
-                                          f"{employee.get_last_name()} "
-                                          f"{employee.get_identity_number()}")
+                    child.set_mother_name(funcs.employee_unique_name(employee))
                 elif employee.get_employee_id() == father_id:
-                    child.set_father_name(f"{employee.get_first_name()} "
-                                          f"{employee.get_last_name()} "
-                                          f"{employee.get_identity_number()}")
+                    child.set_father_name(funcs.employee_unique_name(employee))
 
     def _login(self, values):
         response = self._action_manager.actions(Actions.login, values)
@@ -279,10 +276,12 @@ class Controller:
         return None
 
     def _get_all_employees(self):
-        return [(employee.get_first_name(), employee.get_last_name(), employee.get_identity_number())
-                for employee in self._employees]
+        return self._employees
 
     def _get_employee_id(self, value):
+        if value is None:
+            return None
+
         values = value.split(' ')
 
         if len(values) != 3:
@@ -396,29 +395,23 @@ class Controller:
         return None
 
     def _update_child(self, values):
-        print(values[0][1:])
-        child_id = self._get_child_id(values[0][1:])
+        mother_id = self._get_employee_id(values[4])
+        father_id = self._get_employee_id(values[6])
+        query_values = [values[0], values[1], values[2], mother_id, father_id]
 
-        print(child_id)
+        response = self._action_manager.actions(Actions.update_child, query_values)
 
-        if child_id is not None:
-            values[1][0] = child_id
-            response = self._action_manager.actions(Actions.update_child, values[1])
+        if not response.endswith('0'):
+            for child in self._children:
+                if child.get_child_id() == values[0]:
+                    child.set_identity_number(values[1])
+                    child.set_birth_year(values[2])
+                    child.set_mother_id(mother_id)
+                    child.set_mother_name(values[4])
+                    child.set_father_id(father_id)
+                    child.set_father_name(values[6])
 
-            if not response.endswith('0'):
-                mother_id = self._get_employee_id(values[1][3])
-                father_id = self._get_employee_id(values[1][4])
-
-                for child in self._children:
-                    if child.get_child_id() == child_id:
-                        child.set_identity_number(values[1][1])
-                        child.set_birth_year(values[1][2])
-                        child.set_mother_id(mother_id)
-                        child.set_mother_name(values[1][3])
-                        child.set_father_id(father_id)
-                        child.set_father_name(values[1][4])
-
-                        return Responses.success
+                    return Responses.success
 
         return Responses.fail
 
@@ -495,17 +488,14 @@ class Controller:
         return Responses.success if not response.endswith('0') else Responses.fail
 
     def _delete_child(self, values):
-        child_id = self._get_child_id(values)
+        response = self._action_manager.actions(Actions.delete_child, values)
 
-        if child_id is not None:
-            response = self._action_manager.actions(Actions.delete_child, [child_id])
+        if not response.endswith('0'):
+            for child in self._children:
+                if child.get_child_id() == values[0]:
+                    self._children.remove(child)
 
-            if not response.endswith('0'):
-                for child in self._children:
-                    if child.get_child_id() == child_id:
-                        self._children.remove(child)
-
-                        return Responses.success
+                    return Responses.success
 
         return Responses.fail
 

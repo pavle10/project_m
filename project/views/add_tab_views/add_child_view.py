@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 
 from project.utils.enums import Actions, Responses
-from project.utils import strings as strs
+from project.utils import strings as strs, funcs
 
 
 class AddChildView(QWidget):
@@ -29,7 +29,7 @@ class AddChildView(QWidget):
         self.mother_box = QComboBox()
         self.mother_box.insertItem(0, "Prazno")
         for index, employee in enumerate(self._get_employees()):
-            self.mother_box.insertItem(index+1, f"{employee[0]} {employee[1]} {employee[2]}")
+            self.mother_box.insertItem(index+1, funcs.employee_unique_name(employee))
         mother_label.setBuddy(self.mother_box)
 
         father_label = QLabel(self)
@@ -37,7 +37,7 @@ class AddChildView(QWidget):
         self.father_box = QComboBox()
         self.father_box.insertItem(0, "Prazno")
         for index, employee in enumerate(self._get_employees()):
-            self.father_box.insertItem(index+1, f"{employee[0]} {employee[1]} {employee[2]}")
+            self.father_box.insertItem(index+1, funcs.employee_unique_name(employee))
         father_label.setBuddy(self.father_box)
 
         add_button = QPushButton(self)

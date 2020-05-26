@@ -45,11 +45,11 @@ class PresentChildView(QWidget):
         self.setLayout(layout)
 
     def update_table(self):
-        children = self._manager.actions(Actions.all_children)
+        self._children = self._manager.actions(Actions.all_children)
 
-        self.table.setRowCount(len(children))
+        self.table.setRowCount(len(self._children))
 
-        for row, child in enumerate(children):
+        for row, child in enumerate(self._children):
             self.table.setItem(row, 0, QTableWidgetItem(child.get_identity_number()))
             self.table.setItem(row, 1, QTableWidgetItem(str(child.get_birth_year())))
             self.table.setItem(row, 2, QTableWidgetItem(child.get_mother_name()))
@@ -59,9 +59,9 @@ class PresentChildView(QWidget):
         row_index = self._check_selection()
 
         if row_index is not None:
-            values = [None, self.table.selectedItems()[0].text(), int(self.table.selectedItems()[1].text()),
-                      self.table.selectedItems()[2].text(), self.table.selectedItems()[3].text()]
-            values = list(map(lambda x: None if x == "" else x, values))
+            child = self._children[row_index]
+            values = [child.get_child_id(), child.get_identity_number(), child.get_birth_year(),
+                      child.get_mother_id(), child.get_mother_name(), child.get_father_id(), child.get_father_name()]
             employees = self._manager.actions(Actions.all_employees)
 
             dialog = UpdateChildDialog(values, employees)
@@ -71,7 +71,7 @@ class PresentChildView(QWidget):
                 new_values = list(map(lambda x: None if x == "" else x, new_values))
                 new_values[2] = int(new_values[2])
 
-                response = self._manager.actions(Actions.update_child, [values, new_values])
+                response = self._manager.actions(Actions.update_child, new_values)
 
                 if response == Responses.success:
                     QMessageBox.information(self, strs.PRESENT_MSG, strs.CHILD_UPD_SUCC_MSG)
@@ -86,9 +86,7 @@ class PresentChildView(QWidget):
             dialog = DeleteRowDialog(self)
 
             if dialog.exec():
-                values = [self.table.selectedItems()[0].text(), int(self.table.selectedItems()[1].text()),
-                          self.table.selectedItems()[2].text(), self.table.selectedItems()[3].text()]
-                values = list(map(lambda x: None if x == "" else x, values))
+                values = [self._children[row_index].get_child_id()]
 
                 response = self._manager.actions(Actions.delete_child, values)
 

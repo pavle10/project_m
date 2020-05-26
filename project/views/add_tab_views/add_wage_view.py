@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 
 from project.utils.enums import Actions, Responses
+from project.utils import funcs
 
 
 class AddWageView(QWidget):
@@ -17,7 +18,7 @@ class AddWageView(QWidget):
         employee_label.setText("Zaposleni*:")
         self.employee_box = QComboBox()
         for index, employee in enumerate(self._get_employees()):
-            self.employee_box.insertItem(index, f"{employee[0]} {employee[1]} {employee[2]}")
+            self.employee_box.insertItem(index, funcs.employee_unique_name(employee))
         employee_label.setBuddy(self.employee_box)
 
         day_label = QLabel(self)

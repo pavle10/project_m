@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt
 
 from project.views.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
-from project.utils import strings as strs
+from project.utils import strings as strs, funcs
 
 
 class PresentFreeDaysView(QWidget):
@@ -22,7 +22,7 @@ class PresentFreeDaysView(QWidget):
         self.employee_box = QComboBox()
         self.employee_box.insertItem(0, strs.EMPTY)
         for index, employee in enumerate(self._get_employees()):
-            self.employee_box.insertItem(index + 1, f"{employee[0]} {employee[1]} {employee[2]}")
+            self.employee_box.insertItem(index + 1, funcs.employee_unique_name(employee))
         self.employee_box.currentTextChanged.connect(self._change_label)
         employee_label.setBuddy(self.employee_box)
 

@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 
-from project.utils import constants as cons, strings as strs
+from project.utils import constants as cons, strings as strs, funcs
 
 
 class DeleteRowDialog(QDialog):
@@ -48,17 +48,23 @@ class UpdateChildDialog(QDialog):
         mother_label.setText(strs.PRESENT_CHILD_HDR[2])
         self.mother_box = QComboBox()
         self.mother_box.insertItem(0, "")
+        select_index = 0
         for index, employee in enumerate(employees):
-            self.mother_box.insertItem(index + 1, f"{employee[0]} {employee[1]} {employee[2]}")
+            self.mother_box.insertItem(index + 1, funcs.employee_unique_name(employee))
+            select_index = index + 1 if employee.get_employee_id() == selected_data[3] else select_index
+        self.mother_box.setCurrentIndex(select_index)
         mother_label.setBuddy(self.mother_box)
 
         father_label = QLabel(self)
         father_label.setText(strs.PRESENT_CHILD_HDR[3])
         self.father_box = QComboBox()
         self.father_box.insertItem(0, "")
+        select_index = 0
         for index, employee in enumerate(employees):
-            self.father_box.insertItem(index + 1, f"{employee[0]} {employee[1]} {employee[2]}")
-            father_label.setBuddy(self.father_box)
+            self.father_box.insertItem(index + 1, funcs.employee_unique_name(employee))
+            select_index = index + 1 if employee.get_employee_id() == selected_data[5] else select_index
+        self.father_box.setCurrentIndex(select_index)
+        father_label.setBuddy(self.father_box)
 
         button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
         button_box.accepted.connect(self.accept)
@@ -75,8 +81,8 @@ class UpdateChildDialog(QDialog):
     def get_value(self):
         self.data[1] = self.identity_number_line.text()
         self.data[2] = self.birth_year_line.text()
-        self.data[3] = self.mother_box.currentText()
-        self.data[4] = self.father_box.currentText()
+        self.data[4] = self.mother_box.currentText()
+        self.data[6] = self.father_box.currentText()
 
         return self.data
 

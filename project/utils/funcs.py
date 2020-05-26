@@ -17,6 +17,10 @@ def convert_date_to_string(date):
     return f"{date.year()}-{date.month()}-{date.day()}"
 
 
+def employee_unique_name(employee):
+    return f"{employee.get_first_name()} {employee.get_last_name()} {employee.get_identity_number()}"
+
+
 # TODO Delete this function when fix the add tab view
 def data_manipulation_options():
     options = [strs.EMPLOYEE, strs.POSITION, strs.CHILD, strs.UNIFORM, strs.UNIFORM_PIECE,
