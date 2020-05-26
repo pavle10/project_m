@@ -116,6 +116,8 @@ FREE_DAYS_UPD_FAIL_MSG = "Nisu uspešno promenjeni slobodni dani! Probajte ponov
 FREE_DAYS_DEL_SUCC_MSG = "Uspešno su izbrisani slobodni dani!"
 FREE_DAYS_DEL_FAIL_MSG = "Nisu uspešno izbrisani slobodni dani! Probajte ponovo."
 
+WAGE_ADD_SUCC_MSG = "Nova dnevnica je uspešno dodata!"
+WAGE_ADD_FAIL_MSG = "Nova dnevnica nije uspešno dodata! Probajte opet."
 WAGE_UPD_SUCC_MSG = "Uspešno je promenjena dnevnica!"
 WAGE_UPD_FAIL_MSG = "Nije uspešno promenjena dnevnica! Probajte ponovo."
 WAGE_DEL_SUCC_MSG = "Uspešno je izbrisana dnevnica!"
