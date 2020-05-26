@@ -24,6 +24,151 @@ class DeleteRowDialog(QDialog):
         self.setLayout(layout)
 
 
+class UpdateEmployeeDialog(QDialog):
+
+    def __init__(self, selected_data, positions, *args, **kwargs):
+        super(UpdateEmployeeDialog, self).__init__(*args, **kwargs)
+        self.data = selected_data
+
+        self.setWindowTitle(strs.PRESENT_MSG)
+
+        first_name_label = QLabel(self)
+        first_name_label.setText(strs.PRESENT_EMPLOYEE_HDR[0])
+        self.first_name_line = QLineEdit(self)
+        self.first_name_line.setText(selected_data[1])
+        first_name_label.setBuddy(self.first_name_line)
+
+        last_name_label = QLabel(self)
+        last_name_label.setText(strs.PRESENT_EMPLOYEE_HDR[1])
+        self.last_name_line = QLineEdit(self)
+        self.last_name_line.setText(selected_data[2])
+        last_name_label.setBuddy(self.last_name_line)
+
+        fathers_name_label = QLabel(self)
+        fathers_name_label.setText(strs.PRESENT_EMPLOYEE_HDR[2])
+        self.fathers_name_line = QLineEdit(self)
+        self.fathers_name_line.setText(selected_data[3])
+        fathers_name_label.setBuddy(self.fathers_name_line)
+
+        identity_number_label = QLabel(self)
+        identity_number_label.setText(strs.PRESENT_EMPLOYEE_HDR[3])
+        self.identity_number_line = QLineEdit(self)
+        self.identity_number_line.setText(selected_data[4])
+        identity_number_label.setBuddy(self.identity_number_line)
+
+        personal_card_label = QLabel(self)
+        personal_card_label.setText(strs.PRESENT_EMPLOYEE_HDR[4])
+        self.personal_card_line = QLineEdit(self)
+        self.personal_card_line.setText(selected_data[5])
+        personal_card_label.setBuddy(self.personal_card_line)
+
+        qualification_label = QLabel(self)
+        qualification_label.setText(strs.PRESENT_EMPLOYEE_HDR[5])
+        self.qualification_line = QLineEdit(self)
+        self.qualification_line.setText(selected_data[6])
+        qualification_label.setBuddy(self.qualification_line)
+
+        position_label = QLabel(self)
+        position_label.setText(strs.PRESENT_EMPLOYEE_HDR[6])
+        self.position_box = QComboBox()
+        current_index = 0
+        for index, position in enumerate(positions):
+            self.position_box.insertItem(index, position.get_name())
+            current_index = index if position.get_position_id() == selected_data[7] else 0
+        self.position_box.setCurrentIndex(current_index)
+        position_label.setBuddy(self.position_box)
+
+        saint_day_label = QLabel(self)
+        saint_day_label.setText(strs.PRESENT_EMPLOYEE_HDR[7])
+        self.saint_day_line = QLineEdit(self)
+        self.saint_day_line.setText(selected_data[8])
+        saint_day_label.setBuddy(self.saint_day_line)
+
+        address_label = QLabel(self)
+        address_label.setText(strs.PRESENT_EMPLOYEE_HDR[8])
+        self.address_line = QLineEdit(self)
+        self.address_line.setText(selected_data[9])
+        address_label.setBuddy(self.address_line)
+
+        account_label = QLabel(self)
+        account_label.setText(strs.PRESENT_EMPLOYEE_HDR[9])
+        self.account_line = QLineEdit(self)
+        self.account_line.setText(selected_data[10])
+        account_label.setBuddy(self.account_line)
+
+        before_m_label = QLabel(self)
+        before_m_label.setText(strs.PRESENT_EMPLOYEE_HDR[10])
+        self.before_m_line = QLineEdit(self)
+        self.before_m_line.setText(str(selected_data[11]))
+        before_m_label.setBuddy(self.before_m_line)
+
+        start_date_label = QLabel(self)
+        start_date_label.setText(strs.PRESENT_EMPLOYEE_HDR[11])
+        self.start_date_line = QDateEdit(self)
+        self.start_date_line.setDate(selected_data[12])
+        start_date_label.setBuddy(self.start_date_line)
+
+        home_number_label = QLabel(self)
+        home_number_label.setText(strs.PRESENT_EMPLOYEE_HDR[12])
+        self.home_number_line = QLineEdit(self)
+        self.home_number_line.setText(selected_data[13])
+        home_number_label.setBuddy(self.home_number_line)
+
+        mobile_number_label = QLabel(self)
+        mobile_number_label.setText(strs.PRESENT_EMPLOYEE_HDR[13])
+        self.mobile_number_line = QLineEdit(self)
+        self.mobile_number_line.setText(selected_data[14])
+        mobile_number_label.setBuddy(self.mobile_number_line)
+
+        situation_label = QLabel(self)
+        situation_label.setText(strs.PRESENT_EMPLOYEE_HDR[14])
+        self.situation_line = QLineEdit(self)
+        self.situation_line.setText(selected_data[15])
+        situation_label.setBuddy(self.situation_line)
+
+        button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+
+        layout = QFormLayout()
+        layout.addRow(first_name_label, self.first_name_line)
+        layout.addRow(last_name_label, self.last_name_line)
+        layout.addRow(fathers_name_label, self.fathers_name_line)
+        layout.addRow(identity_number_label, self.identity_number_line)
+        layout.addRow(personal_card_label, self.personal_card_line)
+        layout.addRow(qualification_label, self.qualification_line)
+        layout.addRow(position_label, self.position_box)
+        layout.addRow(saint_day_label, self.saint_day_line)
+        layout.addRow(address_label, self.address_line)
+        layout.addRow(account_label, self.account_line)
+        layout.addRow(before_m_label, self.before_m_line)
+        layout.addRow(start_date_label, self.start_date_line)
+        layout.addRow(home_number_label, self.home_number_line)
+        layout.addRow(mobile_number_label, self.mobile_number_line)
+        layout.addRow(situation_label, self.situation_line)
+        layout.addWidget(button_box)
+        self.setLayout(layout)
+
+    def get_value(self):
+        self.data[1] = self.first_name_line.text()
+        self.data[2] = self.last_name_line.text()
+        self.data[3] = self.fathers_name_line.text()
+        self.data[4] = self.identity_number_line.text()
+        self.data[5] = self.personal_card_line.text()
+        self.data[6] = self.qualification_line.text()
+        self.data[7] = self.position_box.currentText()
+        self.data[8] = self.saint_day_line.text()
+        self.data[9] = self.address_line.text()
+        self.data[10] = self.account_line.text()
+        self.data[11] = self.before_m_line.text()
+        self.data[12] = self.start_date_line.date().toPyDate()
+        self.data[13] = self.home_number_line.text()
+        self.data[14] = self.mobile_number_line.text()
+        self.data[15] = self.situation_line.text()
+
+        return self.data
+
+
 class UpdatePositionDialog(QDialog):
 
     def __init__(self, selected_data, *args, **kwargs):

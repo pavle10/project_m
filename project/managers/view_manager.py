@@ -51,6 +51,8 @@ class ViewManager:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_employee:
+            return self._controller.actions(Actions.update_employee, values)
         elif action == Actions.update_position:
             return self._controller.actions(Actions.update_position, values)
         elif action == Actions.update_child:
@@ -67,6 +69,8 @@ class ViewManager:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_employee:
+            return self._controller.actions(Actions.delete_employee, values)
         elif action == Actions.delete_position:
             return self._controller.actions(Actions.delete_position, values)
         elif action == Actions.delete_child:

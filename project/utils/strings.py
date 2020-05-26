@@ -40,6 +40,8 @@ DELETE_BTN = "Obriši"
 PRINT_BTN = "Štampaj"
 
 # ===== HEADERS =====
+PRESENT_EMPLOYEE_HDR = ["Ime", "Prezime", "Ime oca", "JMBG", "Lična karta", "Stručna sprema", "Radno mesto", "Slava",
+                        "Adresa", "Tekući račun", "Staž pre M", "Staž u M", "Kućni telefon", "Mobilni telefon", "Prijava"]
 PRESENT_POSITION_HDR = ["Naziv", "Radna subota"]
 PRESENT_CHILD_HDR = ["JMBG", "Godina rodjenja", "Majka", "Otac"]
 PRESENT_UNIFORM_HDR = ["Naziv"]
@@ -68,6 +70,11 @@ DATABASE_ERROR_MSG = "DB error: {error}"
 PRESENT_MSG = "Prikaz poruka"
 MUST_SELECT_ONE_ROW_MSG = "Mora biti obeležen tačno jedan red!"
 DELETE_DIALOG_MSG = "Da li si sigurna da želiš da izbrišeš ovaj red?"
+
+EMPLOYEE_UPD_SUCC_MSG = "Uspešno su promenjeni podaci o zaposlenom!"
+EMPLOYEE_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o zaposlenom! Probajte ponovo."
+EMPLOYEE_DEL_SUCC_MSG = "Uspešno je izbrisan zaposleni!"
+EMPLOYEE_DEL_FAIL_MSG = "Nije uspešno izbrisan zaposleni! Probajte ponovo."
 
 POSITION_UPD_SUCC_MSG = "Uspešno su promenjeni podaci o poziciji!"
 POSITION_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o poziciji! Probajte ponovo."

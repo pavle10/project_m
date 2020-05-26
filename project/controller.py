@@ -81,6 +81,8 @@ class Controller:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
+        elif action == Actions.update_employee:
+            return self._update_employee(values)
         elif action == Actions.update_position:
             return self._update_position(values)
         elif action == Actions.update_child:
@@ -97,6 +99,8 @@ class Controller:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
+        elif action == Actions.delete_employee:
+            return self._delete_employee(values)
         elif action == Actions.delete_position:
             return self._delete_position(values)
         elif action == Actions.delete_child:
@@ -398,6 +402,39 @@ class Controller:
 
         return None
 
+    def _update_employee(self, values):
+        position_id = self._get_position_id(values[7])
+
+        print(position_id)
+
+        if position_id is not None:
+            values[7] = position_id
+            values[11] = 0 if values[11] == "" else values[11]
+            response = self._action_manager.actions(Actions.update_employee, values)
+
+            if not response.endswith('0'):
+                for employee in self._employees:
+                    if employee.get_employee_id() == values[0]:
+                        employee.set_first_name(values[1])
+                        employee.set_last_name(values[2])
+                        employee.set_fathers_name(values[3])
+                        employee.set_identity_number(values[4])
+                        employee.set_personal_card(values[5])
+                        employee.set_qualification(values[6])
+                        employee.set_position(values[7])
+                        employee.set_saint_day(values[8])
+                        employee.set_address(values[9])
+                        employee.set_account(values[10])
+                        employee.set_before_m(values[11])
+                        employee.set_start_date(values[12])
+                        employee.set_home_number(values[13])
+                        employee.set_mobile_number(values[14])
+                        employee.set_situation(values[15])
+
+                        return Responses.success
+
+        return Responses.fail
+
     def _update_position(self, values):
         position_id = self._get_position_id(values[0])
 
@@ -507,6 +544,18 @@ class Controller:
         response = self._action_manager.actions(Actions.update_salary_2, values)
 
         return Responses.success if not response.endswith('0') else Responses.fail
+
+    def _delete_employee(self, values):
+        response = self._action_manager.actions(Actions.delete_employee, values)
+
+        if not response.endswith('0'):
+            for employee in self._employees:
+                if employee.get_employee_id() == values[0]:
+                    self._employees.remove(employee)
+
+                    return Responses.success
+
+        return Responses.fail
 
     def _delete_position(self, values):
         position_id = self._get_position_id(values[0])

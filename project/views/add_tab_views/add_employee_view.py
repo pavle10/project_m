@@ -1,6 +1,8 @@
+import datetime
 from PyQt5.QtWidgets import *
 
 from project.utils.enums import Actions, Responses
+from project.utils import constants as cons
 
 
 class AddEmployeeView(QWidget):
@@ -71,7 +73,9 @@ class AddEmployeeView(QWidget):
 
         start_date_label = QLabel(self)
         start_date_label.setText("Početak staža u M:")
-        self.start_date_line = QLineEdit(self)
+        self.start_date_line = QDateEdit(self)
+        self.start_date_line.setDate(datetime.datetime.now().date())
+        self.start_date_line.setDisplayFormat(cons.DATE_FORMAT_PYQT)
         start_date_label.setBuddy(self.start_date_line)
 
         home_number_label = QLabel(self)
