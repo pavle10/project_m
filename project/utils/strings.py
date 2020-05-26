@@ -75,6 +75,8 @@ MUST_SELECT_ONE_ROW_MSG = "Mora biti obeležen tačno jedan red!"
 DELETE_DIALOG_MSG = "Da li si sigurna da želiš da izbrišeš ovaj red?"
 
 # Messages about results from database interaction
+EMPLOYEE_ADD_SUCC_MSG = "Novi zaposleni je uspešno dodat!"
+EMPLOYEE_ADD_FAIL_MSG = "Novi zaposleni nije uspešno dodat! Probajte opet."
 EMPLOYEE_UPD_SUCC_MSG = "Uspešno su promenjeni podaci o zaposlenom!"
 EMPLOYEE_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o zaposlenom! Probajte ponovo."
 EMPLOYEE_DEL_SUCC_MSG = "Uspešno je izbrisan zaposleni!"
