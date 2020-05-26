@@ -10,7 +10,6 @@ NO = "Ne"
 
 # Main window
 ADD_TAB_NAME = "Dodaj"
-UPDATE_DELETE_TAB_NAME = "Izmeni/Izbriši"
 PRESENT_TAB_NAME = "Prikazi"
 REPORTS_TAB_NAME = "Izveštaji"
 
@@ -104,6 +103,8 @@ UNIFORM_PIECE_UPD_FAIL_MSG = "Nije uspešno promenjeno zaduženje odeće! Probaj
 UNIFORM_PIECE_DEL_SUCC_MSG = "Uspešno je izbrisano zaduženje odeće!"
 UNIFORM_PIECE_DEL_FAIL_MSG = "Nije uspešno izbrisano zaduženje odeće! Probajte ponovo."
 
+FREE_DAYS_ADD_SUCC_MSG = "Slobodni dani su uspešno dodati!"
+FREE_DAYS_ADD_FAIL_MSG = "Slobodni dani nisu uspešno dodati! Probajte opet."
 FREE_DAYS_UPD_SUCC_MSG = "Uspešno su promenjeni slobodni dani!"
 FREE_DAYS_UPD_FAIL_MSG = "Nisu uspešno promenjeni slobodni dani! Probajte ponovo."
 FREE_DAYS_DEL_SUCC_MSG = "Uspešno su izbrisani slobodni dani!"
