@@ -62,7 +62,7 @@ class AddUniformPieceView(QWidget):
         layout.addRow(quantity_label, self.quantity_line)
         layout.addRow(additional_label, self.additional_line)
         layout.addRow(date_label, self.date_line)
-        layout.addRow(add_button)
+        layout.addWidget(add_button)
         self.setLayout(layout)
 
     def _get_uniforms(self):

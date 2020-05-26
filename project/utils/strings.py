@@ -95,6 +95,8 @@ CHILD_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o detetu! Probajte ponovo.
 CHILD_DEL_SUCC_MSG = "Uspešno su izbrisani podaci o detetu!"
 CHILD_DEL_FAIL_MSG = "Nisu uspešno izbrisani podaci o detetu! Probajte ponovo."
 
+UNIFORM_ADD_SUCC_MSG = "Novo odelo je uspešno dodato!"
+UNIFORM_ADD_FAIL_MSG = "Novo odelo nije uspešno dodato! Probajte opet."
 UNIFORM_UPD_SUCC_MSG = "Uspešno je promenjen odevni komad!"
 UNIFORM_UPD_FAIL_MSG = "Nije uspešno promenjen odevni komad! Probajte ponovo."
 UNIFORM_DEL_SUCC_MSG = "Uspešno je izbrisan odevni komad!"

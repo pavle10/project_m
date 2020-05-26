@@ -32,7 +32,7 @@ class AddPositionView(QWidget):
         layout = QFormLayout()
         layout.addRow(name_label, self.name_line)
         layout.addRow(saturday_label, self.saturday)
-        layout.addRow(add_button)
+        layout.addWidget(add_button)
         self.setLayout(layout)
 
     def _add_position(self):

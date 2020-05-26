@@ -48,7 +48,7 @@ class AddSalary1View(QWidget):
         layout.addRow(net_label, self.net_line)
         layout.addRow(gross_label, self.gross_line)
         layout.addRow(date_label, self.date_line)
-        layout.addRow(add_button)
+        layout.addWidget(add_button)
         self.setLayout(layout)
 
     def _get_employees(self):

@@ -51,7 +51,7 @@ class AddFreeDaysView(QWidget):
         layout.addRow(reason_label, self.reason_line)
         layout.addRow(start_date_label, self.start_date_line)
         layout.addRow(end_date_label, self.end_date_line)
-        layout.addRow(add_button)
+        layout.addWidget(add_button)
         self.setLayout(layout)
 
     def _get_employees(self):

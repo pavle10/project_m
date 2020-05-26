@@ -78,7 +78,7 @@ class AddSalary2View(QWidget):
         layout.addRow(vacation_value_label, self.vacation_value_line)
         layout.addRow(fix_label, self.fix_line)
         layout.addRow(date_label, self.date_line)
-        layout.addRow(add_button)
+        layout.addWidget(add_button)
         self.setLayout(layout)
 
     def _get_employees(self):

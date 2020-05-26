@@ -49,7 +49,7 @@ class AddChildView(QWidget):
         layout.addRow(birth_year_label, self.birth_year_line)
         layout.addRow(mother_label, self.mother_box)
         layout.addRow(father_label, self.father_box)
-        layout.addRow(add_button)
+        layout.addWidget(add_button)
         self.setLayout(layout)
 
     def _get_employees(self):
