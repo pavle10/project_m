@@ -81,6 +81,8 @@ EMPLOYEE_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o zaposlenom! Probajte 
 EMPLOYEE_DEL_SUCC_MSG = "Uspešno je izbrisan zaposleni!"
 EMPLOYEE_DEL_FAIL_MSG = "Nije uspešno izbrisan zaposleni! Probajte ponovo."
 
+POSITION_ADD_SUCC_MSG = "Nova pozicija je uspešno dodata!"
+POSITION_ADD_FAIL_MSG = "Nova pozicija nije uspešno dodata! Probajte opet."
 POSITION_UPD_SUCC_MSG = "Uspešno su promenjeni podaci o poziciji!"
 POSITION_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o poziciji! Probajte ponovo."
 POSITION_DEL_SUCC_MSG = "Uspešno je izbrisana pozicija!"
