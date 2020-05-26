@@ -1,8 +1,8 @@
+import datetime
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
 
 from project.utils.enums import Actions, Responses
-import project.utils.funcs as funcs
+from project.utils import funcs as funcs, strings as strs, constants as cons
 
 
 class AddSalary1View(QWidget):
@@ -16,56 +16,51 @@ class AddSalary1View(QWidget):
 
     def _init_ui(self):
         employee_label = QLabel(self)
-        employee_label.setText("Zaposleni*:")
+        employee_label.setText(f"*{strs.EMPLOYEE}:")
         self.employee_box = QComboBox()
         for index, employee in enumerate(self._get_employees()):
             self.employee_box.insertItem(index, funcs.employee_unique_name(employee))
         employee_label.setBuddy(self.employee_box)
 
         net_label = QLabel(self)
-        net_label.setText("Neto*:")
+        net_label.setText(f"*{strs.PRESENT_SALARY_1_HDR[0]}:")
         self.net_line = QLineEdit(self)
         net_label.setBuddy(self.net_line)
 
         gross_label = QLabel(self)
-        gross_label.setText("Bruto*:")
+        gross_label.setText(f"*{strs.PRESENT_SALARY_1_HDR[1]}:")
         self.gross_line = QLineEdit(self)
         gross_label.setBuddy(self.gross_line)
 
         date_label = QLabel(self)
-        date_label.setText("Datum*:")
-        self.calendar = QCalendarWidget(self)
-        self.calendar.setFirstDayOfWeek(Qt.Monday)
-        self.calendar.showToday()
-        self.calendar.setGridVisible(True)
-        date_label.setBuddy(self.calendar)
+        date_label.setText(f"*{strs.PRESENT_SALARY_1_HDR[2]}:")
+        self.date_line = QDateEdit(self)
+        self.date_line.setDate(datetime.datetime.now().date())
+        self.date_line.setDisplayFormat(cons.DATE_FORMAT_PYQT)
+        date_label.setBuddy(self.date_line)
 
         add_button = QPushButton(self)
-        add_button.setText("Dodaj")
+        add_button.setText(strs.ADD_BTN)
         add_button.clicked.connect(self._add_salary)
 
-        layout = QVBoxLayout()
-        layout.addWidget(employee_label)
-        layout.addWidget(self.employee_box)
-        layout.addWidget(net_label)
-        layout.addWidget(self.net_line)
-        layout.addWidget(gross_label)
-        layout.addWidget(self.gross_line)
-        layout.addWidget(date_label)
-        layout.addWidget(self.calendar)
-        layout.addWidget(add_button)
+        layout = QFormLayout()
+        layout.addRow(employee_label, self.employee_box)
+        layout.addRow(net_label, self.net_line)
+        layout.addRow(gross_label, self.gross_line)
+        layout.addRow(date_label, self.date_line)
+        layout.addRow(add_button)
         self.setLayout(layout)
 
     def _get_employees(self):
         return self._manager.actions(Actions.all_employees)
 
     def _add_salary(self):
-        chosen_date = funcs.convert_date_to_string(self.calendar.selectedDate())
+        chosen_date = self.date_line.date().toPyDate()
         values = [self.employee_box.currentText(), self.net_line.text(), self.gross_line.text(), chosen_date]
 
         response = self._manager.actions(Actions.add_salary_1, values)
 
         if response == Responses.success:
-            QMessageBox.information(self, "Dodavanje plate 1", "Nova plata 1 je uspešno dodata!")
+            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.SALARY_1_ADD_SUCC_MSG)
         elif response == Responses.fail:
-            QMessageBox.warning(self, "Dodavanje plate 1", "Nova plata 1 nije uspešno dodata! Probajte opet.")
+            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.SALARY_1_ADD_FAIL_MSG)
