@@ -74,10 +74,10 @@ class PresentChildView(QWidget):
                 response = self._manager.actions(Actions.update_child, new_values)
 
                 if response == Responses.success:
-                    QMessageBox.information(self, strs.PRESENT_MSG, strs.CHILD_UPD_SUCC_MSG)
+                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.CHILD_UPD_SUCC_MSG)
                     self.update_table()
                 else:
-                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.CHILD_UPD_FAIL_MSG)
+                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.CHILD_UPD_FAIL_MSG)
 
     def _delete_child(self):
         row_index = self._check_selection()
@@ -91,19 +91,19 @@ class PresentChildView(QWidget):
                 response = self._manager.actions(Actions.delete_child, values)
 
                 if response == Responses.success:
-                    QMessageBox.information(self, strs.PRESENT_MSG, strs.CHILD_DEL_SUCC_MSG)
+                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.CHILD_DEL_SUCC_MSG)
                     self.update_table()
                 else:
-                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.CHILD_DEL_FAIL_MSG)
+                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.CHILD_DEL_FAIL_MSG)
 
     def _print_child(self):
-        QMessageBox.warning(self, strs.PRESENT_MSG, strs.NOT_IMPLEMENTED_MSG)
+        QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
 
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
 
         if len(self.table.selectedItems()) != 4 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
-            QMessageBox.warning(self, strs.PRESENT_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
+            QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
             self.table.clearSelection()
 
             return None

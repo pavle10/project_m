@@ -66,11 +66,15 @@ DATABASE_ERROR_MSG = "DB error: {error}"
 
 # Views
 
+# Add tab views
+ADD_VIEW_MSG = "Dodavanje poruka"
+
 # Present tab views
-PRESENT_MSG = "Prikaz poruka"
+PRESENT_VIEW_MSG = "Prikaz poruka"
 MUST_SELECT_ONE_ROW_MSG = "Mora biti obeležen tačno jedan red!"
 DELETE_DIALOG_MSG = "Da li si sigurna da želiš da izbrišeš ovaj red?"
 
+# Messages about results from database interaction
 EMPLOYEE_UPD_SUCC_MSG = "Uspešno su promenjeni podaci o zaposlenom!"
 EMPLOYEE_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o zaposlenom! Probajte ponovo."
 EMPLOYEE_DEL_SUCC_MSG = "Uspešno je izbrisan zaposleni!"
@@ -81,6 +85,8 @@ POSITION_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o poziciji! Probajte po
 POSITION_DEL_SUCC_MSG = "Uspešno je izbrisana pozicija!"
 POSITION_DEL_FAIL_MSG = "Nije uspešno izbrisana pozicija! Probajte ponovo."
 
+CHILD_ADD_SUCC_MSG = "Novo dete je uspešno dodato!"
+CHILD_ADD_FAIL_MSG = "Novo dete nije uspešno dodato! Probajte opet."
 CHILD_UPD_SUCC_MSG = "Uspešno su promenjeni podaci o detetu!"
 CHILD_UPD_FAIL_MSG = "Nisu uspešno promenjeni podaci o detetu! Probajte ponovo."
 CHILD_DEL_SUCC_MSG = "Uspešno su izbrisani podaci o detetu!"
@@ -115,6 +121,9 @@ SALARY_2_UPD_SUCC_MSG = "Uspešno je promenjena plata 2!"
 SALARY_2_UPD_FAIL_MSG = "Nije uspešno promenjena plata 2! Probajte ponovo."
 SALARY_2_DEL_SUCC_MSG = "Uspešno je izbrisana plata 2!"
 SALARY_2_DEL_FAIL_MSG = "Nije uspešno izbrisana plata 2! Probajte ponovo."
+
+# Messages about data validation
+CHILD_ONE_PARENT_REQUIRED = "Bar jedan roditelj mora biti izabran!"
 
 # Other
 NOT_IMPLEMENTED_MSG = "Nije implementirano!"

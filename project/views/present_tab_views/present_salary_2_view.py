@@ -118,10 +118,10 @@ class PresentSalary2View(QWidget):
                 response = self._manager.actions(Actions.update_salary_2, new_values)
 
                 if response == Responses.success:
-                    QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_2_UPD_SUCC_MSG)
+                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.SALARY_2_UPD_SUCC_MSG)
                     self._change_label()
                 else:
-                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_2_UPD_FAIL_MSG)
+                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.SALARY_2_UPD_FAIL_MSG)
 
     def _delete_salary(self):
         row_index = self._check_selection()
@@ -135,19 +135,19 @@ class PresentSalary2View(QWidget):
                 response = self._manager.actions(Actions.delete_salary_2, values)
 
                 if response == Responses.success:
-                    QMessageBox.information(self, strs.PRESENT_MSG, strs.SALARY_2_DEL_SUCC_MSG)
+                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.SALARY_2_DEL_SUCC_MSG)
                     self._change_label()
                 else:
-                    QMessageBox.warning(self, strs.PRESENT_MSG, strs.SALARY_2_DEL_FAIL_MSG)
+                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.SALARY_2_DEL_FAIL_MSG)
 
     def _print_salary(self):
-        QMessageBox.warning(self, strs.PRESENT_MSG, strs.NOT_IMPLEMENTED_MSG)
+        QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
 
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
 
         if len(self.table.selectedItems()) != 11 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
-            QMessageBox.warning(self, strs.PRESENT_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
+            QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
             self.table.clearSelection()
 
             return None

@@ -8,7 +8,7 @@ class DeleteRowDialog(QDialog):
     def __init__(self, *args, **kwargs):
         super(DeleteRowDialog, self).__init__(*args, **kwargs)
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
         self.resize(cons.DIALOG_WIDTH, cons.DIALOG_HEIGHT)
 
         question_label = QLabel(self)
@@ -30,7 +30,7 @@ class UpdateEmployeeDialog(QDialog):
         super(UpdateEmployeeDialog, self).__init__(*args, **kwargs)
         self.data = selected_data
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         first_name_label = QLabel(self)
         first_name_label.setText(strs.PRESENT_EMPLOYEE_HDR[0])
@@ -175,7 +175,7 @@ class UpdatePositionDialog(QDialog):
         super(UpdatePositionDialog, self).__init__(*args, **kwargs)
         self.data = selected_data
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         name_label = QLabel(self)
         name_label.setText(strs.PRESENT_CHILD_HDR[0])
@@ -214,7 +214,7 @@ class UpdateChildDialog(QDialog):
         super(UpdateChildDialog, self).__init__(*args, **kwargs)
         self.data = selected_data
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         identity_number_label = QLabel(self)
         identity_number_label.setText(strs.PRESENT_CHILD_HDR[0])
@@ -277,7 +277,7 @@ class UpdateUniformDialog(QDialog):
         super(UpdateUniformDialog, self).__init__(*args, **kwargs)
         self.data = selected_data
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         name_label = QLabel(self)
         name_label.setText(strs.PRESENT_UNIFORM_HDR[0])
@@ -307,7 +307,7 @@ class UpdateUniformPieceDialog(QDialog):
         self.data = selected_data
         self.uniforms = uniforms
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         uniform_label = QLabel(self)
         uniform_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[0])
@@ -375,7 +375,7 @@ class UpdateFreeDaysRowDialog(QDialog):
         super(UpdateFreeDaysRowDialog, self).__init__(*args, **kwargs)
         self.data = selected_data
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         start_date_label = QLabel(self)
         start_date_label.setText(strs.PRESENT_FREE_DAYS_HDR[0])
@@ -421,7 +421,7 @@ class UpdateWageRowDialog(QDialog):
         super(UpdateWageRowDialog, self).__init__(*args, **kwargs)
         self.data = selected_data
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         day_label = QLabel(self)
         day_label.setText(strs.PRESENT_WAGE_HDR[0])
@@ -466,7 +466,7 @@ class UpdateSalary1RowDialog(QDialog):
         super(UpdateSalary1RowDialog, self).__init__(*args, **kwargs)
         self.data = list(selected_data)
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         net_label = QLabel(self)
         net_label.setText(strs.PRESENT_SALARY_1_HDR[0])
@@ -511,7 +511,7 @@ class UpdateSalary2RowDialog(QDialog):
         super(UpdateSalary2RowDialog, self).__init__(*args, **kwargs)
         self.data = list(selected_data)
 
-        self.setWindowTitle(strs.PRESENT_MSG)
+        self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         day_label = QLabel(self)
         day_label.setText(strs.PRESENT_SALARY_2_HDR[3])
