@@ -9,7 +9,7 @@ class DeleteRowDialog(QDialog):
         super(DeleteRowDialog, self).__init__(*args, **kwargs)
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
-        self.resize(cons.DIALOG_WIDTH, cons.DIALOG_HEIGHT)
+        self.resize(cons.DIALOGS_WIDTH, cons.DIALOGS_HEIGHT)
 
         question_label = QLabel(self)
         question_label.setText(strs.DELETE_DIALOG_MSG)

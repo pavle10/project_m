@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
-import project.utils.strings as strs
-import project.utils.funcs as funcs
+from project.utils import strings as strs, constants as cons, funcs
 from project.views.add_tab_views.add_employee_view import AddEmployeeView
 from project.views.add_tab_views.add_position_view import AddPositionView
 from project.views.add_tab_views.add_uniform_view import AddUniformView
@@ -25,11 +24,14 @@ class AddTab(QWidget):
 
     def _init_ui(self):
         self.options_list = QListWidget(self)
+        self.options_list.setFixedSize(cons.LIST_AREA_WIDTH, cons.LIST_AREA_HEIGHT)
         for value in funcs.data_manipulation_options():
             self.options_list.insertItem(value[0], value[1])
+        self.options_list.setFont(cons.LIST_FONT)
         self.options_list.clicked.connect(self._change_view)
 
         scroll_area = QScrollArea(self)
+        scroll_area.setFixedSize(cons.SCROLL_AREA_WIDTH, cons.SCROLL_AREA_HEIGHT)
         scroll_area.setWidget(self.options_list)
 
         add_employee = AddEmployeeView(self._manager)
@@ -55,7 +57,7 @@ class AddTab(QWidget):
 
         self.splitter = QSplitter(Qt.Horizontal)
         self.splitter.addWidget(scroll_area)
-        self.splitter.addWidget(QFrame(self))
+        self.splitter.addWidget(QFrame(self.splitter))
 
         layout = QHBoxLayout()
         layout.addWidget(self.splitter)

@@ -6,6 +6,7 @@ import project.utils.strings as strs
 from project.views.add_tab_view import AddTab
 from project.views.present_tab_view import PresentTab
 from project.utils.enums import Actions
+from project.models.my_widgets import MyTab
 
 
 class MainWind(QMainWindow):
@@ -28,8 +29,7 @@ class MainWind(QMainWindow):
         add_tab = AddTab(self._view_manager)
         present_tab = PresentTab(self._view_manager)
 
-        tabs = QTabWidget()
-        tabs.resize(cons.MIN_TAB_WIDTH, cons.MIN_TAB_HEIGHT)
+        tabs = MyTab()
         tabs.addTab(add_tab, add_tab.get_name())
         tabs.addTab(present_tab, present_tab.get_name())
         self.setCentralWidget(tabs)

@@ -140,7 +140,7 @@ class Controller:
         response = self._action_manager.actions(Actions.login, values)
 
         if response is None:
-            return Responses.success
+            return Responses.fail
 
         self._user = response
 
