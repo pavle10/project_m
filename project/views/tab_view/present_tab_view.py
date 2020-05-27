@@ -1,9 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
-import project.utils.strings as strs
-from project.views.tab_view.tab_view import TabView
-from project.models.my_widgets import MyList
 from project.views.tab_view.present_tab_views.present_employee_view import PresentEmployeeView
 from project.views.tab_view.present_tab_views.present_position_view import PresentPositionView
 from project.views.tab_view.present_tab_views.present_child_view import PresentChildView
@@ -13,6 +10,9 @@ from project.views.tab_view.present_tab_views.present_free_days_view import Pres
 from project.views.tab_view.present_tab_views.present_wage_view import PresentWageView
 from project.views.tab_view.present_tab_views.present_salary_1_view import PresentSalary1View
 from project.views.tab_view.present_tab_views.present_salary_2_view import PresentSalary2View
+from project.utils import strings as strs, constants as cons
+from project.views.tab_view.tab_view import TabView
+from project.models.my_widgets import MyList
 
 
 class PresentTab(TabView):
@@ -50,6 +50,8 @@ class PresentTab(TabView):
         self.options_list.clicked.connect(self._change_view)
 
         scroll_area = QScrollArea(self)
+        scroll_area.setFixedSize(cons.SCROLL_AREA_WIDTH, cons.SCROLL_AREA_HEIGHT)
+        scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(self.options_list)
 
         self.splitter = QSplitter(Qt.Horizontal)
@@ -68,4 +70,3 @@ class PresentTab(TabView):
 
     def get_name(self):
         return self._name
-

@@ -51,6 +51,7 @@ class AddTab(TabView):
 
         scroll_area = QScrollArea(self)
         scroll_area.setFixedSize(cons.SCROLL_AREA_WIDTH, cons.SCROLL_AREA_HEIGHT)
+        scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(self.options_list)
 
         self.splitter = QSplitter(Qt.Horizontal)

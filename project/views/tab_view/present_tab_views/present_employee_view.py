@@ -1,9 +1,11 @@
+from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
+from project.models.my_widgets import *
 from project.utils import strings as strs
 
 
-class PresentEmployeeView(QWidget):
+class PresentEmployeeView(PresentView):
 
     def __init__(self, name, manager, *args, **kwargs):
         super(PresentEmployeeView, self).__init__(*args, **kwargs)
@@ -13,26 +15,21 @@ class PresentEmployeeView(QWidget):
         self._init_ui()
 
     def _init_ui(self):
-        self.table = QTableWidget()
-        self.table.setColumnCount(len(strs.PRESENT_EMPLOYEE_HDR))
-        self.table.setHorizontalHeaderLabels(strs.PRESENT_EMPLOYEE_HDR)
-        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
-        self.update_table()
+        self.table = MyTable(strs.PRESENT_EMPLOYEE_HDR)
+        self.update()
 
         self.scroll_area = QScrollArea(self)
+        self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.table)
 
-        update_button = QPushButton(self)
-        update_button.setText(strs.UPDATE_BTN)
-        update_button.clicked.connect(self._update_employee)
+        update_button = MyButton(strs.UPDATE_BTN)
+        update_button.clicked.connect(self._update)
 
-        delete_button = QPushButton(self)
-        delete_button.setText(strs.DELETE_BTN)
-        delete_button.clicked.connect(self._delete_employee)
+        delete_button = MyButton(strs.DELETE_BTN)
+        delete_button.clicked.connect(self._delete)
 
-        print_button = QPushButton(self)
-        print_button.setText(strs.PRINT_BTN)
-        print_button.clicked.connect(self._print_employee)
+        print_button = MyButton(strs.PRINT_BTN)
+        print_button.clicked.connect(self._print)
 
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(update_button)
@@ -44,7 +41,7 @@ class PresentEmployeeView(QWidget):
         layout.addLayout(buttons_layout)
         self.setLayout(layout)
 
-    def update_table(self):
+    def update(self):
         self.employees = self._manager.actions(Actions.all_employees)
         positions = self._manager.actions(Actions.all_positions)
 
@@ -73,7 +70,7 @@ class PresentEmployeeView(QWidget):
             self.table.setItem(row, 13, QTableWidgetItem(employee.get_mobile_number()))
             self.table.setItem(row, 14, QTableWidgetItem(employee.get_situation()))
 
-    def _update_employee(self):
+    def _update(self):
         row_index = self._check_selection()
 
         if row_index is not None:
@@ -87,11 +84,11 @@ class PresentEmployeeView(QWidget):
 
                 if response == Responses.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_UPD_SUCC_MSG)
-                    self.update_table()
+                    self.update()
                 else:
                     QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_UPD_FAIL_MSG)
 
-    def _delete_employee(self):
+    def _delete(self):
         row_index = self._check_selection()
 
         if row_index is not None:
@@ -104,11 +101,11 @@ class PresentEmployeeView(QWidget):
 
                 if response == Responses.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_DEL_SUCC_MSG)
-                    self.update_table()
+                    self.update()
                 else:
                     QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_DEL_FAIL_MSG)
 
-    def _print_employee(self):
+    def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
 
     def _check_selection(self):

@@ -17,7 +17,6 @@ class MyList(QListWidget):
     def __init__(self, options, *args, **kwargs):
         super(MyList, self).__init__(*args, **kwargs)
 
-        self.setFixedSize(cons.LIST_AREA_WIDTH, cons.LIST_AREA_HEIGHT)
         self.setFont(cons.LIST_FONT)
 
         for index, option in enumerate(options):
@@ -74,4 +73,17 @@ class MyButton(QPushButton):
         self.setText(f"{text}:")
         self.setFixedSize(cons.BUTTONS_WIDTH, cons.BUTTONS_HEIGHT)
         self.setFont(cons.BUTTONS_FONT)
+
+
+class MyTable(QTableWidget):
+
+    def __init__(self, header=None, *args, **kwargs):
+        super(MyTable, self).__init__(*args, **kwargs)
+
+        self.setEditTriggers(QTableWidget.NoEditTriggers)
+
+        if header:
+            self.setColumnCount(len(header))
+            self.setHorizontalHeaderLabels(header)
+
 
