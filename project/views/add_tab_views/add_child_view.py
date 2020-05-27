@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 
 from project.utils.enums import Actions, Responses
 from project.utils import strings as strs, funcs
+from project.models.my_widgets import *
 
 
 class AddChildView(QWidget):
@@ -14,34 +15,30 @@ class AddChildView(QWidget):
         self._init_ui()
 
     def _init_ui(self):
-        identity_number_label = QLabel(self)
-        identity_number_label.setText(f"{strs.PRESENT_CHILD_HDR[0]}:")
-        self.identity_number_line = QLineEdit(self)
+        identity_number_label = MyLabel(strs.PRESENT_CHILD_HDR[0])
+        self.identity_number_line = MyEditLine(self)
         identity_number_label.setBuddy(self.identity_number_line)
 
-        birth_year_label = QLabel(self)
-        birth_year_label.setText(f"*{strs.PRESENT_CHILD_HDR[1]}:")
-        self.birth_year_line = QLineEdit(self)
+        birth_year_label = MyLabel(strs.PRESENT_CHILD_HDR[1], is_required=True)
+        self.birth_year_line = MyEditLine(self)
         birth_year_label.setBuddy(self.birth_year_line)
 
-        mother_label = QLabel(self)
-        mother_label.setText(f"{strs.PRESENT_CHILD_HDR[2]}:")
-        self.mother_box = QComboBox()
+        mother_label = MyLabel(strs.PRESENT_CHILD_HDR[2])
+        # TODO Think about better MyComboBox initialization
+        self.mother_box = MyComboBox()
         self.mother_box.insertItem(0, strs.EMPTY)
         for index, employee in enumerate(self._get_employees()):
             self.mother_box.insertItem(index+1, funcs.employee_unique_name(employee))
         mother_label.setBuddy(self.mother_box)
 
-        father_label = QLabel(self)
-        father_label.setText(f"{strs.PRESENT_CHILD_HDR[3]}:")
-        self.father_box = QComboBox()
+        father_label = MyLabel(strs.PRESENT_CHILD_HDR[3])
+        self.father_box = MyComboBox()
         self.father_box.insertItem(0, strs.EMPTY)
         for index, employee in enumerate(self._get_employees()):
             self.father_box.insertItem(index+1, funcs.employee_unique_name(employee))
         father_label.setBuddy(self.father_box)
 
-        add_button = QPushButton(self)
-        add_button.setText(strs.ADD_BTN)
+        add_button = MyButton(strs.ADD_BTN)
         add_button.clicked.connect(self._add_child)
 
         layout = QFormLayout()
