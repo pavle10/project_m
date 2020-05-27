@@ -2,17 +2,17 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
 import project.utils.strings as strs
-from project.views.tab_view import TabView
+from project.views.tab_view.tab_view import TabView
 from project.models.my_widgets import MyList
-from project.views.present_tab_views.present_employee_view import PresentEmployeeView
-from project.views.present_tab_views.present_position_view import PresentPositionView
-from project.views.present_tab_views.present_child_view import PresentChildView
-from project.views.present_tab_views.present_uniform_view import PresentUniformView
-from project.views.present_tab_views.present_uniform_piece_view import PresentUniformPieceView
-from project.views.present_tab_views.present_free_days_view import PresentFreeDaysView
-from project.views.present_tab_views.present_wage_view import PresentWageView
-from project.views.present_tab_views.present_salary_1_view import PresentSalary1View
-from project.views.present_tab_views.present_salary_2_view import PresentSalary2View
+from project.views.tab_view.present_tab_views.present_employee_view import PresentEmployeeView
+from project.views.tab_view.present_tab_views.present_position_view import PresentPositionView
+from project.views.tab_view.present_tab_views.present_child_view import PresentChildView
+from project.views.tab_view.present_tab_views.present_uniform_view import PresentUniformView
+from project.views.tab_view.present_tab_views.present_uniform_piece_view import PresentUniformPieceView
+from project.views.tab_view.present_tab_views.present_free_days_view import PresentFreeDaysView
+from project.views.tab_view.present_tab_views.present_wage_view import PresentWageView
+from project.views.tab_view.present_tab_views.present_salary_1_view import PresentSalary1View
+from project.views.tab_view.present_tab_views.present_salary_2_view import PresentSalary2View
 
 
 class PresentTab(TabView):

@@ -1,4 +1,4 @@
-from project.views.present_tab_views.present_dialogs import *
+from project.views.tab_view.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
 from project.utils import strings as strs
 

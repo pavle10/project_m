@@ -1,4 +1,4 @@
-from project.views.add_tab_views.add_view import AddView
+from project.views.tab_view.add_tab_views.add_view import AddView
 from project.models.my_widgets import *
 from project.utils.enums import Actions, Responses
 from project.utils import funcs as funcs, strings as strs
