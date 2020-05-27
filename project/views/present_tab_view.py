@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
 import project.utils.strings as strs
+from project.models.my_widgets import MyList
 from project.views.present_tab_views.present_employee_view import PresentEmployeeView
 from project.views.present_tab_views.present_position_view import PresentPositionView
 from project.views.present_tab_views.present_child_view import PresentChildView
@@ -44,9 +45,7 @@ class PresentTab(QWidget):
         self.views.append(present_salary_1_view)
         self.views.append(present_salary_2_view)
 
-        self.options_list = QListWidget(self)
-        for index, view in enumerate(self.views):
-            self.options_list.insertItem(index, view.get_name())
+        self.options_list = MyList(self.views)
         self.options_list.clicked.connect(self._change_view)
 
         scroll_area = QScrollArea(self)

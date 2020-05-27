@@ -1,15 +1,14 @@
-from PyQt5.QtWidgets import *
-
+from project.views.add_tab_views.add_view import AddView
 from project.utils.enums import Actions, Responses
 from project.utils import strings as strs, funcs
 from project.models.my_widgets import *
 
 
-class AddChildView(QWidget):
+class AddChildView(AddView):
 
-    def __init__(self, manager, *args, **kwargs):
+    def __init__(self, name, manager, *args, **kwargs):
         super(AddChildView, self).__init__(*args, **kwargs)
-
+        self._name = name
         self._manager = manager
 
         self._init_ui()
@@ -39,7 +38,7 @@ class AddChildView(QWidget):
         father_label.setBuddy(self.father_box)
 
         add_button = MyButton(strs.ADD_BTN)
-        add_button.clicked.connect(self._add_child)
+        add_button.clicked.connect(self._add)
 
         layout = QFormLayout()
         layout.addRow(identity_number_label, self.identity_number_line)
@@ -52,7 +51,7 @@ class AddChildView(QWidget):
     def _get_employees(self):
         return self._manager.actions(Actions.all_employees)
 
-    def _add_child(self):
+    def _add(self):
         mother = self.mother_box.currentText()
         father = self.father_box.currentText()
 
@@ -69,4 +68,7 @@ class AddChildView(QWidget):
             QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.CHILD_ADD_SUCC_MSG)
         elif response == Responses.fail:
             QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.CHILD_ADD_FAIL_MSG)
+
+    def get_name(self):
+        return self._name
 

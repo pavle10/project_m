@@ -1,15 +1,14 @@
-import datetime
-from PyQt5.QtWidgets import *
-
 from project.utils.enums import Actions, Responses
+from project.views.add_tab_views.add_view import AddView
 from project.models.my_widgets import *
-from project.utils import constants as cons, strings as strs
+from project.utils import strings as strs
 
 
-class AddEmployeeView(QWidget):
+class AddEmployeeView(AddView):
 
-    def __init__(self, manager, *args, **kwargs):
+    def __init__(self, name, manager, *args, **kwargs):
         super(AddEmployeeView, self).__init__(*args, **kwargs)
+        self._name = name
         self._manager = manager
 
         self._init_ui()
@@ -78,7 +77,7 @@ class AddEmployeeView(QWidget):
         situation_label.setBuddy(self.situation_line)
 
         add_button = MyButton(strs.ADD_BTN)
-        add_button.clicked.connect(self._add_employee)
+        add_button.clicked.connect(self._add)
 
         layout = QFormLayout()
         layout.addRow(first_name_label, self.first_name_line)
@@ -99,7 +98,7 @@ class AddEmployeeView(QWidget):
         layout.addWidget(add_button)
         self.setLayout(layout)
 
-    def _add_employee(self):
+    def _add(self):
         values = [self.first_name_line.text(), self.last_name_line.text(), self.fathers_name_line.text(),
                   self.identity_number_line.text(), self.personal_card_line.text(), self.qualification_line.text(),
                   self.position_box.currentText(), self.saint_day_line.text(), self.address_line.text(),
@@ -114,3 +113,6 @@ class AddEmployeeView(QWidget):
 
     def _get_positions(self):
         return self._manager.actions(Actions.all_positions)
+
+    def get_name(self):
+        return self._name

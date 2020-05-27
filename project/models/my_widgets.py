@@ -12,6 +12,15 @@ class MyTab(QTabWidget):
         self.resize(cons.MIN_TAB_WIDTH, cons.MIN_TAB_HEIGHT)
 
 
+class MyList(QListWidget):
+
+    def __init__(self, options, *args, **kwargs):
+        super(MyList, self).__init__(*args, **kwargs)
+
+        for index, option in enumerate(options):
+            self.insertItem(index, option.get_name())
+
+
 class MyLabel(QLabel):
 
     def __init__(self, text, is_required=False, *args, **kwargs):

@@ -1,72 +1,59 @@
-import datetime
-from PyQt5.QtWidgets import *
-
+from project.utils import funcs as funcs, strings as strs
+from project.views.add_tab_views.add_view import AddView
 from project.utils.enums import Actions, Responses
-from project.utils import funcs as funcs, strings as strs, constants as cons
+from project.models.my_widgets import *
 
 
-class AddSalary2View(QWidget):
+class AddSalary2View(AddView):
 
-    def __init__(self, manager, *args, **kwargs):
+    def __init__(self, name, manager, *args, **kwargs):
         super(AddSalary2View, self).__init__(*args, **kwargs)
-
+        self._name = name
         self._manager = manager
 
         self._init_ui()
 
     def _init_ui(self):
-        employee_label = QLabel(self)
-        employee_label.setText(f"*{strs.EMPLOYEE}:")
-        self.employee_box = QComboBox()
+        employee_label = MyLabel(strs.EMPLOYEE, is_required=True)
+        self.employee_box = MyComboBox()
         for index, employee in enumerate(self._get_employees()):
             self.employee_box.insertItem(index, funcs.employee_unique_name(employee))
         employee_label.setBuddy(self.employee_box)
 
-        day_label = QLabel(self)
-        day_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[1]}:")
-        self.day_line = QLineEdit(self)
+        day_label = MyLabel(strs.PRESENT_SALARY_2_HDR[1], is_required=True)
+        self.day_line = MyEditLine()
         day_label.setBuddy(self.day_line)
 
-        hour_label = QLabel(self)
-        hour_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[3]}:")
-        self.hour_line = QLineEdit(self)
+        hour_label = MyLabel(strs.PRESENT_SALARY_2_HDR[3], is_required=True)
+        self.hour_line = MyEditLine()
         hour_label.setBuddy(self.hour_line)
 
-        meal_label = QLabel(self)
-        meal_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[5]}:")
-        self.meal_line = QLineEdit(self)
+        meal_label = MyLabel(strs.PRESENT_SALARY_2_HDR[5], is_required=True)
+        self.meal_line = MyEditLine()
         meal_label.setBuddy(self.meal_line)
 
-        payment_label = QLabel(self)
-        payment_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[7]}:")
-        self.payment_line = QLineEdit(self)
+        payment_label = MyLabel(strs.PRESENT_SALARY_2_HDR[7], is_required=True)
+        self.payment_line = MyEditLine()
         payment_label.setBuddy(self.payment_line)
 
-        vacation_label = QLabel(self)
-        vacation_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[8]}:")
-        self.vacation_line = QLineEdit(self)
+        vacation_label = MyLabel(strs.PRESENT_SALARY_2_HDR[8], is_required=True)
+        self.vacation_line = MyEditLine()
         vacation_label.setBuddy(self.vacation_line)
 
-        vacation_value_label = QLabel(self)
-        vacation_value_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[9]}:")
-        self.vacation_value_line = QLineEdit(self)
+        vacation_value_label = MyLabel(strs.PRESENT_SALARY_2_HDR[9], is_required=True)
+        self.vacation_value_line = MyEditLine()
         vacation_value_label.setBuddy(self.vacation_value_line)
 
-        fix_label = QLabel(self)
-        fix_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[10]}:")
-        self.fix_line = QLineEdit(self)
+        fix_label = MyLabel(strs.PRESENT_SALARY_2_HDR[10], is_required=True)
+        self.fix_line = MyEditLine()
         fix_label.setBuddy(self.fix_line)
 
-        date_label = QLabel(self)
-        date_label.setText(f"*{strs.PRESENT_SALARY_2_HDR[0]}:")
-        self.date_line = QDateEdit(self)
-        self.date_line.setDate(datetime.datetime.now().date())
-        self.date_line.setDisplayFormat(cons.DATE_FORMAT_PYQT)
+        date_label = MyLabel(strs.PRESENT_SALARY_2_HDR[0], is_required=True)
+        self.date_line = MyEditDate()
         date_label.setBuddy(self.date_line)
 
-        add_button = QPushButton(self)
-        add_button.setText(strs.ADD_BTN)
-        add_button.clicked.connect(self._add_salary)
+        add_button = MyButton(strs.ADD_BTN)
+        add_button.clicked.connect(self._add)
 
         layout = QFormLayout()
         layout.addRow(employee_label, self.employee_box)
@@ -84,7 +71,7 @@ class AddSalary2View(QWidget):
     def _get_employees(self):
         return self._manager.actions(Actions.all_employees)
 
-    def _add_salary(self):
+    def _add(self):
         chosen_date = self.date_line.date().toPyDate()
         values = [self.employee_box.currentText(), chosen_date, self.day_line.text(), None, self.hour_line.text(),
                   None, self.meal_line.text(), None, self.payment_line.text(), self.vacation_line.text(),
@@ -96,3 +83,6 @@ class AddSalary2View(QWidget):
             QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.SALARY_2_ADD_SUCC_MSG)
         elif response == Responses.fail:
             QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.SALARY_2_ADD_FAIL_MSG)
+
+    def get_name(self):
+        return self._name

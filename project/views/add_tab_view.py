@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
+from project.models.my_widgets import MyList
 from project.utils import strings as strs, constants as cons, funcs
 from project.views.add_tab_views.add_employee_view import AddEmployeeView
 from project.views.add_tab_views.add_position_view import AddPositionView
@@ -23,26 +24,15 @@ class AddTab(QWidget):
         self._init_ui()
 
     def _init_ui(self):
-        self.options_list = QListWidget(self)
-        self.options_list.setFixedSize(cons.LIST_AREA_WIDTH, cons.LIST_AREA_HEIGHT)
-        for value in funcs.data_manipulation_options():
-            self.options_list.insertItem(value[0], value[1])
-        self.options_list.setFont(cons.LIST_FONT)
-        self.options_list.clicked.connect(self._change_view)
-
-        scroll_area = QScrollArea(self)
-        scroll_area.setFixedSize(cons.SCROLL_AREA_WIDTH, cons.SCROLL_AREA_HEIGHT)
-        scroll_area.setWidget(self.options_list)
-
-        add_employee = AddEmployeeView(self._manager)
-        add_position = AddPositionView(self._manager)
-        add_child = AddChildView(self._manager)
-        add_uniform = AddUniformView(self._manager)
-        add_uniform_piece = AddUniformPieceView(self._manager)
-        add_free_days = AddFreeDaysView(self._manager)
-        add_wage = AddWageView(self._manager)
-        add_salary_1 = AddSalary1View(self._manager)
-        add_salary_2 = AddSalary2View(self._manager)
+        add_employee = AddEmployeeView(strs.EMPLOYEE, self._manager)
+        add_position = AddPositionView(strs.POSITION, self._manager)
+        add_child = AddChildView(strs.CHILD, self._manager)
+        add_uniform = AddUniformView(strs.UNIFORM, self._manager)
+        add_uniform_piece = AddUniformPieceView(strs.UNIFORM_PIECE, self._manager)
+        add_free_days = AddFreeDaysView(strs.FREE_DAY, self._manager)
+        add_wage = AddWageView(strs.WAGE, self._manager)
+        add_salary_1 = AddSalary1View(strs.SALARY_1, self._manager)
+        add_salary_2 = AddSalary2View(strs.SALARY_2, self._manager)
 
         self.views = list()
         self.views.append(add_employee)
@@ -54,6 +44,13 @@ class AddTab(QWidget):
         self.views.append(add_wage)
         self.views.append(add_salary_1)
         self.views.append(add_salary_2)
+
+        self.options_list = MyList(self.views)
+        self.options_list.clicked.connect(self._change_view)
+
+        scroll_area = QScrollArea(self)
+        scroll_area.setFixedSize(cons.SCROLL_AREA_WIDTH, cons.SCROLL_AREA_HEIGHT)
+        scroll_area.setWidget(self.options_list)
 
         self.splitter = QSplitter(Qt.Horizontal)
         self.splitter.addWidget(scroll_area)
