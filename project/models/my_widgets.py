@@ -17,6 +17,9 @@ class MyList(QListWidget):
     def __init__(self, options, *args, **kwargs):
         super(MyList, self).__init__(*args, **kwargs)
 
+        self.setFixedSize(cons.LIST_AREA_WIDTH, cons.LIST_AREA_HEIGHT)
+        self.setFont(cons.LIST_FONT)
+
         for index, option in enumerate(options):
             self.insertItem(index, option.get_name())
 

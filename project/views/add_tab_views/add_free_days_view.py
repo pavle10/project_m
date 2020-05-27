@@ -25,7 +25,7 @@ class AddFreeDaysView(AddView):
         reason_label.setBuddy(self.reason_line)
 
         start_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[0], is_required=True)
-        self.start_date_line = MyEditDate()
+        self.start_date_line = MyEditDate(cons.DEFAULT_START_DATE)
         start_date_label.setBuddy(self.start_date_line)
 
         end_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[1], is_required=True)
