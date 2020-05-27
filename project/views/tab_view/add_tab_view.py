@@ -1,8 +1,9 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
+from project.views.tab_view import TabView
 from project.models.my_widgets import MyList
-from project.utils import strings as strs, constants as cons, funcs
+from project.utils import strings as strs, constants as cons
 from project.views.add_tab_views.add_employee_view import AddEmployeeView
 from project.views.add_tab_views.add_position_view import AddPositionView
 from project.views.add_tab_views.add_uniform_view import AddUniformView
@@ -14,7 +15,7 @@ from project.views.add_tab_views.add_salary_1_view import AddSalary1View
 from project.views.add_tab_views.add_salary_2_view import AddSalary2View
 
 
-class AddTab(QWidget):
+class AddTab(TabView):
 
     def __init__(self, manager, *args, **kwargs):
         super(AddTab, self).__init__(*args, **kwargs)
@@ -68,8 +69,3 @@ class AddTab(QWidget):
 
     def get_name(self):
         return self._name
-
-
-
-
-

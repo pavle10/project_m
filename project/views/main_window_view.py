@@ -1,10 +1,9 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 
-import project.utils.constants as cons
-import project.utils.strings as strs
-from project.views.add_tab_view import AddTab
-from project.views.present_tab_view import PresentTab
+from project.utils import strings as strs, constants as cons
+from project.views.tab_view.add_tab_view import AddTab
+from project.views.tab_view.present_tab_view import PresentTab
 from project.utils.enums import Actions
 from project.models.my_widgets import MyTab
 

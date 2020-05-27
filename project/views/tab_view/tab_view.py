@@ -1,15 +1,15 @@
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QWidget
 from abc import abstractmethod
 
 
-class AddView(QWidget):
+class TabView(QWidget):
 
     @abstractmethod
     def _init_ui(self):
         pass
 
     @abstractmethod
-    def _add(self):
+    def _change_view(self):
         pass
 
     @abstractmethod
