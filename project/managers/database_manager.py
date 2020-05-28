@@ -163,7 +163,13 @@ class DatabaseManager:
         return self._execute_query(query, QueryType.update, list(values_deq))
 
     def _login(self, values):
-        return self._execute_query(sql.CHECK_CREDENTIALS, QueryType.select, values)
+        response = self._execute_query(sql.CHECK_CREDENTIALS, QueryType.select, values)
+
+        if response.get_status() == ResponseStatus.success and len(response.get_data()) == 0:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.WRONG_CREDENTIALS_MSG)
+
+        return response
 
     def _get_employees(self):
         response = self._execute_query(sql.SELECT_ALL_EMPLOYEES, QueryType.select)
