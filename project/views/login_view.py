@@ -16,6 +16,7 @@ class LoginView(QWidget):
         self._init_ui()
 
     def _init_ui(self):
+        # TODO Fix and refactor this
         self.setWindowTitle(strs.WINDOWS_TITLE)
         self.setWindowIcon(QIcon(cons.APP_ICON_PATH))
 
