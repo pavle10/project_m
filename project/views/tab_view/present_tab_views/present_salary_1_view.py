@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt
 
 from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
-from project.utils.enums import Actions, Responses
+from project.utils.enums import Actions, ResponseStatus
 from project.utils import strings as strs, funcs
 from project.models.my_widgets import *
 
@@ -108,7 +108,7 @@ class PresentSalary1View(PresentView):
 
                 response = self._manager.actions(Actions.update_salary_1, new_values)
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.SALARY_1_UPD_SUCC_MSG)
                     self._change_label()
                 else:
@@ -125,7 +125,7 @@ class PresentSalary1View(PresentView):
 
                 response = self._manager.actions(Actions.delete_salary_1, values)
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.SALARY_1_DEL_SUCC_MSG)
                     self._change_label()
                 else:

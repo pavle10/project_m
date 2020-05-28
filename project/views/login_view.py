@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtCore import *
 
 import project.utils.constants as cons
-import project.utils.strings as strs
+from project.utils import strings as strs, funcs
 from project.utils.enums import Actions
 
 
@@ -46,9 +46,7 @@ class LoginView(QWidget):
 
         login_button = QPushButton(self)
         login_button.setText(strs.LOGIN_BTN)
-        login_button.clicked.connect(lambda x: self.view_manager.actions(Actions.login,
-                                                                         [self.username_line.text(),
-                                                                          self.password_line.text()]))
+        login_button.clicked.connect(self._try_login)
         grid_layout.addWidget(login_button, 2, 1)
 
         group_box = QGroupBox(strs.MAIN_LBL)
@@ -69,14 +67,16 @@ class LoginView(QWidget):
         frame_geometry.moveCenter(centerPoint)
         self.move(frame_geometry.topLeft())
 
+    def _try_login(self):
+        values = [self.username_line.text(), self.password_line.text()]
+
+        self.view_manager.actions(Actions.login, values)
+
     def _clear(self):
         self.username_line.clear()
         self.password_line.clear()
 
-    def failed_login(self):
-        QMessageBox.warning(self, strs.FAILED_LOGIN_TITLE, strs.FAILED_LOGIN_MSG)
+    def show_message(self, response):
+        funcs.show_message(self, response.get_status(), strs.LOGIN_MSG_TITLE, response.get_message())
 
         self._clear()
-
-    def successful_login(self, username):
-        QMessageBox.information(self, strs.SUCCESSFUL_LOGIN_TITLE, strs.SUCCESSFUL_LOGIN_MSG+username)

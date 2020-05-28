@@ -53,10 +53,10 @@ PRESENT_SALARY_2_HDR = ["Datum", "Radnih dana", "Vrednost radnog dana", "Radnih 
 # ===== MESSAGES =====
 
 # Login
-SUCCESSFUL_LOGIN_TITLE = "Uspešno logovanje"
-SUCCESSFUL_LOGIN_MSG = "Ulogovani ste kao korisnik "
-FAILED_LOGIN_TITLE = "Neuspešno logovanje"
-FAILED_LOGIN_MSG = "Pogrešno korisničko ime i/ili lozinka!"
+LOGIN_MSG_TITLE = "Logovanje poruka"
+SUCCESSFUL_LOGIN_MSG = "Ulogovani ste kao korisnik {username}"
+MISSING_CREDENTIALS_MSG = "Oba polja moraju biti popunjena!"
+WRONG_CREDENTIALS_MSG = "Pogrešno korisničko ime i/ili lozinka!"
 
 # Database
 SECTION_NOT_FOUND_MSG = "Section {section} not found!"

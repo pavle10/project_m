@@ -1,4 +1,6 @@
-from project.utils.enums import Levels
+from PyQt5.QtWidgets import QMessageBox
+
+from project.utils.enums import Levels, ResponseStatus
 import project.utils.strings as strs
 
 
@@ -19,3 +21,10 @@ def convert_date_to_string(date):
 
 def employee_unique_name(employee):
     return f"{employee.get_first_name()} {employee.get_last_name()} {employee.get_identity_number()}"
+
+
+def show_message(parent, status, title, message):
+    if status == ResponseStatus.success:
+        QMessageBox.information(parent, title, message)
+    else:
+        QMessageBox.warning(parent, title, message)

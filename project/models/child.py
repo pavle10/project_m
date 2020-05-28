@@ -1,16 +1,34 @@
 class Child:
 
-    def __init__(self, child_id, identity_number, birth_year, mother_id, father_id):
+    def __init__(self, child_id, first_name, last_name, identity_number, birthday, mother_id, father_id):
+        self.first_name = first_name
+        self.last_name = last_name
         self.child_id = child_id
         self.identity_number = identity_number
-        self.birth_year = birth_year
+        self.birthday = birthday
         self.mother_id = mother_id
         self.mother_name = None
         self.father_id = father_id
         self.father_name = None
 
+    @classmethod
+    def from_values(cls, values):
+        return cls(values[0], values[1], values[3], values[4], values[5], values[6], values[7])
+
     def get_child_id(self):
         return self.child_id
+
+    def get_first_name(self):
+        return self.first_name
+
+    def set_first_name(self, value):
+        self.first_name = value
+
+    def get_last_name(self):
+        return self.last_name
+
+    def set_last_name(self, value):
+        self.last_name = value
 
     def get_identity_number(self):
         return self.identity_number
@@ -18,11 +36,11 @@ class Child:
     def set_identity_number(self, value):
         self.identity_number = value
 
-    def get_birth_year(self):
-        return self.birth_year
+    def get_birthday(self):
+        return self.birthday
 
-    def set_birth_year(self, value):
-        self.birth_year = value
+    def set_birthday(self, value):
+        self.birthday = value
 
     def get_mother_id(self):
         return self.mother_id

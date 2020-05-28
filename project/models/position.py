@@ -5,6 +5,10 @@ class Position:
         self.name = name
         self.saturday = saturday
 
+    @classmethod
+    def from_values(cls, values):
+        return cls(values[0], values[1], values[2])
+
     def get_position_id(self):
         return self.position_id
 

@@ -8,6 +8,10 @@ class FreeDays:
         self.total_days = total_days
         self.reason = reason
 
+    @classmethod
+    def from_values(cls, values):
+        return cls(values[0], values[1], values[2], values[3], values[4], values[5])
+
     def get_free_days_id(self):
         return self.free_days_id
 

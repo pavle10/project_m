@@ -1,6 +1,6 @@
 from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
-from project.utils.enums import Actions, Responses
+from project.utils.enums import Actions, ResponseStatus
 from project.utils import strings as strs
 from project.models.my_widgets import *
 
@@ -62,7 +62,7 @@ class PresentUniformView(PresentView):
 
                 response = self._manager.actions(Actions.update_uniform, new_values)
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.UNIFORM_UPD_SUCC_MSG)
                     self.update_table()
                 else:
@@ -79,7 +79,7 @@ class PresentUniformView(PresentView):
 
                 response = self._manager.actions(Actions.delete_uniform, values)
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.UNIFORM_DEL_SUCC_MSG)
                     self.update_table()
                 else:

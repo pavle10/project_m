@@ -7,6 +7,10 @@ class Wage:
         self.hour = hour
         self.meal = meal
 
+    @classmethod
+    def from_values(cls, values):
+        return cls(values[0], values[1], values[2], values[3], values[4])
+
     def get_wage_id(self):
         return self.wage_id
 

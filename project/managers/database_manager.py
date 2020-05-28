@@ -3,8 +3,18 @@ from collections import deque
 import psycopg2
 
 from project.utils.constants import DATABASE_CONFIG_PATH, DEFAULT_SECTION
-from project.utils.enums import Actions, QueryType, Errors
+from project.utils.enums import Actions, QueryType, ResponseStatus
 from project.utils import strings as strs, sql_queries as sql
+from project.models.response import Response
+from project.models.user import User
+from project.models.position import Position
+from project.models.employee import Employee
+from project.models.uniform import Uniform
+from project.models.uniform_piece import UniformPiece
+from project.models.child import Child
+from project.models.free_days import FreeDays
+from project.models.wage import Wage
+from project.models.salaries import Salary1, Salary2
 
 
 class DatabaseManager:
@@ -14,21 +24,21 @@ class DatabaseManager:
 
     def actions(self, action, values=None):
         if action == Actions.login:
-            return self._execute_query(sql.CHECK_CREDENTIALS, QueryType.select, values)
+            return self._login(values)
         elif action == Actions.all_employees:
-            return self._execute_query(sql.SELECT_ALL_EMPLOYEES, QueryType.select)
+            return self._get_employees()
         elif action == Actions.all_positions:
-            return self._execute_query(sql.SELECT_ALL_POSITIONS, QueryType.select)
+            return self._get_positions()
         elif action == Actions.all_uniforms:
-            return self._execute_query(sql.SELECT_ALL_UNIFORMS, QueryType.select)
+            return self._get_uniforms()
         elif action == Actions.all_uniform_pieces:
-            return self._execute_query(sql.SELECT_ALL_UNIFORM_PIECES, QueryType.select)
+            return self._get_uniform_pieces()
         elif action == Actions.all_children:
-            return self._execute_query(sql.SELECT_ALL_CHILDREN, QueryType.select)
+            return self._get_all_children()
         elif action == Actions.all_free_days:
-            return self._execute_query(sql.SELECT_ALL_FREE_DAYS, QueryType.select)
+            return self._get_all_free_days()
         elif action == Actions.all_wages:
-            return self._execute_query(sql.SELECT_ALL_WAGES, QueryType.select)
+            return self._get_wages()
         elif action == Actions.add_employee:
             return self._execute_query(sql.INSERT_EMPLOYEE, QueryType.insert, values)
         elif action == Actions.add_position:
@@ -104,7 +114,8 @@ class DatabaseManager:
         self.db = db
 
     def _execute_query(self, query, query_type, values=None):
-        result = None
+        status = ResponseStatus.success
+        data = None
         conn = None
 
         try:
@@ -115,30 +126,105 @@ class DatabaseManager:
 
             cur.execute(query, values) if values else cur.execute(query)
 
-            if query_type in [QueryType.update, QueryType.delete]:
-                result = cur.statusmessage
-            else:
-                if cur.rowcount == 1:
-                    result = cur.fetchone()
+            if query_type in [QueryType.select, QueryType.insert]:
+                if cur.rowcount == 0:
+                    data = list()
+                elif cur.rowcount == 1:
+                    data = cur.fetchone()
                 elif cur.rowcount > 1:
-                    result = cur.fetchall()
+                    data = cur.fetchall()
+
+            message = cur.statusmessage
+
+            print(f"Query: {query}")
+            print(f"DB Data: {data}")
+            print(f"DB Message: {message}\n")
 
             conn.commit()
 
             cur.close()
         except Exception as error:
             # TODO Write error to a log
-            print(strs.DATABASE_ERROR_MSG.format(error=error))
+            status = ResponseStatus.fail
+            message = strs.DATABASE_ERROR_MSG.format(error=error)
 
-            result = Errors.database
+            print(message)
+
         finally:
             if conn is not None:
                 conn.close()
 
-        return result
+        return Response(status, message, data)
 
     def _update_query(self, query, values):
         values_deq = deque(values)
         values_deq.rotate(-1)
 
         return self._execute_query(query, QueryType.update, list(values_deq))
+
+    def _login(self, values):
+        return self._execute_query(sql.CHECK_CREDENTIALS, QueryType.select, values)
+
+    def _get_employees(self):
+        response = self._execute_query(sql.SELECT_ALL_EMPLOYEES, QueryType.select)
+
+        if response.get_status() == ResponseStatus.success:
+            data = [Employee.from_values(values) for values in response.get_data()]
+            response.set_data(data)
+
+        return response
+
+    def _get_positions(self):
+        response = self._execute_query(sql.SELECT_ALL_POSITIONS, QueryType.select)
+
+        if response.get_status() == ResponseStatus.success:
+            data = [Position.from_values(values) for values in response.get_data()]
+            response.set_data(data)
+
+        return response
+
+    def _get_uniforms(self):
+        response = self._execute_query(sql.SELECT_ALL_UNIFORMS, QueryType.select)
+
+        if response.get_status() == ResponseStatus.success:
+            data = [Uniform.from_values(values) for values in response.get_data()]
+            response.set_data(data)
+
+        return response
+
+    def _get_uniform_pieces(self):
+        response = self._execute_query(sql.SELECT_ALL_UNIFORM_PIECES, QueryType.select)
+
+        if response.get_status() == ResponseStatus.success:
+            data = [UniformPiece.from_values(values) for values in response.get_data()]
+            response.set_data(data)
+
+        return response
+
+    def _get_all_children(self):
+        response = self._execute_query(sql.SELECT_ALL_CHILDREN, QueryType.select)
+
+        if response.get_status() == ResponseStatus.success:
+            data = [Child.from_values(values) for values in response.get_data()]
+            response.set_data(data)
+
+        return response
+
+    def _get_all_free_days(self):
+        response = self._execute_query(sql.SELECT_ALL_FREE_DAYS, QueryType.select)
+
+        if response.get_status() == ResponseStatus.success:
+            data = [FreeDays.from_values(values) for values in response.get_data()]
+            response.set_data(data)
+
+        return response
+
+    def _get_wages(self):
+        response = self._execute_query(sql.SELECT_ALL_WAGES, QueryType.select)
+
+        if response.get_status() == ResponseStatus.success:
+            data = [Wage.from_values(values) for values in response.get_data()]
+            response.set_data(data)
+
+        return response
+

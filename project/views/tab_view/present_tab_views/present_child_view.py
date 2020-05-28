@@ -1,6 +1,6 @@
 from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
-from project.utils.enums import Actions, Responses
+from project.utils.enums import Actions, ResponseStatus
 from project.models.my_widgets import *
 from project.utils import strings as strs
 
@@ -70,7 +70,7 @@ class PresentChildView(PresentView):
 
                 response = self._manager.actions(Actions.update_child, new_values)
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.CHILD_UPD_SUCC_MSG)
                     self.update_table()
                 else:
@@ -87,7 +87,7 @@ class PresentChildView(PresentView):
 
                 response = self._manager.actions(Actions.delete_child, values)
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.CHILD_DEL_SUCC_MSG)
                     self.update_table()
                 else:

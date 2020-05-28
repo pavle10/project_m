@@ -1,6 +1,6 @@
 from project.views.login_view import LoginView
 from project.views.main_window_view import MainWind
-from project.utils.enums import Actions, Responses
+from project.utils.enums import Actions, ResponseStatus
 
 
 class ViewManager:
@@ -94,12 +94,11 @@ class ViewManager:
     def _login(self, values):
         response = self._controller.actions(Actions.login, values)
 
-        if response == Responses.success:
-            self.login.successful_login(self._controller.get_username())
+        self.login.show_message(response)
+
+        if response.get_status() == ResponseStatus.success:
             self.login.close()
             self.main_wind.show()
-        elif response == Responses.fail:
-            self.login.failed_login()
 
     def _add_position(self, values):
         return self._controller.actions(Actions.add_position, values)

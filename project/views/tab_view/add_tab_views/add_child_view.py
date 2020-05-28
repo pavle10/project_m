@@ -1,5 +1,5 @@
 from project.views.tab_view.add_tab_views.add_view import AddView
-from project.utils.enums import Actions, Responses
+from project.utils.enums import Actions, ResponseStatus
 from project.utils import strings as strs, funcs
 from project.models.my_widgets import *
 
@@ -64,9 +64,9 @@ class AddChildView(AddView):
 
         response = self._manager.actions(Actions.add_child, values)
 
-        if response == Responses.success:
+        if response == ResponseStatus.success:
             QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.CHILD_ADD_SUCC_MSG)
-        elif response == Responses.fail:
+        elif response == ResponseStatus.fail:
             QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.CHILD_ADD_FAIL_MSG)
 
     def get_name(self):

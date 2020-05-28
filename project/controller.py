@@ -1,16 +1,21 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 
+from project.managers.database_manager import DatabaseManager
 from project.managers.view_manager import ViewManager
 from project.managers.action_manager import ActionManager
-from project.utils.enums import Actions, Responses
-from project.utils import funcs
+from project.utils.enums import Actions, ResponseStatus
+from project.models.user import User
+from project.models.response import Response
+from project.utils import funcs, strings as strs
 
 
 class Controller:
 
     def __init__(self):
         self._app = QApplication(sys.argv)
+
+        self._database_manager = DatabaseManager()
 
         self._action_manager = ActionManager()
 
@@ -20,13 +25,34 @@ class Controller:
 
     def _init_models(self):
         self._user = None
-        self._employees = self._action_manager.actions(Actions.all_employees)
-        self._positions = self._action_manager.actions(Actions.all_positions)
-        self._uniforms = self._action_manager.actions(Actions.all_uniforms)
-        self._uniform_pieces = self._action_manager.actions(Actions.all_uniform_pieces)
-        self._children = self._action_manager.actions(Actions.all_children)
-        self._all_free_days = self._action_manager.actions(Actions.all_free_days)
-        self._wages = self._action_manager.actions(Actions.all_wages)
+
+        response = self._database_manager.actions(Actions.all_employees)
+        if response.get_status() == ResponseStatus.success:
+            self._employees = response.get_data()
+
+        response = self._database_manager.actions(Actions.all_positions)
+        if response.get_status() == ResponseStatus.success:
+            self._positions = response.get_data()
+
+        response = self._database_manager.actions(Actions.all_uniforms)
+        if response.get_status() == ResponseStatus.success:
+            self._uniforms = response.get_data()
+
+        response = self._database_manager.actions(Actions.all_uniform_pieces)
+        if response.get_status() == ResponseStatus.success:
+            self._uniform_pieces = response.get_data()
+
+        response = self._database_manager.actions(Actions.all_children)
+        if response.get_status() == ResponseStatus.success:
+            self._children = response.get_data()
+
+        response = self._database_manager.actions(Actions.all_free_days)
+        if response.get_status() == ResponseStatus.success:
+            self._all_free_days = response.get_data()
+
+        response = self._database_manager.actions(Actions.all_wages)
+        if response.get_status() == ResponseStatus.success:
+            self._wages = response.get_data()
 
         self._update_uniform_pieces_name()
         self._update_children_parents()
@@ -137,23 +163,27 @@ class Controller:
                     child.set_father_name(funcs.employee_unique_name(employee))
 
     def _login(self, values):
-        response = self._action_manager.actions(Actions.login, values)
+        # Input data validation
+        if values[0] == "" or values[1] == "":
+            return Response(ResponseStatus.fail, strs.MISSING_CREDENTIALS_MSG)
 
-        if response is None:
-            return Responses.fail
+        # Check credentials
+        response = self._database_manager.actions(Actions.login, values)
 
-        self._user = response
+        if response.get_status() == ResponseStatus.success:
+            self._user = User.from_values(response.get_data())
+            response.set_message(strs.SUCCESSFUL_LOGIN_MSG.format(username=self._user.get_username()))
 
-        return Responses.success
+        return response
 
     def _add_position(self, values):
         response = self._action_manager.actions(Actions.add_position, values)
 
         if response:
             self._positions.append(response)
-            return Responses.success
+            return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _add_employee(self, values):
         position_id = self._get_position_id(values[6])
@@ -164,18 +194,18 @@ class Controller:
 
             if response:
                 self._employees.append(response)
-                return Responses.success
+                return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _add_uniform(self, values):
         response = self._action_manager.actions(Actions.add_uniform, values)
 
         if response:
             self._uniforms.append(response)
-            return Responses.success
+            return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _add_uniform_piece(self, values):
         uniform_id = self._get_uniform_id(values[0])
@@ -189,9 +219,9 @@ class Controller:
 
             if response:
                 self._uniform_pieces.append(response)
-                return Responses.success
+                return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _add_child(self, values):
         mother_id = self._get_employee_id(values[2])
@@ -205,9 +235,9 @@ class Controller:
 
             if response:
                 self._children.append(response)
-                return Responses.success
+                return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _add_free_days(self, values):
         employee_id = self._get_employee_id(values[0])
@@ -219,9 +249,9 @@ class Controller:
 
             if response:
                 self._all_free_days.append(response)
-                return Responses.success
+                return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _add_wage(self, values):
         employee_id = self._get_employee_id(values[0])
@@ -233,9 +263,9 @@ class Controller:
 
             if response:
                 self._wages.append(response)
-                return Responses.success
+                return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _add_salary_1(self, values):
         employee_id = self._get_employee_id(values[0])
@@ -246,20 +276,20 @@ class Controller:
             response = self._action_manager.actions(Actions.add_salary_1, values)
 
             if response:
-                return Responses.success
+                return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _add_salary_2(self, values):
         employee_id = self._get_employee_id(values[0])
 
         if employee_id is None:
-            return Responses.fail
+            return ResponseStatus.fail
 
         wage = self._get_employee_wage(employee_id)
 
         if wage is None:
-            return Responses.fail
+            return ResponseStatus.fail
 
         values[0] = employee_id
         values[3] = wage.get_day()
@@ -269,9 +299,9 @@ class Controller:
         response = self._action_manager.actions(Actions.add_salary_2, values)
 
         if response:
-            return Responses.success
+            return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _get_all_positions(self):
         return self._positions
@@ -431,9 +461,9 @@ class Controller:
                         employee.set_mobile_number(values[14])
                         employee.set_situation(values[15])
 
-                        return Responses.success
+                        return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _update_position(self, values):
         position_id = self._get_position_id(values[0])
@@ -448,9 +478,9 @@ class Controller:
                         position.set_name(values[1][1])
                         position.set_saturday(values[1][2])
 
-                        return Responses.success
+                        return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _update_child(self, values):
         mother_id = self._get_employee_id(values[4])
@@ -469,9 +499,9 @@ class Controller:
                     child.set_father_id(father_id)
                     child.set_father_name(values[6])
 
-                    return Responses.success
+                    return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _update_uniform(self, values):
         uniform_id = self._get_uniform_id(values[0])
@@ -485,9 +515,9 @@ class Controller:
                     if uniform.get_uniform_id() == uniform_id:
                         uniform.set_name(values[1])
 
-                        return Responses.success
+                        return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _update_uniform_piece(self, values):
         response = self._action_manager.actions(Actions.update_uniform_piece, values)
@@ -502,9 +532,9 @@ class Controller:
                     uniform_piece.set_additional(values[5])
                     uniform_piece.set_date(values[6])
 
-                    return Responses.success
+                    return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _update_free_days(self, values):
         response = self._action_manager.actions(Actions.update_free_days, values)
@@ -517,9 +547,9 @@ class Controller:
                     free_days.set_total_days(values[4])
                     free_days.set_reason(values[5])
 
-                    return Responses.success
+                    return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _update_wage(self, values):
         response = self._action_manager.actions(Actions.update_wage, values)
@@ -531,19 +561,19 @@ class Controller:
                     wage.set_hour(values[3])
                     wage.set_meal(values[4])
 
-                    return Responses.success
+                    return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _update_salary_1(self, values):
         response = self._action_manager.actions(Actions.update_salary_1, values)
 
-        return Responses.success if not response.endswith('0') else Responses.fail
+        return ResponseStatus.success if not response.endswith('0') else ResponseStatus.fail
 
     def _update_salary_2(self, values):
         response = self._action_manager.actions(Actions.update_salary_2, values)
 
-        return Responses.success if not response.endswith('0') else Responses.fail
+        return ResponseStatus.success if not response.endswith('0') else ResponseStatus.fail
 
     def _delete_employee(self, values):
         response = self._action_manager.actions(Actions.delete_employee, values)
@@ -553,9 +583,9 @@ class Controller:
                 if employee.get_employee_id() == values[0]:
                     self._employees.remove(employee)
 
-                    return Responses.success
+                    return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _delete_position(self, values):
         position_id = self._get_position_id(values[0])
@@ -570,9 +600,9 @@ class Controller:
                     if position.get_position_id() == position_id:
                         self._positions.remove(position)
 
-                        return Responses.success
+                        return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _delete_child(self, values):
         response = self._action_manager.actions(Actions.delete_child, values)
@@ -582,9 +612,9 @@ class Controller:
                 if child.get_child_id() == values[0]:
                     self._children.remove(child)
 
-                    return Responses.success
+                    return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _delete_uniform(self, values):
         uniform_id = self._get_uniform_id(values[0])
@@ -599,9 +629,9 @@ class Controller:
                     if uniform.get_uniform_id() == uniform_id:
                         self._uniforms.remove(uniform)
 
-                        return Responses.success
+                        return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _delete_uniform_piece(self, values):
         response = self._action_manager.actions(Actions.delete_uniform_piece, values)
@@ -611,9 +641,9 @@ class Controller:
                 if uniform_piece.get_uniform_piece_id() == values[0]:
                     self._uniform_pieces.remove(uniform_piece)
 
-                    return Responses.success
+                    return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _delete_free_days(self, values):
         response = self._action_manager.actions(Actions.delete_free_days, values)
@@ -623,9 +653,9 @@ class Controller:
                 if free_days.get_free_days_id() == values[0]:
                     self._all_free_days.remove(free_days)
 
-                    return Responses.success
+                    return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _delete_wage(self, values):
         response = self._action_manager.actions(Actions.delete_wage, [values[0]])
@@ -633,16 +663,16 @@ class Controller:
         if not response.endswith('0'):
             self._wages.remove(self._get_employee_wage(values[1]))
 
-            return Responses.success
+            return ResponseStatus.success
 
-        return Responses.fail
+        return ResponseStatus.fail
 
     def _delete_salary_1(self, values):
         response = self._action_manager.actions(Actions.delete_salary_1, values)
 
-        return Responses.success if not response.endswith('0') else Responses.fail
+        return ResponseStatus.success if not response.endswith('0') else ResponseStatus.fail
 
     def _delete_salary_2(self, values):
         response = self._action_manager.actions(Actions.delete_salary_2, values)
 
-        return Responses.success if not response.endswith('0') else Responses.fail
+        return ResponseStatus.success if not response.endswith('0') else ResponseStatus.fail

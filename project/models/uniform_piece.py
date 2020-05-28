@@ -10,6 +10,10 @@ class UniformPiece:
         self.additional = additional
         self.date = date
 
+    @classmethod
+    def from_values(cls, values):
+        return cls(values[0], values[1], values[2], values[3], values[4], values[5], values[6])
+
     def get_uniform_piece_id(self):
         return self.uniform_piece_id
 

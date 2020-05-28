@@ -1,6 +1,6 @@
 from project.views.tab_view.add_tab_views.add_view import AddView
 from project.models.my_widgets import *
-from project.utils.enums import Actions, Responses
+from project.utils.enums import Actions, ResponseStatus
 from project.utils import funcs as funcs, strings as strs
 
 
@@ -56,9 +56,9 @@ class AddFreeDaysView(AddView):
 
         response = self._manager.actions(Actions.add_free_days, values)
 
-        if response == Responses.success:
+        if response == ResponseStatus.success:
             QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.FREE_DAYS_ADD_SUCC_MSG)
-        elif response == Responses.fail:
+        elif response == ResponseStatus.fail:
             QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.FREE_DAYS_ADD_FAIL_MSG)
 
     def get_name(self):

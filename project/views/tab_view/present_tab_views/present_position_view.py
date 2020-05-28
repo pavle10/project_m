@@ -1,6 +1,6 @@
 from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
-from project.utils.enums import Actions, Responses
+from project.utils.enums import Actions, ResponseStatus
 from project.models.my_widgets import *
 from project.utils import strings as strs
 
@@ -65,7 +65,7 @@ class PresentPositionView(PresentView):
             if dialog.exec():
                 response = self._manager.actions(Actions.update_position, [position_name, dialog.get_value()])
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.POSITION_UPD_SUCC_MSG)
                     self.update_table()
                 else:
@@ -83,7 +83,7 @@ class PresentPositionView(PresentView):
                 response = self._manager.actions(Actions.delete_position, values)
                 print(response)
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.POSITION_DEL_SUCC_MSG)
                     self.update_table()
                 else:

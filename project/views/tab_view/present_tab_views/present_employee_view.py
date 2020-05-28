@@ -1,6 +1,6 @@
 from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
-from project.utils.enums import Actions, Responses
+from project.utils.enums import Actions, ResponseStatus
 from project.models.my_widgets import *
 from project.utils import strings as strs
 
@@ -82,7 +82,7 @@ class PresentEmployeeView(PresentView):
             if dialog.exec():
                 response = self._manager.actions(Actions.update_employee, dialog.get_value())
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_UPD_SUCC_MSG)
                     self.update()
                 else:
@@ -99,7 +99,7 @@ class PresentEmployeeView(PresentView):
 
                 response = self._manager.actions(Actions.delete_employee, [employee.get_employee_id()])
 
-                if response == Responses.success:
+                if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_DEL_SUCC_MSG)
                     self.update()
                 else:

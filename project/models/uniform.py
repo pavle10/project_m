@@ -4,6 +4,10 @@ class Uniform:
         self.uniform_id = uniform_id
         self.name = name
 
+    @classmethod
+    def from_values(cls, values):
+        return cls(values[0], values[1])
+
     def get_uniform_id(self):
         return self.uniform_id
 

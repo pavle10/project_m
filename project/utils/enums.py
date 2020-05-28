@@ -59,10 +59,6 @@ class QueryType(Enum):
     delete = 3
 
 
-class Responses(Enum):
+class ResponseStatus(Enum):
     fail = 0,
     success = 1
-
-
-class Errors(Enum):
-    database = 0
