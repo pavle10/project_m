@@ -1,9 +1,11 @@
+from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
 from project.utils import strings as strs
+from project.models.my_widgets import *
 
 
-class PresentUniformView(QWidget):
+class PresentUniformView(PresentView):
 
     def __init__(self, name, manager, *args, **kwargs):
         super(PresentUniformView, self).__init__(*args, **kwargs)
@@ -13,26 +15,21 @@ class PresentUniformView(QWidget):
         self._init_ui()
 
     def _init_ui(self):
-        self.table = QTableWidget()
-        self.table.setColumnCount(len(strs.PRESENT_UNIFORM_HDR))
-        self.table.setHorizontalHeaderLabels(strs.PRESENT_UNIFORM_HDR)
-        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.table = MyTable(strs.PRESENT_UNIFORM_HDR)
         self.update_table()
 
         self.scroll_area = QScrollArea(self)
+        self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.table)
 
-        update_button = QPushButton(self)
-        update_button.setText(strs.UPDATE_BTN)
-        update_button.clicked.connect(self._update_uniform)
+        update_button = MyButton(strs.UPDATE_BTN)
+        update_button.clicked.connect(self._update)
 
-        delete_button = QPushButton(self)
-        delete_button.setText(strs.DELETE_BTN)
-        delete_button.clicked.connect(self._delete_uniform)
+        delete_button = MyButton(strs.DELETE_BTN)
+        delete_button.clicked.connect(self._delete)
 
-        print_button = QPushButton(self)
-        print_button.setText(strs.PRINT_BTN)
-        print_button.clicked.connect(self._print_uniform)
+        print_button = MyButton(strs.PRINT_BTN)
+        print_button.clicked.connect(self._print)
 
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(update_button)
@@ -52,7 +49,7 @@ class PresentUniformView(QWidget):
         for row, uniform in enumerate(uniforms):
             self.table.setItem(row, 0, QTableWidgetItem(uniform.get_name()))
 
-    def _update_uniform(self):
+    def _update(self):
         row_index = self._check_selection()
 
         if row_index is not None:
@@ -71,7 +68,7 @@ class PresentUniformView(QWidget):
                 else:
                     QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.UNIFORM_UPD_FAIL_MSG)
 
-    def _delete_uniform(self):
+    def _delete(self):
         row_index = self._check_selection()
 
         if row_index is not None:
@@ -88,7 +85,7 @@ class PresentUniformView(QWidget):
                 else:
                     QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.UNIFORM_DEL_FAIL_MSG)
 
-    def _print_uniform(self):
+    def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
 
     def _check_selection(self):

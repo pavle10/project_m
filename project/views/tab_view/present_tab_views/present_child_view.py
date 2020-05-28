@@ -19,6 +19,7 @@ class PresentChildView(PresentView):
         self.update_table()
 
         self.scroll_area = QScrollArea(self)
+        self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.table)
 
         update_button = MyButton(strs.UPDATE_BTN)

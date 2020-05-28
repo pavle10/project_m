@@ -1,9 +1,11 @@
+from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, Responses
 from project.utils import strings as strs, funcs
+from project.models.my_widgets import *
 
 
-class PresentWageView(QWidget):
+class PresentWageView(PresentView):
 
     def __init__(self, name, manager, *args, **kwargs):
         super(PresentWageView, self).__init__(*args, **kwargs)
@@ -15,9 +17,8 @@ class PresentWageView(QWidget):
         self._init_ui()
 
     def _init_ui(self):
-        employee_label = QLabel(self)
-        employee_label.setText(strs.EMPLOYEE_LBL)
-        self.employee_box = QComboBox()
+        employee_label = MyLabel(strs.EMPLOYEE)
+        self.employee_box = MyComboBox()
         self.employee_box.insertItem(0, strs.EMPTY)
         for index, employee in enumerate(self._get_employees()):
             self.employee_box.insertItem(index+1, funcs.employee_unique_name(employee))
@@ -27,25 +28,20 @@ class PresentWageView(QWidget):
         fields_layout = QFormLayout()
         fields_layout.addRow(employee_label, self.employee_box)
 
-        self.table = QTableWidget()
-        self.table.setColumnCount(len(strs.PRESENT_WAGE_HDR))
-        self.table.setHorizontalHeaderLabels(strs.PRESENT_WAGE_HDR)
-        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.table = MyTable(strs.PRESENT_WAGE_HDR)
 
         self.scroll_area = QScrollArea(self)
+        self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.table)
 
-        update_button = QPushButton(self)
-        update_button.setText(strs.UPDATE_BTN)
-        update_button.clicked.connect(self._update_wage)
+        update_button = MyButton(strs.UPDATE_BTN)
+        update_button.clicked.connect(self._update)
 
-        delete_button = QPushButton(self)
-        delete_button.setText(strs.DELETE_BTN)
-        delete_button.clicked.connect(self._delete_wage)
+        delete_button = MyButton(strs.DELETE_BTN)
+        delete_button.clicked.connect(self._delete)
 
-        print_button = QPushButton(self)
-        print_button.setText(strs.PRINT_BTN)
-        print_button.clicked.connect(self._print_wage)
+        print_button = MyButton(strs.PRINT_BTN)
+        print_button.clicked.connect(self._print)
 
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(update_button)
@@ -80,7 +76,7 @@ class PresentWageView(QWidget):
                 self.table.setItem(row, 1, QTableWidgetItem(str(wage.get_hour())))
                 self.table.setItem(row, 2, QTableWidgetItem(str(wage.get_meal())))
 
-    def _update_wage(self):
+    def _update(self):
         row_index = self._check_selection()
 
         if row_index is not None:
@@ -99,7 +95,7 @@ class PresentWageView(QWidget):
                 else:
                     QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.WAGE_UPD_FAIL_MSG)
 
-    def _delete_wage(self):
+    def _delete(self):
         row_index = self._check_selection()
 
         if row_index is not None:
@@ -117,7 +113,7 @@ class PresentWageView(QWidget):
                 else:
                     QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.WAGE_DEL_FAIL_MSG)
 
-    def _print_wage(self):
+    def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
 
     def _check_selection(self):

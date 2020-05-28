@@ -27,9 +27,8 @@ SALARY_2 = "Plata 2"
 MAIN_LBL = "Logovanje"
 USERNAME_LBL = "Korisničko ime:"
 PASSWORD_LBL = "Lozinka:"
-EMPLOYEE_LBL = "Zaposleni:"
-FROM_DATE_LBL = "Od datuma:"
-TO_DATE_LBL = "Do datuma:"
+FROM_DATE_LBL = "Od datuma"
+TO_DATE_LBL = "Do datuma"
 
 # ===== BUTTONS =====
 LOGIN_BTN = "Uloguj se"

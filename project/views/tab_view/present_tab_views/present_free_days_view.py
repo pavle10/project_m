@@ -19,7 +19,7 @@ class PresentFreeDaysView(PresentView):
         self._init_ui()
 
     def _init_ui(self):
-        employee_label = MyLabel(strs.EMPLOYEE_LBL)
+        employee_label = MyLabel(strs.EMPLOYEE)
         self.employee_box = MyComboBox()
         self.employee_box.insertItem(0, strs.EMPTY)
         for index, employee in enumerate(self._get_employees()):
