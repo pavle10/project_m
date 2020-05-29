@@ -535,35 +535,45 @@ class Controller:
         return self._database_manager.actions(Actions.employee_salaries_2, values)
 
     def _update_employee(self, values):
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[1], values[2], values[4], values[7], values[9]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
+
+        # Check before m fields
+        before_m = values[11]
+
+        if not funcs.convert_to_int(before_m, range(3)):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
+
+        years = before_m[0]
+        months = before_m[1]
+        days = before_m[2]
+
+        if years < 0 or months < 0 or months > 11 or days < 0 or days > 30:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INVALID_DATE_FORMAT_MSG)
+
+        values[11] = funcs.to_days(years, months, days)
+
         position_id = self._get_position_id(values[7])
 
-        if position_id is not None:
-            values[7] = position_id
-            values[11] = 0 if values[11] == "" else values[11]
-            response = self._action_manager.actions(Actions.update_employee, values)
+        # Check position id
+        if position_id is None:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            if not response.endswith('0'):
-                for employee in self._employees:
-                    if employee.get_employee_id() == values[0]:
-                        employee.set_first_name(values[1])
-                        employee.set_last_name(values[2])
-                        employee.set_fathers_name(values[3])
-                        employee.set_identity_number(values[4])
-                        employee.set_personal_card(values[5])
-                        employee.set_qualification(values[6])
-                        employee.set_position(values[7])
-                        employee.set_saint_day(values[8])
-                        employee.set_address(values[9])
-                        employee.set_account(values[10])
-                        employee.set_before_m(values[11])
-                        employee.set_start_date(values[12])
-                        employee.set_home_number(values[13])
-                        employee.set_mobile_number(values[14])
-                        employee.set_situation(values[15])
+        values[7] = position_id
 
-                        return ResponseStatus.success
+        response = self._database_manager.actions(Actions.update_employee, values)
 
-        return ResponseStatus.fail
+        if response.get_status() == ResponseStatus.success:
+            for employee in self._employees:
+                if employee.get_employee_id() == values[0]:
+                    employee.update_data(values)
+                    break
+
+        return response
 
     def _update_position(self, values):
         position_id = self._get_position_id(values[0])
@@ -709,16 +719,15 @@ class Controller:
         return self._database_manager.actions(Actions.update_salary_2, values)
 
     def _delete_employee(self, values):
-        response = self._action_manager.actions(Actions.delete_employee, values)
+        response = self._database_manager.actions(Actions.delete_employee, values)
 
-        if not response.endswith('0'):
+        if response.get_status() == ResponseStatus.success:
             for employee in self._employees:
                 if employee.get_employee_id() == values[0]:
                     self._employees.remove(employee)
+                    break
 
-                    return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return response
 
     def _delete_position(self, values):
         position_id = self._get_position_id(values[0])

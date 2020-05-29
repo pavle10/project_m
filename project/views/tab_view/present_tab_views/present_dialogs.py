@@ -143,7 +143,7 @@ class UpdateEmployeeDialog(QDialog):
         self.data[8] = self.saint_day_line.text()
         self.data[9] = self.address_line.text()
         self.data[10] = self.account_line.text()
-        self.data[11] = self.before_m_line.text()
+        self.data[11] = [self.years_line.text(), self.months_line.text(), self.days_line.text()]
         self.data[12] = self.start_date_line.date().toPyDate()
         self.data[13] = self.home_number_line.text()
         self.data[14] = self.mobile_number_line.text()

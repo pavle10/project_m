@@ -145,3 +145,20 @@ class Employee:
                       self.before_m, self.start_date, self.home_number, self.mobile_number, self.situation]
 
         return data_array
+
+    def update_data(self, values):
+        self.first_name = values[1]
+        self.last_name = values[2]
+        self.fathers_name = values[3]
+        self.identity_number = values[4]
+        self.personal_card = values[5]
+        self.qualification = values[6]
+        self.position = values[7]
+        self.saint_day = values[8]
+        self.address = values[9]
+        self.account = values[10]
+        self.before_m = values[11]
+        self.start_date = values[12]
+        self.home_number = values[13]
+        self.mobile_number = values[14]
+        self.situation = values[15]

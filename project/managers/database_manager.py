@@ -60,7 +60,7 @@ class DatabaseManager:
         elif action == Actions.employee_salaries_2:
             return self._execute_query(sql.SELECT_EMPLOYEE_SALARIES_2, QueryType.select, values)
         elif action == Actions.update_employee:
-            return self._update_query(sql.UPDATE_EMPLOYEE, values)
+            return self._update_employee(values)
         elif action == Actions.update_position:
             return self._update_query(sql.UPDATE_POSITION, values)
         elif action == Actions.update_child:
@@ -78,7 +78,7 @@ class DatabaseManager:
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
         elif action == Actions.delete_employee:
-            return self._execute_query(sql.DELETE_EMPLOYEE, QueryType.delete, values)
+            return self._delete_employee(values)
         elif action == Actions.delete_position:
             return self._execute_query(sql.DELETE_POSITION, QueryType.delete, values)
         elif action == Actions.delete_child:
@@ -339,6 +339,17 @@ class DatabaseManager:
 
         return response
 
+    def _update_employee(self, values):
+        response = self._update_query(sql.UPDATE_EMPLOYEE, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.EMPLOYEE_UPD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.EMPLOYEE_UPD_FAIL_MSG)
+
+        return response
+
     def _update_free_days(self, values):
         response = self._update_query(sql.UPDATE_FREE_DAYS, values)
 
@@ -380,6 +391,17 @@ class DatabaseManager:
         else:
             response.set_status(ResponseStatus.fail)
             response.set_message(strs.SALARY_2_UPD_FAIL_MSG)
+
+        return response
+
+    def _delete_employee(self, values):
+        response = self._execute_query(sql.DELETE_EMPLOYEE, QueryType.delete, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.EMPLOYEE_DEL_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.EMPLOYEE_DEL_FAIL_MSG)
 
         return response
 

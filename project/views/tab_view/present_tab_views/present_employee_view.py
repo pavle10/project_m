@@ -98,11 +98,10 @@ class PresentEmployeeView(PresentView):
 
                 response = self._manager.actions(Actions.delete_employee, [employee.get_employee_id()])
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_DEL_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self.update_view()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_DEL_FAIL_MSG)
 
     def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
