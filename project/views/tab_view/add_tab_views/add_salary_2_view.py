@@ -72,17 +72,27 @@ class AddSalary2View(AddView):
         return self._manager.actions(Actions.all_employees)
 
     def _add(self):
-        chosen_date = self.date_line.date().toPyDate()
-        values = [self.employee_box.currentText(), chosen_date, self.day_line.text(), None, self.hour_line.text(),
-                  None, self.meal_line.text(), None, self.payment_line.text(), self.vacation_line.text(),
-                  self.vacation_value_line.text(), self.fix_line.text()]
+        values = [self.employee_box.currentText(), self.date_line.date().toPyDate(), self.day_line.text(), None,
+                  self.hour_line.text(), None, self.meal_line.text(), None, self.payment_line.text(),
+                  self.vacation_line.text(), self.vacation_value_line.text(), self.fix_line.text()]
 
         response = self._manager.actions(Actions.add_salary_2, values)
 
-        if response == ResponseStatus.success:
-            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.SALARY_2_ADD_SUCC_MSG)
-        elif response == ResponseStatus.fail:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.SALARY_2_ADD_FAIL_MSG)
+        funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
+
+        if response.get_status() == ResponseStatus.success:
+            self._clear()
+
+    def _clear(self):
+        self.employee_box.setCurrentIndex(0)
+        self.day_line.clear()
+        self.hour_line.clear()
+        self.meal_line.clear()
+        self.payment_line.clear()
+        self.vacation_line.clear()
+        self.vacation_value_line.clear()
+        self.fix_line.clear()
+        self.date_line.setDate(cons.DEFAULT_END_DATE)
 
     def get_name(self):
         return self._name

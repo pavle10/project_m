@@ -403,27 +403,71 @@ class Controller:
         return self._database_manager.actions(Actions.add_salary_1, values)
 
     def _add_salary_2(self, values):
+        # Input data validation
+
+        try:
+            values[2] = 0 if values[2] == "" else int(values[2])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[1]))
+
+        try:
+            values[4] = 0 if values[4] == "" else int(values[4])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[3]))
+
+        try:
+            values[6] = 0 if values[6] == "" else int(values[6])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[5]))
+
+        try:
+            values[8] = 0 if values[8] == "" else int(values[8])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[7]))
+
+        try:
+            values[9] = 0 if values[9] == "" else int(values[9])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[8]))
+
+        try:
+            values[10] = 0 if values[10] == "" else int(values[10])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[9]))
+
+        try:
+            values[11] = 0 if values[11] == "" else int(values[11])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[10]))
+
+        if values[2] < 0 or values[4] < 0 or values[6] < 0 or values[8] < 0 \
+                or values[9] < 0 or values[10] < 0 or values[11] < 0:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE_MSG)
+
         employee_id = self._get_employee_id(values[0])
 
         if employee_id is None:
-            return ResponseStatus.fail
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
         wage = self._get_employee_wage(employee_id)
 
         if wage is None:
-            return ResponseStatus.fail
+            return Response(ResponseStatus.fail, strs.WAGE_FOR_EMPLOYEE_MISSING_MSG.format(employee=values[0]))
 
         values[0] = employee_id
         values[3] = wage.get_day()
         values[5] = wage.get_hour()
         values[7] = wage.get_meal()
 
-        response = self._action_manager.actions(Actions.add_salary_2, values)
-
-        if response:
-            return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return self._database_manager.actions(Actions.add_salary_2, values)
 
     def _get_all_positions(self):
         return self._positions

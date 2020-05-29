@@ -144,6 +144,7 @@ INVALID_DATE_FORMAT_MSG = "Vrednosti za godine, mesece i dane moraju biti u odgo
 INVALID_MEASURE_MSG = "Brojevne vrednosti moraju biti pozitivne!"
 INVALID_NET_GROSS_RATIO_MSG = "Bruto ne sme biti manji od neto!"
 CHILD_ONE_PARENT_REQUIRED_MSG = "Bar jedan roditelj mora biti izabran!"
+WAGE_FOR_EMPLOYEE_MISSING_MSG = "Dnevnice za zaposlenog {employee} nisu unete!"
 
 # Other
 NOT_IMPLEMENTED_MSG = "Nije implementirano!"
