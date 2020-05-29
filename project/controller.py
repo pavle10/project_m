@@ -304,18 +304,27 @@ class Controller:
         return response
 
     def _add_free_days(self, values):
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[0], values[4]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
+
+        if values[3] <= 0:
+            return Response(ResponseStatus.fail, strs.INVALID_DATES)
+
         employee_id = self._get_employee_id(values[0])
 
-        if employee_id is not None:
-            values[0] = employee_id
+        if employee_id is None:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            response = self._action_manager.actions(Actions.add_free_days, values)
+        values[0] = employee_id
 
-            if response:
-                self._all_free_days.append(response)
-                return ResponseStatus.success
+        response = self._database_manager.actions(Actions.add_free_days, values)
 
-        return ResponseStatus.fail
+        if response.get_status() == ResponseStatus.success:
+            self._all_free_days.append(response.get_data())
+
+        return response
 
     def _add_wage(self, values):
         employee_id = self._get_employee_id(values[0])

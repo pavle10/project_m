@@ -20,7 +20,7 @@ class AddFreeDaysView(AddView):
             self.employee_box.insertItem(index, funcs.employee_unique_name(employee))
         employee_label.setBuddy(self.employee_box)
 
-        reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[3])
+        reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[3], is_required=True)
         self.reason_line = MyEditLine()
         reason_label.setBuddy(self.reason_line)
 
@@ -49,17 +49,22 @@ class AddFreeDaysView(AddView):
     def _add(self):
         start_date = self.start_date_line.date().toPyDate()
         end_date = self.end_date_line.date().toPyDate()
-        # TODO implement valid total days calculation and move it to controller
-        total_days = end_date - start_date
+        total_days = funcs.count_free_days(start_date, end_date)
 
-        values = [self.employee_box.currentText(), start_date, end_date, total_days.days,  self.reason_line.text()]
+        values = [self.employee_box.currentText(), start_date, end_date, total_days,  self.reason_line.text()]
 
         response = self._manager.actions(Actions.add_free_days, values)
 
-        if response == ResponseStatus.success:
-            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.FREE_DAYS_ADD_SUCC_MSG)
-        elif response == ResponseStatus.fail:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.FREE_DAYS_ADD_FAIL_MSG)
+        funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
+
+        if response.get_status() == ResponseStatus.success:
+            self._clear()
+
+    def _clear(self):
+        self.employee_box.setCurrentIndex(0)
+        self.reason_line.clear()
+        self.start_date_line.setDate(cons.DEFAULT_END_DATE)
+        self.end_date_line.setDate(cons.DEFAULT_END_DATE)
 
     def get_name(self):
         return self._name

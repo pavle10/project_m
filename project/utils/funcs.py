@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QMessageBox
+import numpy as np
 
 from project.utils.enums import Levels, ResponseStatus
 import project.utils.strings as strs
@@ -92,3 +93,7 @@ def is_query_successful(response):
             return True
 
     return False
+
+
+def count_free_days(start_date, end_date):
+    return int(np.busday_count(start_date, end_date))

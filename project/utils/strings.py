@@ -139,6 +139,7 @@ SALARY_2_DEL_FAIL_MSG = "Nije uspešno izbrisana plata 2! Probajte ponovo."
 # Data validation
 REQUIRED_FIELDS_NOT_FILLED_MSG = "Sva obavezna polja (crvene boje) moraju biti popunjena!"
 NOT_INTEGER_MSG = "Vrednosti u polju {field} moraju biti celi brojevi!"
+INVALID_DATES = "Početni datum mora biti pre krajnjeg datuma!"
 INVALID_DATE_FORMAT = "Vrednosti za godine, mesece i dane moraju biti u odgovarajućim okvirima!"
 INVALID_MEASURE = "Brojevne vrednosti moraju biti pozitivne!"
 CHILD_ONE_PARENT_REQUIRED = "Bar jedan roditelj mora biti izabran!"
