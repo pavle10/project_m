@@ -495,34 +495,36 @@ class Controller:
         return None
 
     def _get_employee_salaries_1(self, values):
-        employee_id = self._get_employee_id(values[0][0])
+        start_date = values[1]
+        end_date = values[2]
 
-        if employee_id is not None:
-            values[0][0] = employee_id
-            start_date = values[1]
-            end_date = values[2]
+        if start_date > end_date:
+            return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
 
-            response = self._action_manager.actions(Actions.employee_salaries_1, values[0])
+        employee_id = self._get_employee_id(values[0])
 
-            if response:
-                return [salary for salary in response if start_date <= salary[4] <= end_date]
+        if employee_id is None and values[0] not in [strs.EMPTY, strs.ALL]:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-        return None
+        values[0] = employee_id
+
+        return self._database_manager.actions(Actions.employee_salaries_1, values)
 
     def _get_employee_salaries_2(self, values):
-        employee_id = self._get_employee_id(values[0][0])
+        start_date = values[1]
+        end_date = values[2]
 
-        if employee_id is not None:
-            values[0][0] = employee_id
-            start_date = values[1]
-            end_date = values[2]
+        if start_date > end_date:
+            return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
 
-            response = self._action_manager.actions(Actions.employee_salaries_2, values[0])
+        employee_id = self._get_employee_id(values[0])
 
-            if response:
-                return [salary for salary in response if start_date <= salary[2] <= end_date]
+        if employee_id is None and values[0] not in [strs.EMPTY, strs.ALL]:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-        return None
+        values[0] = employee_id
+
+        return self._database_manager.actions(Actions.employee_salaries_2, values)
 
     def _update_employee(self, values):
         position_id = self._get_position_id(values[7])

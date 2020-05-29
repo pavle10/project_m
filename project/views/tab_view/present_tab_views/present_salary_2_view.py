@@ -72,11 +72,15 @@ class PresentSalary2View(PresentView):
 
     def _change_label(self):
         # Get data
-        values = [[self.employee_box.currentText()], self.start_date_line.date(), self.end_date_line.date()]
+        values = [self.employee_box.currentText(),
+                  self.start_date_line.date().toPyDate(),
+                  self.end_date_line.date().toPyDate()]
 
-        self._salaries = self._manager.actions(Actions.employee_salaries_2, values)
+        response = self._manager.actions(Actions.employee_salaries_2, values)
+        self._salaries = response.get_data()
 
-        if self._salaries is None:
+        if response.get_status() == ResponseStatus.fail:
+            funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
             self.table.clearContents()
             self.table.setRowCount(0)
         else:
