@@ -88,7 +88,7 @@ class Controller:
         elif action == Actions.add_salary_1:
             return self._add_salary_1(values)
         elif action == Actions.add_salary_2:
-            return self._add_salary_2(values)
+            return self._add_salary_2(action, values)
         elif action == Actions.all_positions:
             return self._get_all_positions()
         elif action == Actions.all_employees:
@@ -658,14 +658,34 @@ class Controller:
         return ResponseStatus.fail
 
     def _update_salary_1(self, values):
-        response = self._action_manager.actions(Actions.update_salary_1, values)
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[2], values[3]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        return ResponseStatus.success if not response.endswith('0') else ResponseStatus.fail
+        if not funcs.convert_to_int(values, [2, 3]):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
+
+        if values[2] < 0 or values[3] < 0:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE_MSG)
+
+        if values[2] > values[3]:
+            return Response(ResponseStatus.fail, strs.INVALID_NET_GROSS_RATIO_MSG)
+
+        return self._database_manager.actions(Actions.update_salary_1, values)
 
     def _update_salary_2(self, values):
-        response = self._action_manager.actions(Actions.update_salary_2, values)
+        # Input data validation
+        if not funcs.convert_to_int(values, [3, 5, 7, 9, 10, 11, 12]):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
 
-        return ResponseStatus.success if not response.endswith('0') else ResponseStatus.fail
+        if values[3] < 0 or values[5] < 0 or values[7] < 0 or values[9] < 0 \
+                or values[10] < 0 or values[11] < 0 or values[12] < 0:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE_MSG)
+
+        return self._database_manager.actions(Actions.update_salary_2, values)
 
     def _delete_employee(self, values):
         response = self._action_manager.actions(Actions.delete_employee, values)
@@ -760,11 +780,7 @@ class Controller:
         return ResponseStatus.fail
 
     def _delete_salary_1(self, values):
-        response = self._action_manager.actions(Actions.delete_salary_1, values)
-
-        return ResponseStatus.success if not response.endswith('0') else ResponseStatus.fail
+        return self._database_manager.actions(Actions.delete_salary_1, values)
 
     def _delete_salary_2(self, values):
-        response = self._action_manager.actions(Actions.delete_salary_2, values)
-
-        return ResponseStatus.success if not response.endswith('0') else ResponseStatus.fail
+        return self._database_manager.actions(Actions.delete_salary_2, values)

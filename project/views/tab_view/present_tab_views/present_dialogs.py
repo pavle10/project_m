@@ -439,7 +439,7 @@ class UpdateSalary1RowDialog(QDialog):
         self.gross_line = MyEditLine(str(selected_data[3]))
         gross_label.setBuddy(self.gross_line)
 
-        date_label = MyEditLine(strs.PRESENT_SALARY_1_HDR[2])
+        date_label = MyLabel(strs.PRESENT_SALARY_1_HDR[2])
         self.date_line = MyEditDate(selected_data[4])
         date_label.setBuddy(self.date_line)
 
@@ -470,35 +470,35 @@ class UpdateSalary2RowDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        day_label = MyLabel(strs.PRESENT_SALARY_2_HDR[3])
+        day_label = MyLabel(strs.PRESENT_SALARY_2_HDR[1])
         self.day_line = MyEditLine(str(selected_data[3]))
         day_label.setBuddy(self.day_line)
 
-        hour_label = MyLabel(strs.PRESENT_SALARY_2_HDR[5])
+        hour_label = MyLabel(strs.PRESENT_SALARY_2_HDR[3])
         self.hour_line = MyEditLine(str(selected_data[5]))
         hour_label.setBuddy(self.hour_line)
 
-        meal_label = MyLabel(strs.PRESENT_SALARY_2_HDR[7])
+        meal_label = MyLabel(strs.PRESENT_SALARY_2_HDR[5])
         self.meal_line = MyEditLine(str(selected_data[7]))
         meal_label.setBuddy(self.meal_line)
 
-        payment_label = MyLabel(strs.PRESENT_SALARY_2_HDR[9])
+        payment_label = MyLabel(strs.PRESENT_SALARY_2_HDR[7])
         self.payment_line = MyEditLine(str(selected_data[9]))
         payment_label.setBuddy(self.payment_line)
 
-        vacation_label = MyEditLine(strs.PRESENT_SALARY_2_HDR[10])
+        vacation_label = MyLabel(strs.PRESENT_SALARY_2_HDR[8])
         self.vacation_line = MyEditLine(str(selected_data[10]))
         vacation_label.setBuddy(self.vacation_line)
 
-        vacation_value_label = MyLabel(strs.PRESENT_SALARY_2_HDR[11])
+        vacation_value_label = MyLabel(strs.PRESENT_SALARY_2_HDR[9])
         self.vacation_value_line = MyEditLine(str(selected_data[11]))
         vacation_value_label.setBuddy(self.vacation_value_line)
 
-        fix_label = MyLabel(strs.PRESENT_SALARY_2_HDR[12])
+        fix_label = MyLabel(strs.PRESENT_SALARY_2_HDR[10])
         self.fix_line = MyEditLine(str(selected_data[12]))
         fix_label.setBuddy(self.fix_line)
 
-        date_label = MyLabel(strs.PRESENT_SALARY_2_HDR[2])
+        date_label = MyLabel(strs.PRESENT_SALARY_2_HDR[0])
         self.date_line = MyEditDate(selected_data[2])
         date_label.setBuddy(self.date_line)
 

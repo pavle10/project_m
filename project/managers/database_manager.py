@@ -13,7 +13,6 @@ from project.models.uniform_piece import UniformPiece
 from project.models.child import Child
 from project.models.free_days import FreeDays
 from project.models.wage import Wage
-from project.models.salaries import Salary1, Salary2
 
 
 class DatabaseManager:
@@ -75,9 +74,9 @@ class DatabaseManager:
         elif action == Actions.update_wage:
             return self._update_query(sql.UPDATE_WAGE, values)
         elif action == Actions.update_salary_1:
-            return self._update_query(sql.UPDATE_SALARY_1, values)
+            return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
-            return self._update_query(sql.UPDATE_SALARY_2, values)
+            return self._update_salary_2(values)
         elif action == Actions.delete_employee:
             return self._execute_query(sql.DELETE_EMPLOYEE, QueryType.delete, values)
         elif action == Actions.delete_position:
@@ -93,9 +92,9 @@ class DatabaseManager:
         elif action == Actions.delete_wage:
             return self._execute_query(sql.DELETE_WAGE, QueryType.delete, values)
         elif action == Actions.delete_salary_1:
-            return self._execute_query(sql.DELETE_SALARY_1, QueryType.delete, values)
+            return self._delete_salary_1(values)
         elif action == Actions.delete_salary_2:
-            return self._execute_query(sql.DELETE_SALARY_2, QueryType.delete, values)
+            return self._delete_salary_2(values)
 
     def _read_config(self, section=DEFAULT_SECTION):
         parser = ConfigParser()
@@ -337,6 +336,50 @@ class DatabaseManager:
         else:
             response.set_status(ResponseStatus.fail)
             response.set_message(strs.SALARY_2_ADD_FAIL_MSG)
+
+        return response
+
+    def _update_salary_1(self, values):
+        response = self._update_query(sql.UPDATE_SALARY_1, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.SALARY_1_UPD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.SALARY_1_UPD_FAIL_MSG)
+
+        return response
+
+    def _update_salary_2(self, values):
+        response = self._update_query(sql.UPDATE_SALARY_2, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.SALARY_2_UPD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.SALARY_2_UPD_FAIL_MSG)
+
+        return response
+
+    def _delete_salary_1(self, values):
+        response = self._execute_query(sql.DELETE_SALARY_1, QueryType.delete, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.SALARY_1_DEL_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.SALARY_1_DEL_FAIL_MSG)
+
+        return response
+
+    def _delete_salary_2(self, values):
+        response = self._execute_query(sql.DELETE_SALARY_2, QueryType.delete, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.SALARY_2_DEL_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.SALARY_2_DEL_FAIL_MSG)
 
         return response
 

@@ -106,17 +106,16 @@ class PresentSalary2View(PresentView):
         if row_index is not None:
             values = self._salaries[row_index]
 
-            dialog = UpdateSalary1RowDialog(values)
+            dialog = UpdateSalary2RowDialog(values)
             if dialog.exec():
                 new_values = dialog.get_value()
 
                 response = self._manager.actions(Actions.update_salary_2, new_values)
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.SALARY_2_UPD_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self._change_label()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.SALARY_2_UPD_FAIL_MSG)
 
     def _delete(self):
         row_index = self._check_selection()
@@ -129,11 +128,10 @@ class PresentSalary2View(PresentView):
 
                 response = self._manager.actions(Actions.delete_salary_2, values)
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.SALARY_2_DEL_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self._change_label()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.SALARY_2_DEL_FAIL_MSG)
 
     def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
