@@ -271,4 +271,13 @@ class DatabaseManager:
         return response
 
     def _add_uniform(self, values):
-        return True
+        response = self._execute_query(sql.INSERT_UNIFORM, QueryType.insert, values)
+
+        if funcs.is_query_successful(response):
+            response.set_data(Uniform.from_values(response.get_data()[0]))
+            response.set_message(strs.UNIFORM_ADD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.UNIFORM_ADD_FAIL_MSG)
+
+        return response

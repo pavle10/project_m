@@ -1,6 +1,6 @@
 from project.views.tab_view.add_tab_views.add_view import AddView
 from project.utils.enums import Actions, ResponseStatus
-from project.utils import strings as strs
+from project.utils import strings as strs, funcs
 from project.models.my_widgets import *
 
 
@@ -29,10 +29,13 @@ class AddUniformView(AddView):
     def _add(self):
         response = self._manager.actions(Actions.add_uniform, [self.name_line.text()])
 
-        if response == ResponseStatus.success:
-            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.UNIFORM_ADD_SUCC_MSG)
-        elif response == ResponseStatus.fail:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.UNIFORM_ADD_FAIL_MSG)
+        funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
+
+        if response.get_status() == ResponseStatus.success:
+            self._clear()
+
+    def _clear(self):
+        self.name_line.clear()
 
     def get_name(self):
         return self._name

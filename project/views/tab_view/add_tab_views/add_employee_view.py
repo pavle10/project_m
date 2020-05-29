@@ -1,5 +1,5 @@
 from project.views.tab_view.add_tab_views.add_view import AddView
-from project.utils.enums import Actions
+from project.utils.enums import Actions, ResponseStatus
 from project.utils import strings as strs, funcs
 from project.models.my_widgets import *
 
@@ -114,15 +114,37 @@ class AddEmployeeView(AddView):
         values = [self.first_name_line.text(), self.last_name_line.text(), self.fathers_name_line.text(),
                   self.identity_number_line.text(), self.personal_card_line.text(), self.qualification_line.text(),
                   self.position_box.currentText(), self.saint_day_line.text(), self.address_line.text(),
-                  self.account_line.text(), before_m, self.start_date_line.text(),
+                  self.account_line.text(), before_m, self.start_date_line.date().toPyDate(),
                   self.home_number_line.text(), self.mobile_number_line.text(), self.situation_line.text()]
 
         response = self._manager.actions(Actions.add_employee, values)
 
         funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
 
+        if response.get_status() == ResponseStatus.success:
+            self._clear()
+
     def _get_positions(self):
         return self._manager.actions(Actions.all_positions)
+
+    def _clear(self):
+        self.first_name_line.clear()
+        self.last_name_line.clear()
+        self.fathers_name_line.clear()
+        self.identity_number_line.clear()
+        self.personal_card_line.clear()
+        self.qualification_line.clear()
+        self.position_box.setCurrentIndex(0)
+        self.saint_day_line.clear()
+        self.address_line.clear()
+        self.account_line.clear()
+        self.years_line.clear()
+        self.months_line.clear()
+        self.days_line.clear()
+        self.start_date_line.setDate(cons.DEFAULT_END_DATE)
+        self.home_number_line.clear()
+        self.mobile_number_line.clear()
+        self.situation_line.clear()
 
     def get_name(self):
         return self._name

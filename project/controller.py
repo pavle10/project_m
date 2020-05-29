@@ -230,13 +230,17 @@ class Controller:
         return response
 
     def _add_uniform(self, values):
-        response = self._action_manager.actions(Actions.add_uniform, values)
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[0]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        if response:
-            self._uniforms.append(response)
-            return ResponseStatus.success
+        response = self._database_manager.actions(Actions.add_uniform, values)
 
-        return ResponseStatus.fail
+        if response.get_status() == ResponseStatus.success:
+            self._uniforms.append(response.get_data())
+
+        return response
 
     def _add_uniform_piece(self, values):
         uniform_id = self._get_uniform_id(values[0])
