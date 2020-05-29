@@ -171,7 +171,7 @@ class Controller:
         response = self._database_manager.actions(Actions.login, values)
 
         if response.get_status() == ResponseStatus.success:
-            self._user = User.from_values(response.get_data())
+            self._user = User.from_values(response.get_data()[0])
             response.set_message(strs.SUCCESSFUL_LOGIN_MSG.format(username=self._user.get_username()))
 
         return response
@@ -179,7 +179,7 @@ class Controller:
     def _add_position(self, values):
         # Input data validation
         # Check required fields
-        if not funcs.check_required_fields([values[0]]):
+        if not funcs.check_required_fields(values[0]):
             return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
         values[1] = funcs.convert_saturday(values[1])
@@ -194,7 +194,7 @@ class Controller:
     def _add_employee(self, values):
         # Input data validation
         # Check required fields
-        if not funcs.check_required_fields([values[0], values[1], values[3], values[6], values[8]]):
+        if not funcs.check_required_fields(values[0], values[1], values[3], values[6], values[8]):
             return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
         # Check before m fields
@@ -229,7 +229,6 @@ class Controller:
 
         return response
 
-
     def _add_uniform(self, values):
         response = self._action_manager.actions(Actions.add_uniform, values)
 
@@ -256,20 +255,26 @@ class Controller:
         return ResponseStatus.fail
 
     def _add_child(self, values):
-        mother_id = self._get_employee_id(values[2])
-        father_id = self._get_employee_id(values[3])
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[0], values[1], values[3]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        if not (mother_id is None and father_id is None):
-            values[2] = mother_id
-            values[3] = father_id
+        mother_id = self._get_employee_id(values[4])
+        father_id = self._get_employee_id(values[5])
 
-            response = self._action_manager.actions(Actions.add_child, values)
+        if mother_id is None and father_id is None:
+            return Response(ResponseStatus.fail, strs.CHILD_ONE_PARENT_REQUIRED)
 
-            if response:
-                self._children.append(response)
-                return ResponseStatus.success
+        values[4] = mother_id
+        values[5] = father_id
 
-        return ResponseStatus.fail
+        response = self._database_manager.actions(Actions.add_child, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self._children.append(response.get_data())
+
+        return response
 
     def _add_free_days(self, values):
         employee_id = self._get_employee_id(values[0])

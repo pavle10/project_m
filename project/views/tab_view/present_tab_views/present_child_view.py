@@ -47,10 +47,12 @@ class PresentChildView(PresentView):
         self.table.setRowCount(len(self._children))
 
         for row, child in enumerate(self._children):
-            self.table.setItem(row, 0, QTableWidgetItem(child.get_identity_number()))
-            self.table.setItem(row, 1, QTableWidgetItem(str(child.get_birth_year())))
-            self.table.setItem(row, 2, QTableWidgetItem(child.get_mother_name()))
-            self.table.setItem(row, 3, QTableWidgetItem(child.get_father_name()))
+            self.table.setItem(row, 0, QTableWidgetItem(child.get_first_name()))
+            self.table.setItem(row, 1, QTableWidgetItem(child.get_last_name()))
+            self.table.setItem(row, 2, QTableWidgetItem(child.get_identity_number()))
+            self.table.setItem(row, 3, QTableWidgetItem(str(child.get_birthday())))
+            self.table.setItem(row, 4, QTableWidgetItem(child.get_mother_name()))
+            self.table.setItem(row, 5, QTableWidgetItem(child.get_father_name()))
 
     def _update(self):
         row_index = self._check_selection()

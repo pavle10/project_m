@@ -43,11 +43,11 @@ class DatabaseManager:
         elif action == Actions.add_position:
             return self._add_position(values)
         elif action == Actions.add_uniform:
-            return self._execute_query(sql.INSERT_UNIFORM, QueryType.insert, values)
+            return self._add_uniform(values)
         elif action == Actions.add_uniform_piece:
             return self._execute_query(sql.INSERT_UNIFORM_PIECE, QueryType.insert, values)
         elif action == Actions.add_child:
-            return self._execute_query(sql.INSERT_CHILD, QueryType.insert, values)
+            return self._add_child(values)
         elif action == Actions.add_free_days:
             return self._execute_query(sql.INSERT_FREE_DAYS, QueryType.insert, values)
         elif action == Actions.add_wage:
@@ -130,7 +130,7 @@ class DatabaseManager:
                     # Do not set status to fail, because some queries are successful even if the rowcount == 0
                     data = list()
                 elif cur.rowcount == 1:
-                    data = cur.fetchone()
+                    data = [cur.fetchone()]
                 elif cur.rowcount > 1:
                     data = cur.fetchall()
 
@@ -238,7 +238,7 @@ class DatabaseManager:
         response = self._execute_query(sql.INSERT_EMPLOYEE, QueryType.insert, values)
 
         if funcs.is_query_successful(response):
-            response.set_data(Employee.from_values(response.get_data()))
+            response.set_data(Employee.from_values(response.get_data()[0]))
             response.set_message(strs.EMPLOYEE_ADD_SUCC_MSG)
         else:
             response.set_status(ResponseStatus.fail)
@@ -250,10 +250,25 @@ class DatabaseManager:
         response = self._execute_query(sql.INSERT_POSITION, QueryType.insert, values)
 
         if funcs.is_query_successful(response):
-            response.set_data(Position.from_values(response.get_data()))
+            response.set_data(Position.from_values(response.get_data()[0]))
             response.set_message(strs.POSITION_ADD_SUCC_MSG)
         else:
             response.set_status(ResponseStatus.fail)
             response.set_message(strs.POSITION_ADD_FAIL_MSG)
 
         return response
+
+    def _add_child(self, values):
+        response = self._execute_query(sql.INSERT_CHILD, QueryType.insert, values)
+
+        if funcs.is_query_successful(response):
+            response.set_data(Child.from_values(response.get_data()[0]))
+            response.set_message(strs.CHILD_ADD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.CHILD_ADD_FAIL_MSG)
+
+        return response
+
+    def _add_uniform(self, values):
+        return True

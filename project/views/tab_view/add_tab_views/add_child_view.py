@@ -1,5 +1,5 @@
 from project.views.tab_view.add_tab_views.add_view import AddView
-from project.utils.enums import Actions, ResponseStatus
+from project.utils.enums import Actions
 from project.utils import strings as strs, funcs
 from project.models.my_widgets import *
 
@@ -14,15 +14,23 @@ class AddChildView(AddView):
         self._init_ui()
 
     def _init_ui(self):
-        identity_number_label = MyLabel(strs.PRESENT_CHILD_HDR[0])
-        self.identity_number_line = MyEditLine(self)
+        first_name_label = MyLabel(strs.PRESENT_CHILD_HDR[0], is_required=True)
+        self.first_name_line = MyEditLine()
+        first_name_label.setBuddy(self.first_name_line)
+
+        last_name_label = MyLabel(strs.PRESENT_CHILD_HDR[1], is_required=True)
+        self.last_name_label = MyEditLine()
+        last_name_label.setBuddy(self.last_name_label)
+
+        identity_number_label = MyLabel(strs.PRESENT_CHILD_HDR[2])
+        self.identity_number_line = MyEditLine()
         identity_number_label.setBuddy(self.identity_number_line)
 
-        birth_year_label = MyLabel(strs.PRESENT_CHILD_HDR[1], is_required=True)
-        self.birth_year_line = MyEditLine(self)
-        birth_year_label.setBuddy(self.birth_year_line)
+        birthday_label = MyLabel(strs.PRESENT_CHILD_HDR[3], is_required=True)
+        self.birthday_line = MyEditDate()
+        birthday_label.setBuddy(self.birthday_line)
 
-        mother_label = MyLabel(strs.PRESENT_CHILD_HDR[2])
+        mother_label = MyLabel(strs.PRESENT_CHILD_HDR[4])
         # TODO Think about better MyComboBox initialization
         self.mother_box = MyComboBox()
         self.mother_box.insertItem(0, strs.EMPTY)
@@ -30,7 +38,7 @@ class AddChildView(AddView):
             self.mother_box.insertItem(index+1, funcs.employee_unique_name(employee))
         mother_label.setBuddy(self.mother_box)
 
-        father_label = MyLabel(strs.PRESENT_CHILD_HDR[3])
+        father_label = MyLabel(strs.PRESENT_CHILD_HDR[5])
         self.father_box = MyComboBox()
         self.father_box.insertItem(0, strs.EMPTY)
         for index, employee in enumerate(self._get_employees()):
@@ -41,8 +49,10 @@ class AddChildView(AddView):
         add_button.clicked.connect(self._add)
 
         layout = QFormLayout()
+        layout.addRow(first_name_label, self.first_name_line)
+        layout.addRow(last_name_label, self.last_name_label)
         layout.addRow(identity_number_label, self.identity_number_line)
-        layout.addRow(birth_year_label, self.birth_year_line)
+        layout.addRow(birthday_label, self.birthday_line)
         layout.addRow(mother_label, self.mother_box)
         layout.addRow(father_label, self.father_box)
         layout.addWidget(add_button)
@@ -52,22 +62,12 @@ class AddChildView(AddView):
         return self._manager.actions(Actions.all_employees)
 
     def _add(self):
-        mother = self.mother_box.currentText()
-        father = self.father_box.currentText()
-
-        if mother == strs.EMPTY and father == strs.EMPTY:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.CHILD_ONE_PARENT_REQUIRED)
-
-            return
-
-        values = [self.identity_number_line.text(), self.birth_year_line.text(), mother, father]
+        values = [self.first_name_line.text(), self.last_name_label.text(), self.identity_number_line.text(),
+                  self.birthday_line.date().toPyDate(), self.mother_box.currentText(), self.father_box.currentText()]
 
         response = self._manager.actions(Actions.add_child, values)
 
-        if response == ResponseStatus.success:
-            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.CHILD_ADD_SUCC_MSG)
-        elif response == ResponseStatus.fail:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.CHILD_ADD_FAIL_MSG)
+        funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
 
     def get_name(self):
         return self._name

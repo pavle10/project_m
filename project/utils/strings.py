@@ -41,7 +41,7 @@ PRINT_BTN = "Štampaj"
 PRESENT_EMPLOYEE_HDR = ["Ime", "Prezime", "Ime oca", "JMBG", "Lična karta", "Stručna sprema", "Radno mesto", "Slava",
                         "Adresa", "Tekući račun", "Staž pre M", "Staž u M", "Kućni telefon", "Mobilni telefon", "Prijava"]
 PRESENT_POSITION_HDR = ["Naziv", "Radna subota"]
-PRESENT_CHILD_HDR = ["JMBG", "Godina rodjenja", "Majka", "Otac"]
+PRESENT_CHILD_HDR = ["Ime", "Prezime", "JMBG", "Datum rodjenja", "Majka", "Otac"]
 PRESENT_UNIFORM_HDR = ["Naziv"]
 PRESENT_UNIFORM_PIECE_HDR = ["Naziv", "Veličina", "Količina", "Dodatno", "Datum"]
 PRESENT_FREE_DAYS_HDR = ["Početak", "Završetak", "Ukupno dana", "Razlog"]
