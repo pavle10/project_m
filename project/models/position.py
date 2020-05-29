@@ -32,3 +32,10 @@ class Position:
 
     def __hash__(self):
         return hash(self.position_id)
+
+    def data_to_array(self):
+        return [self.position_id, self.name, self.saturday]
+
+    def update_data(self, values):
+        self.name = values[1]
+        self.saturday = values[2]

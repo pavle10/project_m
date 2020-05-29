@@ -62,7 +62,7 @@ class DatabaseManager:
         elif action == Actions.update_employee:
             return self._update_employee(values)
         elif action == Actions.update_position:
-            return self._update_query(sql.UPDATE_POSITION, values)
+            return self._update_position(values)
         elif action == Actions.update_child:
             return self._update_query(sql.UPDATE_CHILD, values)
         elif action == Actions.update_uniform:
@@ -80,7 +80,7 @@ class DatabaseManager:
         elif action == Actions.delete_employee:
             return self._delete_employee(values)
         elif action == Actions.delete_position:
-            return self._execute_query(sql.DELETE_POSITION, QueryType.delete, values)
+            return self._delete_position(values)
         elif action == Actions.delete_child:
             return self._execute_query(sql.DELETE_CHILD, QueryType.delete, values)
         elif action == Actions.delete_uniform:
@@ -350,6 +350,17 @@ class DatabaseManager:
 
         return response
 
+    def _update_position(self, values):
+        response = self._update_query(sql.UPDATE_POSITION, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.POSITION_UPD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.POSITION_UPD_FAIL_MSG)
+
+        return response
+
     def _update_free_days(self, values):
         response = self._update_query(sql.UPDATE_FREE_DAYS, values)
 
@@ -402,6 +413,17 @@ class DatabaseManager:
         else:
             response.set_status(ResponseStatus.fail)
             response.set_message(strs.EMPLOYEE_DEL_FAIL_MSG)
+
+        return response
+
+    def _delete_position(self, values):
+        response = self._execute_query(sql.DELETE_POSITION, QueryType.delete, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.POSITION_DEL_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.POSITION_DEL_FAIL_MSG)
 
         return response
 

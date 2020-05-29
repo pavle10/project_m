@@ -576,21 +576,26 @@ class Controller:
         return response
 
     def _update_position(self, values):
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[1], values[2]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
+
         position_id = self._get_position_id(values[0])
 
-        if position_id is not None:
-            values[1][0] = position_id
-            response = self._action_manager.actions(Actions.update_position, values[1])
+        if position_id is None:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            if not response.endswith('0'):
-                for position in self._positions:
-                    if position.get_name() == values[0]:
-                        position.set_name(values[1][1])
-                        position.set_saturday(values[1][2])
+        values[0] = position_id
+        response = self._database_manager.actions(Actions.update_position, values)
 
-                        return ResponseStatus.success
+        if response.get_status() == ResponseStatus.success:
+            for position in self._positions:
+                if position.get_position_id() == values[0]:
+                    position.update_data(values)
+                    break
 
-        return ResponseStatus.fail
+        return response
 
     def _update_child(self, values):
         mother_id = self._get_employee_id(values[4])
@@ -732,19 +737,19 @@ class Controller:
     def _delete_position(self, values):
         position_id = self._get_position_id(values[0])
 
-        if position_id is not None:
-            values[0] = position_id
-            response = self._action_manager.actions(Actions.delete_position, values)
-            print(response)
+        if position_id is None:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            if not response.endswith('0'):
-                for position in self._positions:
-                    if position.get_position_id() == position_id:
-                        self._positions.remove(position)
+        values[0] = position_id
+        response = self._database_manager.actions(Actions.delete_position, values)
 
-                        return ResponseStatus.success
+        if response.get_status() == ResponseStatus.success:
+            for position in self._positions:
+                if position.get_position_id() == position_id:
+                    self._positions.remove(position)
+                    break
 
-        return ResponseStatus.fail
+        return response
 
     def _delete_child(self, values):
         response = self._action_manager.actions(Actions.delete_child, values)

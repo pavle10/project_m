@@ -58,18 +58,17 @@ class PresentPositionView(PresentView):
         if row_index is not None:
             position_name = self.table.selectedItems()[0].text()
             saturday_value = int(not funcs.convert_saturday(self.table.selectedItems()[1].text()))
-            values = [None, position_name, saturday_value]
+            values = [position_name, position_name, saturday_value]
 
             dialog = UpdatePositionDialog(values)
 
             if dialog.exec():
-                response = self._manager.actions(Actions.update_position, [position_name, dialog.get_value()])
+                response = self._manager.actions(Actions.update_position, dialog.get_value())
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.POSITION_UPD_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self.update_table()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.POSITION_UPD_FAIL_MSG)
 
     def _delete(self):
         row_index = self._check_selection()
@@ -81,13 +80,11 @@ class PresentPositionView(PresentView):
 
             if dialog.exec():
                 response = self._manager.actions(Actions.delete_position, values)
-                print(response)
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.POSITION_DEL_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self.update_table()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.POSITION_DEL_FAIL_MSG)
 
     def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
