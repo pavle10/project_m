@@ -30,6 +30,8 @@ DIALOGS_WIDTH = 300
 DIALOGS_HEIGHT = 150
 LABELS_WIDTH = 150
 LABELS_HEIGHT = 25
+SHORT_LABELS_WIDTH = 50
+SHORT_LABELS_HEIGHT = 25
 LINES_WIDTH = 300
 LINES_HEIGHT = 25
 BUTTONS_WIDTH = 150
@@ -39,6 +41,7 @@ BUTTONS_HEIGHT = 28
 TABS_FONT = QFont("Times", pointSize=11, weight=QFont.Normal)
 LIST_FONT = QFont("Times", pointSize=11, weight=QFont.Normal)
 LABELS_FONT = QFont("Times", pointSize=10, weight=QFont.Bold)
+SHORT_LABELS_FONT = QFont("Times", pointSize=10, weight=QFont.Medium)
 LINES_FONT = QFont("Times", pointSize=10, weight=QFont.Medium)
 BUTTONS_FONT = QFont("Times", pointSize=10, weight=QFont.Medium)
 

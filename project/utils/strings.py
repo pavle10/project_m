@@ -136,8 +136,12 @@ SALARY_2_UPD_FAIL_MSG = "Nije uspešno promenjena plata 2! Probajte ponovo."
 SALARY_2_DEL_SUCC_MSG = "Uspešno je izbrisana plata 2!"
 SALARY_2_DEL_FAIL_MSG = "Nije uspešno izbrisana plata 2! Probajte ponovo."
 
-# Messages about data validation
+# Data validation
+REQUIRED_FIELDS_NOT_FILLED_MSG = "Sva obavezna polja (crvene boje) moraju biti popunjena!"
+NOT_INTEGER_VALUE_MSG = "Vrednosti u polju {field} moraju biti celi brojevi!"
+INVALID_DATE_FORMAT = "Vrednosti za godine, mesece i dane moraju biti u odgovarajućim okvirima!"
 CHILD_ONE_PARENT_REQUIRED = "Bar jedan roditelj mora biti izabran!"
 
 # Other
 NOT_IMPLEMENTED_MSG = "Nije implementirano!"
+INTERNAL_ERROR_MSG = "Interna greška! Pitaj Pavla."

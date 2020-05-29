@@ -1,7 +1,7 @@
-from project.utils.enums import Actions, ResponseStatus
 from project.views.tab_view.add_tab_views.add_view import AddView
+from project.utils.enums import Actions, ResponseStatus
+from project.utils import strings as strs, funcs
 from project.models.my_widgets import *
-from project.utils import strings as strs
 
 
 class AddEmployeeView(AddView):
@@ -57,8 +57,19 @@ class AddEmployeeView(AddView):
         account_label.setBuddy(self.account_line)
 
         before_m_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[10])
-        self.before_m_line = MyEditLine()
-        before_m_label.setBuddy(self.before_m_line)
+        years_label = MyLabelShort("Godina")
+        self.years_line = MyEditLineShort()
+        months_label = MyLabelShort("Meseci")
+        self.months_line = MyEditLineShort()
+        days_label = MyLabelShort("Dana")
+        self.days_line = MyEditLineShort()
+        before_layout = QHBoxLayout()
+        before_layout.addWidget(years_label)
+        before_layout.addWidget(self.years_line)
+        before_layout.addWidget(months_label)
+        before_layout.addWidget(self.months_line)
+        before_layout.addWidget(days_label)
+        before_layout.addWidget(self.days_line)
 
         start_date_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[11], is_required=True)
         self.start_date_line = MyEditDate()
@@ -90,7 +101,7 @@ class AddEmployeeView(AddView):
         layout.addRow(saint_day_label, self.saint_day_line)
         layout.addRow(address_label, self.address_line)
         layout.addRow(account_label, self.account_line)
-        layout.addRow(before_m_label, self.before_m_line)
+        layout.addRow(before_m_label, before_layout)
         layout.addRow(start_date_label, self.start_date_line)
         layout.addRow(home_number_label, self.home_number_line)
         layout.addRow(mobile_number_label, self.mobile_number_line)
@@ -99,17 +110,16 @@ class AddEmployeeView(AddView):
         self.setLayout(layout)
 
     def _add(self):
+        before_m = [self.years_line.text(), self.months_line.text(), self.days_line.text()]
         values = [self.first_name_line.text(), self.last_name_line.text(), self.fathers_name_line.text(),
                   self.identity_number_line.text(), self.personal_card_line.text(), self.qualification_line.text(),
                   self.position_box.currentText(), self.saint_day_line.text(), self.address_line.text(),
-                  self.account_line.text(), self.before_m_line.text(), self.start_date_line.text(),
+                  self.account_line.text(), before_m, self.start_date_line.text(),
                   self.home_number_line.text(), self.mobile_number_line.text(), self.situation_line.text()]
+
         response = self._manager.actions(Actions.add_employee, values)
 
-        if response == ResponseStatus.success:
-            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.EMPLOYEE_ADD_SUCC_MSG)
-        elif response == ResponseStatus.fail:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.EMPLOYEE_ADD_FAIL_MSG)
+        funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
 
     def _get_positions(self):
         return self._manager.actions(Actions.all_positions)

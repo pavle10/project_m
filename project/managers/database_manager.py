@@ -6,7 +6,6 @@ from project.utils.constants import DATABASE_CONFIG_PATH, DEFAULT_SECTION
 from project.utils.enums import Actions, QueryType, ResponseStatus
 from project.utils import strings as strs, sql_queries as sql
 from project.models.response import Response
-from project.models.user import User
 from project.models.position import Position
 from project.models.employee import Employee
 from project.models.uniform import Uniform
@@ -40,7 +39,7 @@ class DatabaseManager:
         elif action == Actions.all_wages:
             return self._get_wages()
         elif action == Actions.add_employee:
-            return self._execute_query(sql.INSERT_EMPLOYEE, QueryType.insert, values)
+            return self._add_employee(values)
         elif action == Actions.add_position:
             return self._execute_query(sql.INSERT_POSITION, QueryType.insert, values)
         elif action == Actions.add_uniform:
@@ -231,6 +230,19 @@ class DatabaseManager:
         if response.get_status() == ResponseStatus.success:
             data = [Wage.from_values(values) for values in response.get_data()]
             response.set_data(data)
+
+        return response
+
+    def _add_employee(self, values):
+        response = self._execute_query(sql.INSERT_EMPLOYEE, QueryType.insert, values)
+
+        if response.get_status() == ResponseStatus.success:
+            if len(response.get_data()) > 0:
+                response.set_data(Employee.from_values(response.get_data()))
+                response.set_message(strs.EMPLOYEE_ADD_SUCC_MSG)
+            else:
+                response.set_status(ResponseStatus.fail)
+                response.set_message(strs.EMPLOYEE_ADD_FAIL_MSG)
 
         return response
 

@@ -36,6 +36,16 @@ class MyLabel(QLabel):
             self.setStyleSheet(cons.LABEL_REQ_FLD_STYLE)
 
 
+class MyLabelShort(QLabel):
+
+    def __init__(self, text, *args, **kwargs):
+        super(MyLabelShort, self).__init__(*args, **kwargs)
+
+        self.setText(f"{text}:")
+        self.setFixedSize(cons.SHORT_LABELS_WIDTH, cons.SHORT_LABELS_HEIGHT)
+        self.setFont(cons.SHORT_LABELS_FONT)
+
+
 class MyEditLine(QLineEdit):
 
     def __init__(self, *args, **kwargs):
@@ -43,6 +53,15 @@ class MyEditLine(QLineEdit):
 
         self.setFixedSize(cons.LINES_WIDTH, cons.LINES_HEIGHT)
         self.setFont(cons.LINES_FONT)
+
+
+class MyEditLineShort(QLineEdit):
+
+    def __init__(self, *args, **kwargs):
+        super(MyEditLineShort, self).__init__(*args, **kwargs)
+
+        self.setFixedSize(cons.SHORT_LABELS_WIDTH, cons.SHORT_LABELS_HEIGHT)
+        self.setFont(cons.SHORT_LABELS_FONT)
 
 
 class MyComboBox(QComboBox):

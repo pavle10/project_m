@@ -186,17 +186,42 @@ class Controller:
         return ResponseStatus.fail
 
     def _add_employee(self, values):
+        # Input data validation
+        # Check required fields
+        if values[0] == "" or values[1] == "" or values[3] == "" or values[6] == "" or values[8] == "":
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
+
+        # Check before m fields
+        before_m = values[10]
+
+        try:
+            years = 0 if before_m[0] == "" else int(before_m[0])
+            months = 0 if before_m[1] == "" else int(before_m[1])
+            days = 0 if before_m[2] == "" else int(before_m[2])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_VALUE_MSG.format(field=strs.PRESENT_EMPLOYEE_HDR[10]))
+
+        if years < 0 or months < 0 or months > 11 or days < 0 or days > 30:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INVALID_DATE_FORMAT)
+
+        values[10] = funcs.to_days(years, months, days)
+
         position_id = self._get_position_id(values[6])
 
-        if position_id is not None:
-            values[6] = position_id
-            response = self._action_manager.actions(Actions.add_employee, values)
+        if position_id is None:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            if response:
-                self._employees.append(response)
-                return ResponseStatus.success
+        values[6] = position_id
+        response = self._database_manager.actions(Actions.add_employee, values)
 
-        return ResponseStatus.fail
+        if response.get_status() == ResponseStatus.success:
+            self._employees.append(response.get_data())
+
+        return response
+
 
     def _add_uniform(self, values):
         response = self._action_manager.actions(Actions.add_uniform, values)

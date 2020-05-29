@@ -28,3 +28,51 @@ def show_message(parent, status, title, message):
         QMessageBox.information(parent, title, message)
     else:
         QMessageBox.warning(parent, title, message)
+
+
+def from_days(num_days):
+    years = 0
+    months = 0
+
+    delta = 365
+    count = 1
+    while num_days - delta >= 0:
+        num_days -= delta
+        years += 1
+        count = (count + 1) % 4
+        if count:
+            delta = 365
+        else:
+            delta = 366
+
+    delta = 31
+    count = 1
+    while num_days - delta >= 0:
+        num_days -= delta
+        months += 1
+        count += 1
+        if count == 2:
+            if years != 0 and years % 3 == 0:
+                delta = 29
+            else:
+                delta = 28
+        elif count in [3, 5, 7, 8, 10, 12]:
+            delta = 31
+        else:
+            delta = 30
+
+    return [years, months, num_days]
+
+
+def to_days(years, months, days):
+    leap_years = years // 4
+    days += 366 * leap_years + 365 * (years - leap_years)
+
+    months_list = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    if years != 0 and years % 3 == 0:
+        months_list[1] = 29
+
+    for i in range(months):
+        days += months_list[i]
+
+    return days
