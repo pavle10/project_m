@@ -4,7 +4,7 @@ import psycopg2
 
 from project.utils.constants import DATABASE_CONFIG_PATH, DEFAULT_SECTION
 from project.utils.enums import Actions, QueryType, ResponseStatus
-from project.utils import strings as strs, sql_queries as sql
+from project.utils import strings as strs, sql_queries as sql, funcs
 from project.models.response import Response
 from project.models.position import Position
 from project.models.employee import Employee
@@ -41,7 +41,7 @@ class DatabaseManager:
         elif action == Actions.add_employee:
             return self._add_employee(values)
         elif action == Actions.add_position:
-            return self._execute_query(sql.INSERT_POSITION, QueryType.insert, values)
+            return self._add_position(values)
         elif action == Actions.add_uniform:
             return self._execute_query(sql.INSERT_UNIFORM, QueryType.insert, values)
         elif action == Actions.add_uniform_piece:
@@ -127,6 +127,7 @@ class DatabaseManager:
 
             if query_type in [QueryType.select, QueryType.insert]:
                 if cur.rowcount == 0:
+                    # Do not set status to fail, because some queries are successful even if the rowcount == 0
                     data = list()
                 elif cur.rowcount == 1:
                     data = cur.fetchone()
@@ -236,13 +237,23 @@ class DatabaseManager:
     def _add_employee(self, values):
         response = self._execute_query(sql.INSERT_EMPLOYEE, QueryType.insert, values)
 
-        if response.get_status() == ResponseStatus.success:
-            if len(response.get_data()) > 0:
-                response.set_data(Employee.from_values(response.get_data()))
-                response.set_message(strs.EMPLOYEE_ADD_SUCC_MSG)
-            else:
-                response.set_status(ResponseStatus.fail)
-                response.set_message(strs.EMPLOYEE_ADD_FAIL_MSG)
+        if funcs.is_query_successful(response):
+            response.set_data(Employee.from_values(response.get_data()))
+            response.set_message(strs.EMPLOYEE_ADD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.EMPLOYEE_ADD_FAIL_MSG)
 
         return response
 
+    def _add_position(self, values):
+        response = self._execute_query(sql.INSERT_POSITION, QueryType.insert, values)
+
+        if funcs.is_query_successful(response):
+            response.set_data(Position.from_values(response.get_data()))
+            response.set_message(strs.POSITION_ADD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.POSITION_ADD_FAIL_MSG)
+
+        return response

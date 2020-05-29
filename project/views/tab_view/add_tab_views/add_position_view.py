@@ -1,6 +1,6 @@
 from project.views.tab_view.add_tab_views.add_view import AddView
 from project.utils.enums import Actions, ResponseStatus
-from project.utils import strings as strs
+from project.utils import strings as strs, funcs
 from project.models.my_widgets import *
 
 
@@ -18,7 +18,7 @@ class AddPositionView(AddView):
         self.name_line = MyEditLine()
         name_label.setBuddy(self.name_line)
 
-        saturday_label = MyLabel(strs.PRESENT_POSITION_HDR[1], is_required=True)
+        saturday_label = MyLabel(strs.PRESENT_POSITION_HDR[1])
         self.saturday = MyComboBox()
         self.saturday.addItem(strs.YES)
         self.saturday.addItem(strs.NO)
@@ -36,10 +36,7 @@ class AddPositionView(AddView):
     def _add(self):
         response = self._manager.actions(Actions.add_position, [self.name_line.text(), self.saturday.currentText()])
 
-        if response == ResponseStatus.success:
-            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.POSITION_ADD_SUCC_MSG)
-        elif response == ResponseStatus.fail:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.POSITION_ADD_FAIL_MSG)
+        funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
 
     def get_name(self):
         return self._name

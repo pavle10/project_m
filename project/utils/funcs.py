@@ -76,3 +76,19 @@ def to_days(years, months, days):
         days += months_list[i]
 
     return days
+
+
+def check_required_fields(*args):
+    for arg in args:
+        if arg == "":
+            return False
+
+    return True
+
+
+def is_query_successful(response):
+    if response.get_status() == ResponseStatus.success:
+        if len(response.get_data()) > 0:
+            return True
+
+    return False

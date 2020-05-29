@@ -177,18 +177,24 @@ class Controller:
         return response
 
     def _add_position(self, values):
-        response = self._action_manager.actions(Actions.add_position, values)
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields([values[0]]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        if response:
+        values[1] = funcs.convert_saturday(values[1])
+
+        response = self._database_manager.actions(Actions.add_position, values)
+
+        if response.get_status() == ResponseStatus.success:
             self._positions.append(response)
-            return ResponseStatus.success
 
-        return ResponseStatus.fail
+        return response
 
     def _add_employee(self, values):
         # Input data validation
         # Check required fields
-        if values[0] == "" or values[1] == "" or values[3] == "" or values[6] == "" or values[8] == "":
+        if not funcs.check_required_fields([values[0], values[1], values[3], values[6], values[8]]):
             return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
         # Check before m fields
@@ -210,6 +216,7 @@ class Controller:
 
         position_id = self._get_position_id(values[6])
 
+        # Check position id
         if position_id is None:
             # TODO write to log
             return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
