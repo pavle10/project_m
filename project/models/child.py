@@ -71,3 +71,17 @@ class Child:
 
     def __hash__(self):
         return hash(self.child_id)
+
+    def data_to_array(self):
+        return [self.child_id, self.first_name, self.last_name, self.identity_number, self.birthday,
+                self.mother_id, self.mother_name, self.father_id, self.father_name]
+
+    def update_data(self, values):
+        self.first_name = values[1]
+        self.last_name = values[2]
+        self.identity_number = values[3]
+        self.birthday = values[4]
+        self.mother_id = values[5]
+        self.mother_name = values[6]
+        self.father_id = values[7]
+        self.father_name = values[8]

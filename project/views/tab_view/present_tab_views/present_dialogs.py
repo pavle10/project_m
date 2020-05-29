@@ -209,26 +209,26 @@ class UpdateChildDialog(QDialog):
         identity_number_label.setBuddy(self.identity_number_line)
 
         birthday_label = MyLabel(strs.PRESENT_CHILD_HDR[3])
-        self.birthday_line = MyEditLine(selected_data[4])
+        self.birthday_line = MyEditDate(selected_data[4])
         birthday_label.setBuddy(self.birthday_line)
 
-        mother_label = MyLabel(strs.PRESENT_CHILD_HDR[3])
+        mother_label = MyLabel(strs.PRESENT_CHILD_HDR[4])
         self.mother_box = MyComboBox()
         self.mother_box.insertItem(0, "")
         select_index = 0
         for index, employee in enumerate(employees):
             self.mother_box.insertItem(index + 1, funcs.employee_unique_name(employee))
-            select_index = index + 1 if employee.get_employee_id() == selected_data[3] else select_index
+            select_index = index + 1 if employee.get_employee_id() == selected_data[5] else select_index
         self.mother_box.setCurrentIndex(select_index)
         mother_label.setBuddy(self.mother_box)
 
-        father_label = MyLabel(strs.PRESENT_CHILD_HDR[4])
+        father_label = MyLabel(strs.PRESENT_CHILD_HDR[5])
         self.father_box = MyComboBox()
         self.father_box.insertItem(0, "")
         select_index = 0
         for index, employee in enumerate(employees):
             self.father_box.insertItem(index + 1, funcs.employee_unique_name(employee))
-            select_index = index + 1 if employee.get_employee_id() == selected_data[5] else select_index
+            select_index = index + 1 if employee.get_employee_id() == selected_data[7] else select_index
         self.father_box.setCurrentIndex(select_index)
         father_label.setBuddy(self.father_box)
 

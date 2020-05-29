@@ -64,7 +64,7 @@ class DatabaseManager:
         elif action == Actions.update_position:
             return self._update_position(values)
         elif action == Actions.update_child:
-            return self._update_query(sql.UPDATE_CHILD, values)
+            return self._update_child(values)
         elif action == Actions.update_uniform:
             return self._update_query(sql.UPDATE_UNIFORM, values)
         elif action == Actions.update_uniform_piece:
@@ -82,7 +82,7 @@ class DatabaseManager:
         elif action == Actions.delete_position:
             return self._delete_position(values)
         elif action == Actions.delete_child:
-            return self._execute_query(sql.DELETE_CHILD, QueryType.delete, values)
+            return self._delete_child(values)
         elif action == Actions.delete_uniform:
             return self._execute_query(sql.DELETE_UNIFORM, QueryType.delete, values)
         elif action == Actions.delete_uniform_piece:
@@ -361,6 +361,17 @@ class DatabaseManager:
 
         return response
 
+    def _update_child(self, values):
+        response = self._update_query(sql.UPDATE_CHILD, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.CHILD_UPD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.CHILD_UPD_FAIL_MSG)
+
+        return response
+
     def _update_free_days(self, values):
         response = self._update_query(sql.UPDATE_FREE_DAYS, values)
 
@@ -424,6 +435,17 @@ class DatabaseManager:
         else:
             response.set_status(ResponseStatus.fail)
             response.set_message(strs.POSITION_DEL_FAIL_MSG)
+
+        return response
+
+    def _delete_child(self, values):
+        response = self._execute_query(sql.DELETE_CHILD, QueryType.delete, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.CHILD_DEL_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.CHILD_DEL_FAIL_MSG)
 
         return response
 

@@ -59,25 +59,20 @@ class PresentChildView(PresentView):
 
         if row_index is not None:
             child = self._children[row_index]
-            values = [child.get_child_id(), child.get_first_name(), child.get_last_name(),  child.get_identity_number(),
-                      child.get_birthday(), child.get_mother_id(), child.get_mother_name(), child.get_father_id(),
-                      child.get_father_name()]
+            values = child.data_to_array()
             employees = self._manager.actions(Actions.all_employees)
+
+            print(values)
 
             dialog = UpdateChildDialog(values, employees)
 
             if dialog.exec():
-                new_values = dialog.get_value()
-                new_values = list(map(lambda x: None if x == "" else x, new_values))
-                new_values[2] = int(new_values[2])
+                response = self._manager.actions(Actions.update_child, dialog.get_value())
 
-                response = self._manager.actions(Actions.update_child, new_values)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.CHILD_UPD_SUCC_MSG)
+                if response.get_status() == ResponseStatus.success:
                     self.update_table()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.CHILD_UPD_FAIL_MSG)
 
     def _delete(self):
         row_index = self._check_selection()
@@ -86,15 +81,12 @@ class PresentChildView(PresentView):
             dialog = DeleteRowDialog(self)
 
             if dialog.exec():
-                values = [self._children[row_index].get_child_id()]
+                response = self._manager.actions(Actions.delete_child, [self._children[row_index].get_child_id()])
 
-                response = self._manager.actions(Actions.delete_child, values)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.CHILD_DEL_SUCC_MSG)
+                if response.get_status() == ResponseStatus.success:
                     self.update_table()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.CHILD_DEL_FAIL_MSG)
 
     def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
@@ -102,7 +94,7 @@ class PresentChildView(PresentView):
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
 
-        if len(self.table.selectedItems()) != 4 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
+        if len(self.table.selectedItems()) != 6 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
             QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
             self.table.clearSelection()
 

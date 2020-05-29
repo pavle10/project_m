@@ -598,25 +598,33 @@ class Controller:
         return response
 
     def _update_child(self, values):
-        mother_id = self._get_employee_id(values[4])
-        father_id = self._get_employee_id(values[6])
-        query_values = [values[0], values[1], values[2], mother_id, father_id]
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[1], values[2], values[4]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        response = self._action_manager.actions(Actions.update_child, query_values)
+        if values[6] == "" and values[8] == "":
+            return Response(ResponseStatus.fail, strs.CHILD_ONE_PARENT_REQUIRED_MSG)
 
-        if not response.endswith('0'):
+        mother_id = self._get_employee_id(values[6])
+        father_id = self._get_employee_id(values[8])
+
+        if mother_id is None and father_id is None:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
+
+        query_values = [values[0], values[1], values[2], values[3], values[4], mother_id, father_id]
+        values[5] = mother_id
+        values[7] = father_id
+
+        response = self._database_manager.actions(Actions.update_child, query_values)
+
+        if response.get_status() == ResponseStatus.success:
             for child in self._children:
                 if child.get_child_id() == values[0]:
-                    child.set_identity_number(values[1])
-                    child.set_birth_year(values[2])
-                    child.set_mother_id(mother_id)
-                    child.set_mother_name(values[4])
-                    child.set_father_id(father_id)
-                    child.set_father_name(values[6])
+                    child.update_data(values)
+                    break
 
-                    return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return response
 
     def _update_uniform(self, values):
         uniform_id = self._get_uniform_id(values[0])
@@ -754,14 +762,13 @@ class Controller:
     def _delete_child(self, values):
         response = self._action_manager.actions(Actions.delete_child, values)
 
-        if not response.endswith('0'):
+        if response.get_status() == ResponseStatus.success:
             for child in self._children:
                 if child.get_child_id() == values[0]:
                     self._children.remove(child)
+                    break
 
-                    return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return response
 
     def _delete_uniform(self, values):
         uniform_id = self._get_uniform_id(values[0])
