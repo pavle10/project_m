@@ -20,6 +20,17 @@ def convert_date_to_string(date):
     return f"{date.year()}-{date.month()}-{date.day()}"
 
 
+def convert_to_int(values, indices):
+    try:
+        for index in indices:
+            values[index] = 0 if values[index] == "" else int(values[index])
+    except ValueError:
+        # TODO Write to log
+        return False
+
+    return True
+
+
 def employee_unique_name(employee):
     return f"{employee.get_first_name()} {employee.get_last_name()} {employee.get_identity_number()}"
 

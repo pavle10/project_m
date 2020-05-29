@@ -29,6 +29,9 @@ USERNAME_LBL = "Korisničko ime:"
 PASSWORD_LBL = "Lozinka:"
 FROM_DATE_LBL = "Od datuma"
 TO_DATE_LBL = "Do datuma"
+YEARS = "Godine"
+MONTHS = "Meseci"
+DAYS = "Dani"
 
 # ===== BUTTONS =====
 LOGIN_BTN = "Uloguj se"
@@ -138,7 +141,7 @@ SALARY_2_DEL_FAIL_MSG = "Nije uspešno izbrisana plata 2! Probajte ponovo."
 
 # Data validation
 REQUIRED_FIELDS_NOT_FILLED_MSG = "Sva obavezna polja (crvene boje) moraju biti popunjena!"
-NOT_INTEGER_MSG = "Vrednosti u polju {field} moraju biti celi brojevi!"
+NOT_INTEGER_MSG = "Slovni karakteri uneti u polje gde se traže cifre!"
 INVALID_DATES_MSG = "Početni datum mora biti pre krajnjeg datuma!"
 INVALID_DATE_FORMAT_MSG = "Vrednosti za godine, mesece i dane moraju biti u odgovarajućim okvirima!"
 INVALID_MEASURE_MSG = "Brojevne vrednosti moraju biti pozitivne!"

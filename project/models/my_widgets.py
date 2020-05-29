@@ -48,11 +48,14 @@ class MyLabelShort(QLabel):
 
 class MyEditLine(QLineEdit):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, text=None, *args, **kwargs):
         super(MyEditLine, self).__init__(*args, **kwargs)
 
         self.setFixedSize(cons.LINES_WIDTH, cons.LINES_HEIGHT)
         self.setFont(cons.LINES_FONT)
+
+        if text:
+            self.setText(text)
 
 
 class MyEditLineShort(QLineEdit):

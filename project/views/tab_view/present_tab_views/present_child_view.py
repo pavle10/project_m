@@ -59,8 +59,9 @@ class PresentChildView(PresentView):
 
         if row_index is not None:
             child = self._children[row_index]
-            values = [child.get_child_id(), child.get_identity_number(), child.get_birth_year(),
-                      child.get_mother_id(), child.get_mother_name(), child.get_father_id(), child.get_father_name()]
+            values = [child.get_child_id(), child.get_first_name(), child.get_last_name(),  child.get_identity_number(),
+                      child.get_birthday(), child.get_mother_id(), child.get_mother_name(), child.get_father_id(),
+                      child.get_father_name()]
             employees = self._manager.actions(Actions.all_employees)
 
             dialog = UpdateChildDialog(values, employees)

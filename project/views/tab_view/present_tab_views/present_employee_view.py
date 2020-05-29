@@ -16,7 +16,7 @@ class PresentEmployeeView(PresentView):
 
     def _init_ui(self):
         self.table = MyTable(strs.PRESENT_EMPLOYEE_HDR)
-        self.update()
+        self.update_view()
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
@@ -41,7 +41,7 @@ class PresentEmployeeView(PresentView):
         layout.addLayout(buttons_layout)
         self.setLayout(layout)
 
-    def update(self):
+    def update_view(self):
         self.employees = self._manager.actions(Actions.all_employees)
         positions = self._manager.actions(Actions.all_positions)
 
@@ -82,11 +82,10 @@ class PresentEmployeeView(PresentView):
             if dialog.exec():
                 response = self._manager.actions(Actions.update_employee, dialog.get_value())
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_UPD_SUCC_MSG)
-                    self.update()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_UPD_FAIL_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
+                    self.update_view()
 
     def _delete(self):
         row_index = self._check_selection()
@@ -101,7 +100,7 @@ class PresentEmployeeView(PresentView):
 
                 if response == ResponseStatus.success:
                     QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_DEL_SUCC_MSG)
-                    self.update()
+                    self.update_view()
                 else:
                     QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.EMPLOYEE_DEL_FAIL_MSG)
 

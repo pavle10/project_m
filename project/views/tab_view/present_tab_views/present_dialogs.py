@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 
 from project.utils import constants as cons, strings as strs, funcs
+from project.models.my_widgets import *
 
 
 class DeleteRowDialog(QDialog):
@@ -32,45 +33,32 @@ class UpdateEmployeeDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        first_name_label = QLabel(self)
-        first_name_label.setText(strs.PRESENT_EMPLOYEE_HDR[0])
-        self.first_name_line = QLineEdit(self)
-        self.first_name_line.setText(selected_data[1])
+        first_name_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[0])
+        self.first_name_line = MyEditLine(selected_data[1])
         first_name_label.setBuddy(self.first_name_line)
 
-        last_name_label = QLabel(self)
-        last_name_label.setText(strs.PRESENT_EMPLOYEE_HDR[1])
-        self.last_name_line = QLineEdit(self)
-        self.last_name_line.setText(selected_data[2])
+        last_name_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[1])
+        self.last_name_line = MyEditLine(selected_data[2])
         last_name_label.setBuddy(self.last_name_line)
 
-        fathers_name_label = QLabel(self)
-        fathers_name_label.setText(strs.PRESENT_EMPLOYEE_HDR[2])
-        self.fathers_name_line = QLineEdit(self)
-        self.fathers_name_line.setText(selected_data[3])
+        fathers_name_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[2])
+        self.fathers_name_line = MyEditLine(selected_data[3])
         fathers_name_label.setBuddy(self.fathers_name_line)
 
-        identity_number_label = QLabel(self)
-        identity_number_label.setText(strs.PRESENT_EMPLOYEE_HDR[3])
-        self.identity_number_line = QLineEdit(self)
-        self.identity_number_line.setText(selected_data[4])
+        identity_number_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[3])
+        self.identity_number_line = MyEditLine(selected_data[4])
         identity_number_label.setBuddy(self.identity_number_line)
 
-        personal_card_label = QLabel(self)
-        personal_card_label.setText(strs.PRESENT_EMPLOYEE_HDR[4])
-        self.personal_card_line = QLineEdit(self)
-        self.personal_card_line.setText(selected_data[5])
+        personal_card_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[4])
+        self.personal_card_line = MyEditLine(selected_data[5])
         personal_card_label.setBuddy(self.personal_card_line)
 
-        qualification_label = QLabel(self)
-        qualification_label.setText(strs.PRESENT_EMPLOYEE_HDR[5])
-        self.qualification_line = QLineEdit(self)
-        self.qualification_line.setText(selected_data[6])
+        qualification_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[5])
+        self.qualification_line = MyEditLine(selected_data[6])
         qualification_label.setBuddy(self.qualification_line)
 
-        position_label = QLabel(self)
-        position_label.setText(strs.PRESENT_EMPLOYEE_HDR[6])
-        self.position_box = QComboBox()
+        position_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[6])
+        self.position_box = MyComboBox()
         current_index = 0
         for index, position in enumerate(positions):
             self.position_box.insertItem(index, position.get_name())
@@ -78,52 +66,47 @@ class UpdateEmployeeDialog(QDialog):
         self.position_box.setCurrentIndex(current_index)
         position_label.setBuddy(self.position_box)
 
-        saint_day_label = QLabel(self)
-        saint_day_label.setText(strs.PRESENT_EMPLOYEE_HDR[7])
-        self.saint_day_line = QLineEdit(self)
-        self.saint_day_line.setText(selected_data[8])
+        saint_day_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[7])
+        self.saint_day_line = MyEditLine(selected_data[8])
         saint_day_label.setBuddy(self.saint_day_line)
 
-        address_label = QLabel(self)
-        address_label.setText(strs.PRESENT_EMPLOYEE_HDR[8])
-        self.address_line = QLineEdit(self)
-        self.address_line.setText(selected_data[9])
+        address_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[8])
+        self.address_line = MyEditLine(selected_data[9])
         address_label.setBuddy(self.address_line)
 
-        account_label = QLabel(self)
-        account_label.setText(strs.PRESENT_EMPLOYEE_HDR[9])
-        self.account_line = QLineEdit(self)
-        self.account_line.setText(selected_data[10])
+        account_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[9])
+        self.account_line = MyEditLine(selected_data[10])
         account_label.setBuddy(self.account_line)
 
-        before_m_label = QLabel(self)
-        before_m_label.setText(strs.PRESENT_EMPLOYEE_HDR[10])
-        self.before_m_line = QLineEdit(self)
-        self.before_m_line.setText(str(selected_data[11]))
-        before_m_label.setBuddy(self.before_m_line)
+        before_m_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[10])
+        years_label = MyLabelShort(strs.YEARS)
+        self.years_line = MyEditLineShort()
+        months_label = MyLabelShort(strs.MONTHS)
+        self.months_line = MyEditLineShort()
+        days_label = MyLabelShort(strs.DAYS)
+        self.days_line = MyEditLineShort()
+        before_layout = QHBoxLayout()
+        before_layout.addWidget(years_label)
+        before_layout.addWidget(self.years_line)
+        before_layout.addWidget(months_label)
+        before_layout.addWidget(self.months_line)
+        before_layout.addWidget(days_label)
+        before_layout.addWidget(self.days_line)
 
-        start_date_label = QLabel(self)
-        start_date_label.setText(strs.PRESENT_EMPLOYEE_HDR[11])
-        self.start_date_line = QDateEdit(self)
-        self.start_date_line.setDate(selected_data[12])
+        start_date_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[11])
+        self.start_date_line = MyEditDate(selected_data[12])
         start_date_label.setBuddy(self.start_date_line)
 
-        home_number_label = QLabel(self)
-        home_number_label.setText(strs.PRESENT_EMPLOYEE_HDR[12])
-        self.home_number_line = QLineEdit(self)
-        self.home_number_line.setText(selected_data[13])
+        home_number_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[12])
+        self.home_number_line = MyEditLine(selected_data[13])
         home_number_label.setBuddy(self.home_number_line)
 
-        mobile_number_label = QLabel(self)
-        mobile_number_label.setText(strs.PRESENT_EMPLOYEE_HDR[13])
-        self.mobile_number_line = QLineEdit(self)
-        self.mobile_number_line.setText(selected_data[14])
+        mobile_number_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[13])
+        self.mobile_number_line = MyEditLine(selected_data[14])
         mobile_number_label.setBuddy(self.mobile_number_line)
 
-        situation_label = QLabel(self)
-        situation_label.setText(strs.PRESENT_EMPLOYEE_HDR[14])
-        self.situation_line = QLineEdit(self)
-        self.situation_line.setText(selected_data[15])
+        situation_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[14])
+        self.situation_line = MyEditLine(selected_data[15])
         situation_label.setBuddy(self.situation_line)
 
         button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
@@ -141,7 +124,7 @@ class UpdateEmployeeDialog(QDialog):
         layout.addRow(saint_day_label, self.saint_day_line)
         layout.addRow(address_label, self.address_line)
         layout.addRow(account_label, self.account_line)
-        layout.addRow(before_m_label, self.before_m_line)
+        layout.addRow(before_m_label, before_layout)
         layout.addRow(start_date_label, self.start_date_line)
         layout.addRow(home_number_label, self.home_number_line)
         layout.addRow(mobile_number_label, self.mobile_number_line)
@@ -177,15 +160,12 @@ class UpdatePositionDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        name_label = QLabel(self)
-        name_label.setText(strs.PRESENT_CHILD_HDR[0])
-        self.name_line = QLineEdit(self)
-        self.name_line.setText(selected_data[1])
+        name_label = MyLabel(strs.PRESENT_CHILD_HDR[0])
+        self.name_line = MyEditLine(selected_data[1])
         name_label.setBuddy(self.name_line)
 
-        saturday_label = QLabel(self)
-        saturday_label.setText(strs.PRESENT_POSITION_HDR[1])
-        self.saturday = QComboBox()
+        saturday_label = MyLabel(strs.PRESENT_POSITION_HDR[1])
+        self.saturday = MyComboBox()
         self.saturday.addItem(strs.YES)
         self.saturday.addItem(strs.NO)
         self.saturday.setCurrentIndex(selected_data[2])
@@ -216,21 +196,24 @@ class UpdateChildDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        identity_number_label = QLabel(self)
-        identity_number_label.setText(strs.PRESENT_CHILD_HDR[0])
-        self.identity_number_line = QLineEdit(self)
-        self.identity_number_line.setText(selected_data[1])
+        first_name_label = MyLabel(strs.PRESENT_CHILD_HDR[0])
+        self.first_name_line = MyEditLine(selected_data[1])
+        first_name_label.setBuddy(self.first_name_line)
+
+        last_name_label = MyLabel(strs.PRESENT_CHILD_HDR[1])
+        self.last_name_line = MyEditLine(selected_data[2])
+        last_name_label.setBuddy(self.last_name_line)
+
+        identity_number_label = MyLabel(strs.PRESENT_CHILD_HDR[2])
+        self.identity_number_line = MyEditLine(selected_data[3])
         identity_number_label.setBuddy(self.identity_number_line)
 
-        birth_year_label = QLabel(self)
-        birth_year_label.setText(strs.PRESENT_CHILD_HDR[1])
-        self.birth_year_line = QLineEdit(self)
-        self.birth_year_line.setText(str(selected_data[2]))
-        birth_year_label.setBuddy(self.birth_year_line)
+        birthday_label = MyLabel(strs.PRESENT_CHILD_HDR[3])
+        self.birthday_line = MyEditLine(selected_data[4])
+        birthday_label.setBuddy(self.birthday_line)
 
-        mother_label = QLabel(self)
-        mother_label.setText(strs.PRESENT_CHILD_HDR[2])
-        self.mother_box = QComboBox()
+        mother_label = MyLabel(strs.PRESENT_CHILD_HDR[3])
+        self.mother_box = MyComboBox()
         self.mother_box.insertItem(0, "")
         select_index = 0
         for index, employee in enumerate(employees):
@@ -239,9 +222,8 @@ class UpdateChildDialog(QDialog):
         self.mother_box.setCurrentIndex(select_index)
         mother_label.setBuddy(self.mother_box)
 
-        father_label = QLabel(self)
-        father_label.setText(strs.PRESENT_CHILD_HDR[3])
-        self.father_box = QComboBox()
+        father_label = MyLabel(strs.PRESENT_CHILD_HDR[4])
+        self.father_box = MyComboBox()
         self.father_box.insertItem(0, "")
         select_index = 0
         for index, employee in enumerate(employees):
@@ -255,18 +237,22 @@ class UpdateChildDialog(QDialog):
         button_box.rejected.connect(self.reject)
 
         layout = QFormLayout()
+        layout.addRow(first_name_label, self.first_name_line)
+        layout.addRow(last_name_label, self.last_name_line)
         layout.addRow(identity_number_label, self.identity_number_line)
-        layout.addRow(birth_year_label, self.birth_year_line)
+        layout.addRow(birthday_label, self.birthday_line)
         layout.addRow(mother_label, self.mother_box)
         layout.addRow(father_label, self.father_box)
         layout.addRow(button_box)
         self.setLayout(layout)
 
     def get_value(self):
-        self.data[1] = self.identity_number_line.text()
-        self.data[2] = self.birth_year_line.text()
-        self.data[4] = self.mother_box.currentText()
-        self.data[6] = self.father_box.currentText()
+        self.data[1] = self.first_name_line.text()
+        self.data[2] = self.last_name_line.text()
+        self.data[3] = self.identity_number_line.text()
+        self.data[4] = self.birthday_line.text()
+        self.data[6] = self.mother_box.currentText()
+        self.data[8] = self.father_box.currentText()
 
         return self.data
 
@@ -279,10 +265,8 @@ class UpdateUniformDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        name_label = QLabel(self)
-        name_label.setText(strs.PRESENT_UNIFORM_HDR[0])
-        self.name_line = QLineEdit(self)
-        self.name_line.setText(selected_data[0])
+        name_label = MyLabel(strs.PRESENT_UNIFORM_HDR[0])
+        self.name_line = MyEditLine(selected_data[0])
         name_label.setBuddy(self.name_line)
 
         button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
@@ -309,9 +293,8 @@ class UpdateUniformPieceDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        uniform_label = QLabel(self)
-        uniform_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[0])
-        self.uniform_box = QComboBox()
+        uniform_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[0])
+        self.uniform_box = MyComboBox()
         current_index = 0
         for index, uniform in enumerate(self.uniforms):
             self.uniform_box.insertItem(index, uniform.get_name())
@@ -320,28 +303,20 @@ class UpdateUniformPieceDialog(QDialog):
         self.uniform_box.setCurrentIndex(current_index)
         uniform_label.setBuddy(self.uniform_box)
 
-        size_label = QLabel(self)
-        size_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[1])
-        self.size_line = QLineEdit(self)
-        self.size_line.setText(str(selected_data[3]))
+        size_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[1])
+        self.size_line = MyEditLine(str(selected_data[3]))
         size_label.setBuddy(self.size_line)
 
-        quantity_label = QLabel(self)
-        quantity_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[2])
-        self.quantity_line = QLineEdit(self)
-        self.quantity_line.setText(str(selected_data[4]))
+        quantity_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[2])
+        self.quantity_line = MyEditLine(str(selected_data[4]))
         quantity_label.setBuddy(self.quantity_line)
 
-        additional_label = QLabel(self)
-        additional_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[3])
-        self.additional_line = QLineEdit(self)
-        self.additional_line.setText(selected_data[5])
+        additional_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[3])
+        self.additional_line = MyEditLine(selected_data[5])
         additional_label.setBuddy(self.additional_line)
 
-        date_label = QLabel(self)
-        date_label.setText(strs.PRESENT_UNIFORM_PIECE_HDR[4])
-        self.date_line = QDateEdit(self)
-        self.date_line.setDate(selected_data[6])
+        date_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[4])
+        self.date_line = MyEditDate(selected_data[6])
         date_label.setBuddy(self.date_line)
 
         button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
@@ -377,22 +352,16 @@ class UpdateFreeDaysRowDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        start_date_label = QLabel(self)
-        start_date_label.setText(strs.PRESENT_FREE_DAYS_HDR[0])
-        self.start_date_line = QDateEdit(self)
-        self.start_date_line.setDate(selected_data[2])
+        start_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[0])
+        self.start_date_line = MyEditDate(selected_data[2])
         start_date_label.setBuddy(self.start_date_line)
 
-        end_date_label = QLabel(self)
-        end_date_label.setText(strs.PRESENT_FREE_DAYS_HDR[1])
-        self.end_date_line = QDateEdit(self)
-        self.end_date_line.setDate(selected_data[3])
+        end_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[1])
+        self.end_date_line = MyEditDate(selected_data[3])
         end_date_label.setBuddy(self.end_date_line)
 
-        reason_label = QLabel(self)
-        reason_label.setText(strs.PRESENT_FREE_DAYS_HDR[2])
-        self.reason_line = QLineEdit(self)
-        self.reason_line.setText(selected_data[5])
+        reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[2])
+        self.reason_line = MyEditLine(selected_data[5])
         reason_label.setBuddy(self.reason_line)
 
         button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
@@ -423,22 +392,16 @@ class UpdateWageRowDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        day_label = QLabel(self)
-        day_label.setText(strs.PRESENT_WAGE_HDR[0])
-        self.day_line = QLineEdit(self)
-        self.day_line.setText(str(selected_data[2]))
+        day_label = MyLabel(strs.PRESENT_WAGE_HDR[0])
+        self.day_line = MyEditLine(str(selected_data[2]))
         day_label.setBuddy(self.day_line)
 
-        hour_label = QLabel(self)
-        hour_label.setText(strs.PRESENT_WAGE_HDR[1])
-        self.hour_line = QLineEdit(self)
-        self.hour_line.setText(str(selected_data[3]))
+        hour_label = MyLabel(strs.PRESENT_WAGE_HDR[1])
+        self.hour_line = MyEditLine(str(selected_data[3]))
         hour_label.setBuddy(self.hour_line)
 
-        meal_label = QLabel(self)
-        meal_label.setText(strs.PRESENT_WAGE_HDR[2])
-        self.meal_line = QLineEdit(self)
-        self.meal_line.setText(str(selected_data[4]))
+        meal_label = MyLabel(strs.PRESENT_WAGE_HDR[2])
+        self.meal_line = MyEditLine(str(selected_data[4]))
         meal_label.setBuddy(self.meal_line)
 
         button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
@@ -468,22 +431,16 @@ class UpdateSalary1RowDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        net_label = QLabel(self)
-        net_label.setText(strs.PRESENT_SALARY_1_HDR[0])
-        self.net_line = QLineEdit(self)
-        self.net_line.setText(str(selected_data[2]))
+        net_label = MyLabel(strs.PRESENT_SALARY_1_HDR[0])
+        self.net_line = MyEditLine(str(selected_data[2]))
         net_label.setBuddy(self.net_line)
 
-        gross_label = QLabel(self)
-        gross_label.setText(strs.PRESENT_SALARY_1_HDR[1])
-        self.gross_line = QLineEdit(self)
-        self.gross_line.setText(str(selected_data[3]))
+        gross_label = MyLabel(strs.PRESENT_SALARY_1_HDR[1])
+        self.gross_line = MyEditLine(str(selected_data[3]))
         gross_label.setBuddy(self.gross_line)
 
-        date_label = QLabel(self)
-        date_label.setText(strs.PRESENT_SALARY_1_HDR[2])
-        self.date_line = QDateEdit(self)
-        self.date_line.setDate(selected_data[4])
+        date_label = MyEditLine(strs.PRESENT_SALARY_1_HDR[2])
+        self.date_line = MyEditDate(selected_data[4])
         date_label.setBuddy(self.date_line)
 
         button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)
@@ -513,52 +470,36 @@ class UpdateSalary2RowDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        day_label = QLabel(self)
-        day_label.setText(strs.PRESENT_SALARY_2_HDR[3])
-        self.day_line = QLineEdit(self)
-        self.day_line.setText(str(selected_data[3]))
+        day_label = MyLabel(strs.PRESENT_SALARY_2_HDR[3])
+        self.day_line = MyEditLine(str(selected_data[3]))
         day_label.setBuddy(self.day_line)
 
-        hour_label = QLabel(self)
-        hour_label.setText(strs.PRESENT_SALARY_2_HDR[5])
-        self.hour_line = QLineEdit(self)
-        self.hour_line.setText(str(selected_data[5]))
+        hour_label = MyLabel(strs.PRESENT_SALARY_2_HDR[5])
+        self.hour_line = MyEditLine(str(selected_data[5]))
         hour_label.setBuddy(self.hour_line)
 
-        meal_label = QLabel(self)
-        meal_label.setText(strs.PRESENT_SALARY_2_HDR[7])
-        self.meal_line = QLineEdit(self)
-        self.meal_line.setText(str(selected_data[7]))
+        meal_label = MyLabel(strs.PRESENT_SALARY_2_HDR[7])
+        self.meal_line = MyEditLine(str(selected_data[7]))
         meal_label.setBuddy(self.meal_line)
 
-        payment_label = QLabel(self)
-        payment_label.setText(strs.PRESENT_SALARY_2_HDR[9])
-        self.payment_line = QLineEdit(self)
-        self.payment_line.setText(str(selected_data[9]))
+        payment_label = MyLabel(strs.PRESENT_SALARY_2_HDR[9])
+        self.payment_line = MyEditLine(str(selected_data[9]))
         payment_label.setBuddy(self.payment_line)
 
-        vacation_label = QLabel(self)
-        vacation_label.setText(strs.PRESENT_SALARY_2_HDR[10])
-        self.vacation_line = QLineEdit(self)
-        self.vacation_line.setText(str(selected_data[10]))
+        vacation_label = MyEditLine(strs.PRESENT_SALARY_2_HDR[10])
+        self.vacation_line = MyEditLine(str(selected_data[10]))
         vacation_label.setBuddy(self.vacation_line)
 
-        vacation_value_label = QLabel(self)
-        vacation_value_label.setText(strs.PRESENT_SALARY_2_HDR[11])
-        self.vacation_value_line = QLineEdit(self)
-        self.vacation_value_line.setText(str(selected_data[11]))
+        vacation_value_label = MyLabel(strs.PRESENT_SALARY_2_HDR[11])
+        self.vacation_value_line = MyEditLine(str(selected_data[11]))
         vacation_value_label.setBuddy(self.vacation_value_line)
 
-        fix_label = QLabel(self)
-        fix_label.setText(strs.PRESENT_SALARY_2_HDR[12])
-        self.fix_line = QLineEdit(self)
-        self.fix_line.setText(str(selected_data[12]))
+        fix_label = MyLabel(strs.PRESENT_SALARY_2_HDR[12])
+        self.fix_line = MyEditLine(str(selected_data[12]))
         fix_label.setBuddy(self.fix_line)
 
-        date_label = QLabel(self)
-        date_label.setText(strs.PRESENT_SALARY_2_HDR[2])
-        self.date_line = QDateEdit(self)
-        self.date_line.setDate(selected_data[2])
+        date_label = MyLabel(strs.PRESENT_SALARY_2_HDR[2])
+        self.date_line = MyEditDate(selected_data[2])
         date_label.setBuddy(self.date_line)
 
         button_box = QDialogButtonBox(QDialogButtonBox.Yes | QDialogButtonBox.No)

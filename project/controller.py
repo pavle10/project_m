@@ -164,7 +164,7 @@ class Controller:
 
     def _login(self, values):
         # Input data validation
-        if values[0] == "" or values[1] == "":
+        if not funcs.check_required_fields(values[0], values[1]):
             return Response(ResponseStatus.fail, strs.MISSING_CREDENTIALS_MSG)
 
         # Check credentials
@@ -200,13 +200,12 @@ class Controller:
         # Check before m fields
         before_m = values[10]
 
-        try:
-            years = 0 if before_m[0] == "" else int(before_m[0])
-            months = 0 if before_m[1] == "" else int(before_m[1])
-            days = 0 if before_m[2] == "" else int(before_m[2])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_EMPLOYEE_HDR[10]))
+        if not funcs.convert_to_int(before_m, range(3)):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
+
+        years = before_m[0]
+        months = before_m[1]
+        days = before_m[2]
 
         if years < 0 or months < 0 or months > 11 or days < 0 or days > 30:
             # TODO write to log
@@ -248,17 +247,8 @@ class Controller:
         if not funcs.check_required_fields(values[0], values[1], values[2], values[3]):
             return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        try:
-            values[2] = 0 if values[2] == "" else int(values[2])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_UNIFORM_PIECE_HDR[1]))
-
-        try:
-            values[3] = 0 if values[3] == "" else int(values[3])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_UNIFORM_PIECE_HDR[2]))
+        if not funcs.convert_to_int(values, [2, 3]):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
 
         if values[2] < 0 or values[3] < 0:
             # TODO write to log
@@ -332,23 +322,8 @@ class Controller:
         if not funcs.check_required_fields(values[0], values[1], values[2], values[3]):
             return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        try:
-            values[1] = 0 if values[1] == "" else int(values[1])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_WAGE_HDR[0]))
-
-        try:
-            values[2] = 0 if values[2] == "" else int(values[2])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_WAGE_HDR[1]))
-
-        try:
-            values[3] = 0 if values[3] == "" else int(values[3])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_WAGE_HDR[2]))
+        if not funcs.convert_to_int(values, [1, 2, 3]):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
 
         if values[1] < 0 or values[2] < 0 or values[3] < 0:
             # TODO write to log
@@ -374,17 +349,8 @@ class Controller:
         if not funcs.check_required_fields(values[0], values[1], values[2]):
             return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        try:
-            values[1] = 0 if values[1] == "" else int(values[1])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_1_HDR[0]))
-
-        try:
-            values[2] = 0 if values[2] == "" else int(values[2])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_1_HDR[1]))
+        if not funcs.convert_to_int(values, [1, 2]):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
 
         if values[1] < 0 or values[2] < 0:
             # TODO write to log
@@ -404,48 +370,8 @@ class Controller:
 
     def _add_salary_2(self, values):
         # Input data validation
-
-        try:
-            values[2] = 0 if values[2] == "" else int(values[2])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[1]))
-
-        try:
-            values[4] = 0 if values[4] == "" else int(values[4])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[3]))
-
-        try:
-            values[6] = 0 if values[6] == "" else int(values[6])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[5]))
-
-        try:
-            values[8] = 0 if values[8] == "" else int(values[8])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[7]))
-
-        try:
-            values[9] = 0 if values[9] == "" else int(values[9])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[8]))
-
-        try:
-            values[10] = 0 if values[10] == "" else int(values[10])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[9]))
-
-        try:
-            values[11] = 0 if values[11] == "" else int(values[11])
-        except ValueError:
-            # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_2_HDR[10]))
+        if not funcs.convert_to_int(values, [2, 4, 6, 8, 9, 10, 11]):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
 
         if values[2] < 0 or values[4] < 0 or values[6] < 0 or values[8] < 0 \
                 or values[9] < 0 or values[10] < 0 or values[11] < 0:
@@ -600,8 +526,6 @@ class Controller:
 
     def _update_employee(self, values):
         position_id = self._get_position_id(values[7])
-
-        print(position_id)
 
         if position_id is not None:
             values[7] = position_id
