@@ -210,7 +210,7 @@ class Controller:
 
         if years < 0 or months < 0 or months > 11 or days < 0 or days > 30:
             # TODO write to log
-            return Response(ResponseStatus.fail, strs.INVALID_DATE_FORMAT)
+            return Response(ResponseStatus.fail, strs.INVALID_DATE_FORMAT_MSG)
 
         values[10] = funcs.to_days(years, months, days)
 
@@ -262,7 +262,7 @@ class Controller:
 
         if values[2] < 0 or values[3] < 0:
             # TODO write to log
-            return Response(ResponseStatus.fail, strs.INVALID_MEASURE)
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE_MSG)
 
         uniform_id = self._get_uniform_id(values[0])
         employee_id = self._get_employee_id(values[1])
@@ -291,7 +291,7 @@ class Controller:
         father_id = self._get_employee_id(values[5])
 
         if mother_id is None and father_id is None:
-            return Response(ResponseStatus.fail, strs.CHILD_ONE_PARENT_REQUIRED)
+            return Response(ResponseStatus.fail, strs.CHILD_ONE_PARENT_REQUIRED_MSG)
 
         values[4] = mother_id
         values[5] = father_id
@@ -310,7 +310,7 @@ class Controller:
             return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
         if values[3] <= 0:
-            return Response(ResponseStatus.fail, strs.INVALID_DATES)
+            return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
 
         employee_id = self._get_employee_id(values[0])
 
@@ -352,7 +352,7 @@ class Controller:
 
         if values[1] < 0 or values[2] < 0 or values[3] < 0:
             # TODO write to log
-            return Response(ResponseStatus.fail, strs.INVALID_MEASURE)
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE_MSG)
 
         employee_id = self._get_employee_id(values[0])
 
@@ -369,17 +369,38 @@ class Controller:
         return response
 
     def _add_salary_1(self, values):
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[0], values[1], values[2]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
+
+        try:
+            values[1] = 0 if values[1] == "" else int(values[1])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_1_HDR[0]))
+
+        try:
+            values[2] = 0 if values[2] == "" else int(values[2])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_SALARY_1_HDR[1]))
+
+        if values[1] < 0 or values[2] < 0:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE_MSG)
+
+        if values[1] > values[2]:
+            return Response(ResponseStatus.fail, strs.INVALID_NET_GROSS_RATIO_MSG)
+
         employee_id = self._get_employee_id(values[0])
 
-        if employee_id is not None:
-            values[0] = employee_id
+        if employee_id is None:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            response = self._action_manager.actions(Actions.add_salary_1, values)
+        values[0] = employee_id
 
-            if response:
-                return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return self._database_manager.actions(Actions.add_salary_1, values)
 
     def _add_salary_2(self, values):
         employee_id = self._get_employee_id(values[0])

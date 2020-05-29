@@ -53,7 +53,7 @@ class DatabaseManager:
         elif action == Actions.add_wage:
             return self._add_wage(values)
         elif action == Actions.add_salary_1:
-            return self._execute_query(sql.INSERT_SALARY_1, QueryType.insert, values)
+            return self._add_salary_1(values)
         elif action == Actions.add_salary_2:
             return self._execute_query(sql.INSERT_SALARY_2, QueryType.insert, values)
         elif action == Actions.employee_salaries_1:
@@ -317,5 +317,17 @@ class DatabaseManager:
             response.set_message(strs.WAGE_ADD_FAIL_MSG)
 
         return response
+
+    def _add_salary_1(self, values):
+        response = self._execute_query(sql.INSERT_SALARY_1, QueryType.insert, values)
+
+        if funcs.is_query_successful(response):
+            response.set_message(strs.SALARY_1_ADD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.SALARY_1_ADD_FAIL_MSG)
+
+        return response
+
 
 

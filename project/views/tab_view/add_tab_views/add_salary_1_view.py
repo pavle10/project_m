@@ -47,15 +47,21 @@ class AddSalary1View(AddView):
         return self._manager.actions(Actions.all_employees)
 
     def _add(self):
-        chosen_date = self.date_line.date().toPyDate()
-        values = [self.employee_box.currentText(), self.net_line.text(), self.gross_line.text(), chosen_date]
+        values = [self.employee_box.currentText(), self.net_line.text(),
+                  self.gross_line.text(), self.date_line.date().toPyDate()]
 
         response = self._manager.actions(Actions.add_salary_1, values)
 
-        if response == ResponseStatus.success:
-            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.SALARY_1_ADD_SUCC_MSG)
-        elif response == ResponseStatus.fail:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.SALARY_1_ADD_FAIL_MSG)
+        funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
+
+        if response.get_status() == ResponseStatus.success:
+            self._clear()
+
+    def _clear(self):
+        self.employee_box.setCurrentIndex(0)
+        self.net_line.clear()
+        self.gross_line.clear()
+        self.date_line.setDate(cons.DEFAULT_END_DATE)
 
     def get_name(self):
         return self._name
