@@ -327,18 +327,46 @@ class Controller:
         return response
 
     def _add_wage(self, values):
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[0], values[1], values[2], values[3]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
+
+        try:
+            values[1] = 0 if values[1] == "" else int(values[1])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_WAGE_HDR[0]))
+
+        try:
+            values[2] = 0 if values[2] == "" else int(values[2])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_WAGE_HDR[1]))
+
+        try:
+            values[3] = 0 if values[3] == "" else int(values[3])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_WAGE_HDR[2]))
+
+        if values[1] < 0 or values[2] < 0 or values[3] < 0:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE)
+
         employee_id = self._get_employee_id(values[0])
 
-        if employee_id is not None:
-            values[0] = employee_id
+        if employee_id is None:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            response = self._action_manager.actions(Actions.add_wage, values)
+        values[0] = employee_id
 
-            if response:
-                self._wages.append(response)
-                return ResponseStatus.success
+        response = self._database_manager.actions(Actions.add_wage, values)
 
-        return ResponseStatus.fail
+        if response.get_status() == ResponseStatus.success:
+            self._wages.append(response.get_data())
+
+        return response
 
     def _add_salary_1(self, values):
         employee_id = self._get_employee_id(values[0])

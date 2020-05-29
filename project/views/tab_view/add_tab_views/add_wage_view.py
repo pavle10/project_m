@@ -51,10 +51,16 @@ class AddWageView(AddView):
 
         response = self._manager.actions(Actions.add_wage, values)
 
-        if response == ResponseStatus.success:
-            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.WAGE_ADD_SUCC_MSG)
-        elif response == ResponseStatus.fail:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.WAGE_ADD_FAIL_MSG)
+        funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
+
+        if response.get_status() == ResponseStatus.success:
+            self._clear()
+
+    def _clear(self):
+        self.employee_box.setCurrentIndex(0)
+        self.day_line.clear()
+        self.hour_line.clear()
+        self.meal_line.clear()
 
     def get_name(self):
         return self._name

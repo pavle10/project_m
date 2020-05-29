@@ -51,7 +51,7 @@ class DatabaseManager:
         elif action == Actions.add_free_days:
             return self._add_free_days(values)
         elif action == Actions.add_wage:
-            return self._execute_query(sql.INSERT_WAGE, QueryType.insert, values)
+            return self._add_wage(values)
         elif action == Actions.add_salary_1:
             return self._execute_query(sql.INSERT_SALARY_1, QueryType.insert, values)
         elif action == Actions.add_salary_2:
@@ -303,6 +303,18 @@ class DatabaseManager:
         else:
             response.set_status(ResponseStatus.fail)
             response.set_message(strs.FREE_DAYS_ADD_FAIL_MSG)
+
+        return response
+
+    def _add_wage(self, values):
+        response = self._execute_query(sql.INSERT_WAGE, QueryType.insert, values)
+
+        if funcs.is_query_successful(response):
+            response.set_data(Wage.from_values(response.get_data()[0]))
+            response.set_message(strs.WAGE_ADD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.WAGE_ADD_FAIL_MSG)
 
         return response
 
