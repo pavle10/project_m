@@ -40,3 +40,11 @@ class Wage:
 
     def __hash__(self):
         return hash(self.wage_id)
+
+    def data_to_array(self):
+        return [self.wage_id, self.employee_id, self.day, self.hour, self.meal]
+
+    def update_data(self, values):
+        self.day = values[2]
+        self.hour = values[3]
+        self.meal = values[4]

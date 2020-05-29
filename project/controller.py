@@ -88,7 +88,7 @@ class Controller:
         elif action == Actions.add_salary_1:
             return self._add_salary_1(values)
         elif action == Actions.add_salary_2:
-            return self._add_salary_2(action, values)
+            return self._add_salary_2(values)
         elif action == Actions.all_positions:
             return self._get_all_positions()
         elif action == Actions.all_employees:
@@ -102,7 +102,7 @@ class Controller:
         elif action == Actions.employee_free_days:
             return self._get_employee_free_days(values)
         elif action == Actions.employee_wage:
-            return self._get_employee_wage(self._get_employee_id(values[0]))
+            return self._get_employee_wage(values)
         elif action == Actions.employee_salaries_1:
             return self._get_employee_salaries_1(values)
         elif action == Actions.employee_salaries_2:
@@ -487,12 +487,14 @@ class Controller:
 
         return result
 
-    def _get_employee_wage(self, employee_id):
+    def _get_employee_wage(self, values):
+        employee_id = self._get_employee_id(values[0])
+
         for wage in self._wages:
             if wage.get_employee_id() == employee_id:
-                return wage
+                return Response(ResponseStatus.success, strs.WAGE_EMP_SUCC_MSG, wage)
 
-        return None
+        return Response(ResponseStatus.fail, strs.WAGE_EMP_FAIL_MSG)
 
     def _get_employee_salaries_1(self, values):
         start_date = values[1]
@@ -644,18 +646,27 @@ class Controller:
         return ResponseStatus.fail
 
     def _update_wage(self, values):
-        response = self._action_manager.actions(Actions.update_wage, values)
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[2], values[3], values[4]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        if not response.endswith('0'):
+        if not funcs.convert_to_int(values, [2, 3, 4]):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
+
+        if values[2] < 0 or values[3] < 0 or values[4] < 0:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE_MSG)
+
+        response = self._database_manager.actions(Actions.update_wage, values)
+
+        if response.get_status() == ResponseStatus.success:
             for wage in self._wages:
                 if wage.get_wage_id() == values[0]:
-                    wage.set_day(values[2])
-                    wage.set_hour(values[3])
-                    wage.set_meal(values[4])
+                    wage.update_data(values)
+                    break
 
-                    return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return response
 
     def _update_salary_1(self, values):
         # Input data validation
@@ -770,14 +781,15 @@ class Controller:
         return ResponseStatus.fail
 
     def _delete_wage(self, values):
-        response = self._action_manager.actions(Actions.delete_wage, [values[0]])
+        response = self._database_manager.actions(Actions.delete_wage, values)
 
-        if not response.endswith('0'):
-            self._wages.remove(self._get_employee_wage(values[1]))
+        if response.get_status() == ResponseStatus.success:
+            for wage in self._wages:
+                if wage.get_wage_id() == values[0]:
+                    self._wages.remove(wage)
+                    break
 
-            return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return response
 
     def _delete_salary_1(self, values):
         return self._database_manager.actions(Actions.delete_salary_1, values)

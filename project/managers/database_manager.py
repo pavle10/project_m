@@ -72,7 +72,7 @@ class DatabaseManager:
         elif action == Actions.update_free_days:
             return self._update_query(sql.UPDATE_FREE_DAYS, values)
         elif action == Actions.update_wage:
-            return self._update_query(sql.UPDATE_WAGE, values)
+            return self._update_wage(values)
         elif action == Actions.update_salary_1:
             return self._update_salary_1(values)
         elif action == Actions.update_salary_2:
@@ -90,7 +90,7 @@ class DatabaseManager:
         elif action == Actions.delete_free_days:
             return self._execute_query(sql.DELETE_FREE_DAYS, QueryType.delete, values)
         elif action == Actions.delete_wage:
-            return self._execute_query(sql.DELETE_WAGE, QueryType.delete, values)
+            return self._delete_wage(values)
         elif action == Actions.delete_salary_1:
             return self._delete_salary_1(values)
         elif action == Actions.delete_salary_2:
@@ -339,6 +339,17 @@ class DatabaseManager:
 
         return response
 
+    def _update_wage(self, values):
+        response = self._update_query(sql.UPDATE_WAGE, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.WAGE_UPD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.WAGE_UPD_FAIL_MSG)
+
+        return response
+
     def _update_salary_1(self, values):
         response = self._update_query(sql.UPDATE_SALARY_1, values)
 
@@ -358,6 +369,17 @@ class DatabaseManager:
         else:
             response.set_status(ResponseStatus.fail)
             response.set_message(strs.SALARY_2_UPD_FAIL_MSG)
+
+        return response
+
+    def _delete_wage(self, values):
+        response = self._execute_query(sql.DELETE_WAGE, QueryType.delete, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.WAGE_DEL_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.WAGE_DEL_FAIL_MSG)
 
         return response
 

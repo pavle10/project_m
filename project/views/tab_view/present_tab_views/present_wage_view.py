@@ -61,7 +61,8 @@ class PresentWageView(PresentView):
         # Get data
         values = [self.employee_box.currentText()]
 
-        self._wages = self._manager.actions(Actions.employee_wage, values)
+        response = self._manager.actions(Actions.employee_wage, values)
+        self._wages = response.get_data()
 
         if self._wages is None:
             self.table.clearContents()
@@ -81,7 +82,7 @@ class PresentWageView(PresentView):
 
         if row_index is not None:
             wage = self._wages[row_index]
-            values = [wage.get_wage_id(), wage.get_employee_id(), wage.get_day(), wage.get_hour(), wage.get_meal()]
+            values = wage.data_to_array()
 
             dialog = UpdateWageRowDialog(values)
             if dialog.exec():
@@ -89,11 +90,10 @@ class PresentWageView(PresentView):
 
                 response = self._manager.actions(Actions.update_wage, new_values)
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.WAGE_UPD_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self._change_label()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.WAGE_UPD_FAIL_MSG)
 
     def _delete(self):
         row_index = self._check_selection()
@@ -103,15 +103,14 @@ class PresentWageView(PresentView):
 
             if dialog.exec():
                 wage = self._wages[row_index]
-                values = [wage.get_wage_id(), wage.get_employee_id()]
+                values = [wage.get_wage_id()]
 
                 response = self._manager.actions(Actions.delete_wage, values)
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.WAGE_DEL_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self._change_label()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.WAGE_DEL_FAIL_MSG)
 
     def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)

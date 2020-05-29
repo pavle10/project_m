@@ -124,6 +124,8 @@ WAGE_UPD_SUCC_MSG = "Uspešno je promenjena dnevnica!"
 WAGE_UPD_FAIL_MSG = "Nije uspešno promenjena dnevnica! Probajte ponovo."
 WAGE_DEL_SUCC_MSG = "Uspešno je izbrisana dnevnica!"
 WAGE_DEL_FAIL_MSG = "Nije uspešno izbrisana dnevnica! Probajte ponovo."
+WAGE_EMP_SUCC_MSG = "Pronadjene su dnevnice zaposlenog!"
+WAGE_EMP_FAIL_MSG = "Nisu pronadjene dnevnice zaposlenog!"
 
 SALARY_1_ADD_SUCC_MSG = "Nova plata 1 je uspešno dodata!"
 SALARY_1_ADD_FAIL_MSG = "Nova plata 1 nije uspešno dodata! Probajte opet."
