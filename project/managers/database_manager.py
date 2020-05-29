@@ -70,7 +70,7 @@ class DatabaseManager:
         elif action == Actions.update_uniform_piece:
             return self._update_query(sql.UPDATE_UNIFORM_PIECE, values)
         elif action == Actions.update_free_days:
-            return self._update_query(sql.UPDATE_FREE_DAYS, values)
+            return self._update_free_days(values)
         elif action == Actions.update_wage:
             return self._update_wage(values)
         elif action == Actions.update_salary_1:
@@ -88,7 +88,7 @@ class DatabaseManager:
         elif action == Actions.delete_uniform_piece:
             return self._execute_query(sql.DELETE_UNIFORM_PIECE, QueryType.delete, values)
         elif action == Actions.delete_free_days:
-            return self._execute_query(sql.DELETE_FREE_DAYS, QueryType.delete, values)
+            return self._delete_free_days(values)
         elif action == Actions.delete_wage:
             return self._delete_wage(values)
         elif action == Actions.delete_salary_1:
@@ -339,6 +339,17 @@ class DatabaseManager:
 
         return response
 
+    def _update_free_days(self, values):
+        response = self._update_query(sql.UPDATE_FREE_DAYS, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.FREE_DAYS_UPD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.FREE_DAYS_UPD_FAIL_MSG)
+
+        return response
+
     def _update_wage(self, values):
         response = self._update_query(sql.UPDATE_WAGE, values)
 
@@ -369,6 +380,17 @@ class DatabaseManager:
         else:
             response.set_status(ResponseStatus.fail)
             response.set_message(strs.SALARY_2_UPD_FAIL_MSG)
+
+        return response
+
+    def _delete_free_days(self, values):
+        response = self._execute_query(sql.DELETE_FREE_DAYS, QueryType.delete, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.FREE_DAYS_DEL_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.FREE_DAYS_DEL_FAIL_MSG)
 
         return response
 

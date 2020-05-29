@@ -360,7 +360,7 @@ class UpdateFreeDaysRowDialog(QDialog):
         self.end_date_line = MyEditDate(selected_data[3])
         end_date_label.setBuddy(self.end_date_line)
 
-        reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[2])
+        reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[3])
         self.reason_line = MyEditLine(selected_data[5])
         reason_label.setBuddy(self.reason_line)
 
@@ -378,7 +378,7 @@ class UpdateFreeDaysRowDialog(QDialog):
     def get_value(self):
         self.data[2] = self.start_date_line.date().toPyDate()
         self.data[3] = self.end_date_line.date().toPyDate()
-        self.data[4] = (self.data[3] - self.data[2]).days
+        self.data[4] = funcs.count_free_days(self.data[2], self.data[3])
         self.data[5] = self.reason_line.text()
 
         return self.data

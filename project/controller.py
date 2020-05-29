@@ -383,9 +383,10 @@ class Controller:
         if employee_id is None:
             return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-        wage = self._get_employee_wage(employee_id)
+        response = self._get_employee_wage(employee_id)
+        wage = response.get_data()
 
-        if wage is None:
+        if response.get_status() == ResponseStatus.fail or wage is None:
             return Response(ResponseStatus.fail, strs.WAGE_FOR_EMPLOYEE_MISSING_MSG.format(employee=values[0]))
 
         values[0] = employee_id
@@ -473,19 +474,24 @@ class Controller:
 
     def _get_employee_free_days(self, values):
         employee_id = self._get_employee_id(values[0])
+
+        if employee_id is None:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
+
         result = list()
+        start_date = values[1]
+        end_date = values[2]
 
-        if employee_id is not None:
-            start_date = values[1]
-            end_date = values[2]
+        if start_date > end_date:
+            return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
 
-            for free_days in self._all_free_days:
-                if free_days.get_employee_id() == employee_id \
-                        and start_date <= free_days.get_start_date() \
-                        and free_days.get_end_date() <= end_date:
-                    result.append(free_days)
+        for free_days in self._all_free_days:
+            if free_days.get_employee_id() == employee_id \
+                    and start_date <= free_days.get_start_date() \
+                    and free_days.get_end_date() <= end_date:
+                result.append(free_days)
 
-        return result
+        return Response(ResponseStatus.success, strs.FREE_DAYS_EMP_SUCC_MSG, result)
 
     def _get_employee_wage(self, values):
         employee_id = self._get_employee_id(values[0])
@@ -631,19 +637,23 @@ class Controller:
         return ResponseStatus.fail
 
     def _update_free_days(self, values):
-        response = self._action_manager.actions(Actions.update_free_days, values)
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[5]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        if not response.endswith('0'):
+        if values[4] <= 0:
+            return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
+
+        response = self._database_manager.actions(Actions.update_free_days, values)
+
+        if response.get_status() == ResponseStatus.success:
             for free_days in self._all_free_days:
                 if free_days.get_free_days_id() == values[0]:
-                    free_days.set_start_date(values[2])
-                    free_days.set_end_date(values[3])
-                    free_days.set_total_days(values[4])
-                    free_days.set_reason(values[5])
+                    free_days.update_data(values)
+                    break
 
-                    return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return response
 
     def _update_wage(self, values):
         # Input data validation
@@ -769,16 +779,15 @@ class Controller:
         return ResponseStatus.fail
 
     def _delete_free_days(self, values):
-        response = self._action_manager.actions(Actions.delete_free_days, values)
+        response = self._database_manager.actions(Actions.delete_free_days, values)
 
-        if not response.endswith('0'):
+        if response.get_status() == ResponseStatus.success:
             for free_days in self._all_free_days:
                 if free_days.get_free_days_id() == values[0]:
                     self._all_free_days.remove(free_days)
+                    break
 
-                    return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return response
 
     def _delete_wage(self, values):
         response = self._database_manager.actions(Actions.delete_wage, values)

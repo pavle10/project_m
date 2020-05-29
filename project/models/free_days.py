@@ -47,3 +47,12 @@ class FreeDays:
 
     def __hash__(self):
         return hash(self.free_days_id)
+
+    def data_to_array(self):
+        return [self.free_days_id, self.employee_id, self.start_date, self.end_date, self.total_days, self.reason]
+
+    def update_data(self, values):
+        self.start_date = values[2]
+        self.end_date = values[3]
+        self.total_days = values[4]
+        self.reason = values[5]

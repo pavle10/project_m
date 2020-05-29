@@ -74,7 +74,14 @@ class PresentFreeDaysView(PresentView):
         # Get data
         values = [self.employee_box.currentText(), self.start_date_line.date(), self.end_date_line.date()]
 
-        self._free_days = self._manager.actions(Actions.employee_free_days, values)
+        response = self._manager.actions(Actions.employee_free_days, values)
+
+        if response.get_status() == ResponseStatus.fail:
+            funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+            return
+
+        self._free_days = response.get_data()
 
         self.table.setRowCount(len(self._free_days))
 
@@ -96,9 +103,7 @@ class PresentFreeDaysView(PresentView):
         row_index = self._check_selection()
 
         if row_index is not None:
-            free_days = self._free_days[row_index]
-            values = [free_days.get_free_days_id(), free_days.get_employee_id(), free_days.get_start_date(),
-                      free_days.get_end_date(), free_days.get_total_days(), free_days.get_reason()]
+            values = self._free_days[row_index].data_to_array()
 
             dialog = UpdateFreeDaysRowDialog(values)
             if dialog.exec():
@@ -106,11 +111,10 @@ class PresentFreeDaysView(PresentView):
 
                 response = self._manager.actions(Actions.update_free_days, new_values)
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.FREE_DAYS_UPD_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self._change_label()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.FREE_DAYS_UPD_FAIL_MSG)
 
     def _delete(self):
         row_index = self._check_selection()
@@ -123,11 +127,10 @@ class PresentFreeDaysView(PresentView):
 
                 response = self._manager.actions(Actions.delete_free_days, values)
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.FREE_DAYS_DEL_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self._change_label()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.FREE_DAYS_DEL_FAIL_MSG)
 
     def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
