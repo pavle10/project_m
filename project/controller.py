@@ -206,7 +206,7 @@ class Controller:
             days = 0 if before_m[2] == "" else int(before_m[2])
         except ValueError:
             # TODO write to log
-            return Response(ResponseStatus.fail, strs.NOT_INTEGER_VALUE_MSG.format(field=strs.PRESENT_EMPLOYEE_HDR[10]))
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_EMPLOYEE_HDR[10]))
 
         if years < 0 or months < 0 or months > 11 or days < 0 or days > 30:
             # TODO write to log
@@ -243,20 +243,43 @@ class Controller:
         return response
 
     def _add_uniform_piece(self, values):
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[0], values[1], values[2], values[3]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
+
+        try:
+            values[2] = 0 if values[2] == "" else int(values[2])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_UNIFORM_PIECE_HDR[1]))
+
+        try:
+            values[3] = 0 if values[3] == "" else int(values[3])
+        except ValueError:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG.format(field=strs.PRESENT_UNIFORM_PIECE_HDR[2]))
+
+        if values[2] < 0 or values[3] < 0:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE)
+
         uniform_id = self._get_uniform_id(values[0])
         employee_id = self._get_employee_id(values[1])
 
-        if uniform_id is not None and employee_id is not None:
-            values[0] = uniform_id
-            values[1] = employee_id
+        if uniform_id is None or employee_id is None:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            response = self._action_manager.actions(Actions.add_uniform_piece, values)
+        values[0] = uniform_id
+        values[1] = employee_id
 
-            if response:
-                self._uniform_pieces.append(response)
-                return ResponseStatus.success
+        response = self._database_manager.actions(Actions.add_uniform_piece, values)
 
-        return ResponseStatus.fail
+        if response.get_status() == ResponseStatus.success:
+            self._uniform_pieces.append(response.get_data())
+
+        return response
 
     def _add_child(self, values):
         # Input data validation

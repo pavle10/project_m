@@ -45,7 +45,7 @@ class DatabaseManager:
         elif action == Actions.add_uniform:
             return self._add_uniform(values)
         elif action == Actions.add_uniform_piece:
-            return self._execute_query(sql.INSERT_UNIFORM_PIECE, QueryType.insert, values)
+            return self._add_uniform_piece(values)
         elif action == Actions.add_child:
             return self._add_child(values)
         elif action == Actions.add_free_days:
@@ -281,3 +281,16 @@ class DatabaseManager:
             response.set_message(strs.UNIFORM_ADD_FAIL_MSG)
 
         return response
+
+    def _add_uniform_piece(self, values):
+        response = self._execute_query(sql.INSERT_UNIFORM_PIECE, QueryType.insert, values)
+
+        if funcs.is_query_successful(response):
+            response.set_data(UniformPiece.from_values(response.get_data()[0]))
+            response.set_message(strs.UNIFORM_PIECE_ADD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.UNIFORM_PIECE_ADD_FAIL_MSG)
+
+        return response
+

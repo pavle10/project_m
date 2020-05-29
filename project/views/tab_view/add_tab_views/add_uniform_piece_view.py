@@ -62,16 +62,23 @@ class AddUniformPieceView(AddView):
         return self._manager.actions(Actions.all_employees)
 
     def _add(self):
-        chosen_date = self.date_line.date().toPyDate()
         values = [self.uniform_box.currentText(), self.employee_box.currentText(), self.size_line.text(),
-                  self.quantity_line.text(), self.additional_line.text(), chosen_date]
+                  self.quantity_line.text(), self.additional_line.text(), self.date_line.date().toPyDate()]
 
         response = self._manager.actions(Actions.add_uniform_piece, values)
 
-        if response == ResponseStatus.success:
-            QMessageBox.information(self, strs.ADD_VIEW_MSG, strs.UNIFORM_PIECE_ADD_SUCC_MSG)
-        elif response == ResponseStatus.fail:
-            QMessageBox.warning(self, strs.ADD_VIEW_MSG, strs.UNIFORM_PIECE_ADD_FAIL_MSG)
+        funcs.show_message(self, response.get_status(), strs.ADD_VIEW_MSG, response.get_message())
+
+        if response.get_status() == ResponseStatus.success:
+            self._clear()
+
+    def _clear(self):
+        self.uniform_box.setCurrentIndex(0)
+        self.employee_box.setCurrentIndex(0)
+        self.size_line.clear()
+        self.quantity_line.clear()
+        self.additional_line.clear()
+        self.date_line.setDate(cons.DEFAULT_END_DATE)
 
     def get_name(self):
         return self._name
