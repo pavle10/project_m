@@ -35,6 +35,13 @@ def employee_unique_name(employee):
     return f"{employee.get_first_name()} {employee.get_last_name()} {employee.get_identity_number()}"
 
 
+def transform_salary_data(employee_name, values):
+    data = list(values)
+    data.append(employee_name)
+
+    return data
+
+
 def show_message(parent, status, title, message):
     if status == ResponseStatus.success:
         QMessageBox.information(parent, title, message)

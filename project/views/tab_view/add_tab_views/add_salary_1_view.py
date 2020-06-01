@@ -18,15 +18,15 @@ class AddSalary1View(AddView):
         self.employee_box = MyComboBox(self._generate_items())
         employee_label.setBuddy(self.employee_box)
 
-        net_label = MyLabel(strs.PRESENT_SALARY_1_HDR[0], is_required=True)
+        net_label = MyLabel(strs.PRESENT_SALARY_1_HDR[2], is_required=True)
         self.net_line = MyEditLine()
         net_label.setBuddy(self.net_line)
 
-        gross_label = MyLabel(strs.PRESENT_SALARY_1_HDR[1], is_required=True)
+        gross_label = MyLabel(strs.PRESENT_SALARY_1_HDR[3], is_required=True)
         self.gross_line = MyEditLine()
         gross_label.setBuddy(self.gross_line)
 
-        date_label = MyLabel(strs.PRESENT_SALARY_1_HDR[2], is_required=True)
+        date_label = MyLabel(strs.PRESENT_SALARY_1_HDR[0], is_required=True)
         self.date_line = MyEditDate()
         date_label.setBuddy(self.date_line)
 

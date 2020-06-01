@@ -38,6 +38,7 @@ class PresentSalary1View(PresentView):
         fields_layout.addRow(end_date_label, self.end_date_line)
 
         self.table = MyTable(strs.PRESENT_SALARY_1_HDR)
+        self._change_label()
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
@@ -77,7 +78,6 @@ class PresentSalary1View(PresentView):
         return self._manager.actions(Actions.all_employees)
 
     def _change_label(self):
-        # Get data
         values = [self.employee_box.currentText(),
                   self.start_date_line.date().toPyDate(),
                   self.end_date_line.date().toPyDate()]
@@ -92,14 +92,11 @@ class PresentSalary1View(PresentView):
         else:
             self.table.setRowCount(len(self._salaries))
 
-            # Data rows
             for row, salary in enumerate(self._salaries):
-                for column, item in enumerate(salary[2:]):
-                    if column == 2:
-                        date = item.strftime(cons.DATE_FORMAT_PYTHON)
-                        self.table.setItem(row, column, QTableWidgetItem(date))
-                    else:
-                        self.table.setItem(row, column, QTableWidgetItem(str(item)))
+                self.table.setItem(row, 0, QTableWidgetItem(salary[4].strftime(cons.DATE_FORMAT_PYTHON)))
+                self.table.setItem(row, 1, QTableWidgetItem(salary[5]))
+                self.table.setItem(row, 2, QTableWidgetItem(str(salary[2])))
+                self.table.setItem(row, 3, QTableWidgetItem(str(salary[3])))
 
     def update(self):
         self.employee_box.update_items(self._generate_items())
@@ -117,7 +114,7 @@ class PresentSalary1View(PresentView):
         if row_index is not None:
             values = self._salaries[row_index]
 
-            dialog = UpdateSalary1RowDialog(values)
+            dialog = UpdateSalary1RowDialog(values[:-1])
             if dialog.exec():
                 new_values = dialog.get_value()
 
@@ -150,7 +147,7 @@ class PresentSalary1View(PresentView):
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
 
-        if len(self.table.selectedItems()) != 3 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
+        if len(self.table.selectedItems()) != 4 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
             QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
             self.table.clearSelection()
 
