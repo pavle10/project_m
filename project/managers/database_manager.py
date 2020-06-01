@@ -66,7 +66,7 @@ class DatabaseManager:
         elif action == Actions.update_child:
             return self._update_child(values)
         elif action == Actions.update_uniform:
-            return self._update_query(sql.UPDATE_UNIFORM, values)
+            return self._update_uniform(values)
         elif action == Actions.update_uniform_piece:
             return self._update_query(sql.UPDATE_UNIFORM_PIECE, values)
         elif action == Actions.update_free_days:
@@ -84,7 +84,7 @@ class DatabaseManager:
         elif action == Actions.delete_child:
             return self._delete_child(values)
         elif action == Actions.delete_uniform:
-            return self._execute_query(sql.DELETE_UNIFORM, QueryType.delete, values)
+            return self._delete_uniform(values)
         elif action == Actions.delete_uniform_piece:
             return self._execute_query(sql.DELETE_UNIFORM_PIECE, QueryType.delete, values)
         elif action == Actions.delete_free_days:
@@ -372,6 +372,17 @@ class DatabaseManager:
 
         return response
 
+    def _update_uniform(self, values):
+        response = self._update_query(sql.UPDATE_UNIFORM, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.UNIFORM_UPD_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.UNIFORM_UPD_FAIL_MSG)
+
+        return response
+
     def _update_free_days(self, values):
         response = self._update_query(sql.UPDATE_FREE_DAYS, values)
 
@@ -446,6 +457,17 @@ class DatabaseManager:
         else:
             response.set_status(ResponseStatus.fail)
             response.set_message(strs.CHILD_DEL_FAIL_MSG)
+
+        return response
+
+    def _delete_uniform(self, values):
+        response = self._execute_query(sql.DELETE_UNIFORM, QueryType.delete, values)
+
+        if response.get_status() == ResponseStatus.success:
+            response.set_message(strs.UNIFORM_DEL_SUCC_MSG)
+        else:
+            response.set_status(ResponseStatus.fail)
+            response.set_message(strs.UNIFORM_DEL_FAIL_MSG)
 
         return response
 

@@ -627,20 +627,27 @@ class Controller:
         return response
 
     def _update_uniform(self, values):
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[1]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
+
         uniform_id = self._get_uniform_id(values[0])
 
-        if uniform_id is not None:
-            values[0] = uniform_id
-            response = self._action_manager.actions(Actions.update_uniform, values)
+        if uniform_id is None:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            if not response.endswith('0'):
-                for uniform in self._uniforms:
-                    if uniform.get_uniform_id() == uniform_id:
-                        uniform.set_name(values[1])
+        values[0] = uniform_id
+        response = self._database_manager.actions(Actions.update_uniform, values)
 
-                        return ResponseStatus.success
+        if response.get_status() == ResponseStatus.success:
+            for uniform in self._uniforms:
+                if uniform.get_uniform_id() == uniform_id:
+                    uniform.set_name(values[1])
+                    break
 
-        return ResponseStatus.fail
+        return response
 
     def _update_uniform_piece(self, values):
         response = self._action_manager.actions(Actions.update_uniform_piece, values)
@@ -760,7 +767,7 @@ class Controller:
         return response
 
     def _delete_child(self, values):
-        response = self._action_manager.actions(Actions.delete_child, values)
+        response = self._database_manager.actions(Actions.delete_child, values)
 
         if response.get_status() == ResponseStatus.success:
             for child in self._children:
@@ -773,19 +780,21 @@ class Controller:
     def _delete_uniform(self, values):
         uniform_id = self._get_uniform_id(values[0])
 
-        if uniform_id is not None:
-            values[0] = uniform_id
+        if uniform_id is None:
+            # TODO Write to log
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-            response = self._action_manager.actions(Actions.delete_uniform, values)
+        values[0] = uniform_id
 
-            if not response.endswith('0'):
-                for uniform in self._uniforms:
-                    if uniform.get_uniform_id() == uniform_id:
-                        self._uniforms.remove(uniform)
+        response = self._database_manager.actions(Actions.delete_uniform, values)
 
-                        return ResponseStatus.success
+        if response.get_status() == ResponseStatus.success:
+            for uniform in self._uniforms:
+                if uniform.get_uniform_id() == uniform_id:
+                    self._uniforms.remove(uniform)
+                    break
 
-        return ResponseStatus.fail
+        return response
 
     def _delete_uniform_piece(self, values):
         response = self._action_manager.actions(Actions.delete_uniform_piece, values)
