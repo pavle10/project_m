@@ -383,14 +383,17 @@ class Controller:
             # TODO write to log
             return Response(ResponseStatus.fail, strs.INVALID_MEASURE_MSG)
 
+        if values[11] > 0 and (values[2] > 0 or values[4] > 0 or values[6] > 0 or
+                               values[8] > 0 or values[9] > 0 or values[10] > 0):
+            return Response(ResponseStatus.fail, strs.NOT_ALLOWED_FIX_AND_OTHER_MSG)
+
         employee_id = self._get_employee_id(values[0])
 
         if employee_id is None:
             return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-        response = self._get_employee_wage(employee_id)
+        response = self._get_employee_wage(values)
         wage = response.get_data()
-
         if response.get_status() == ResponseStatus.fail or wage is None:
             return Response(ResponseStatus.fail, strs.WAGE_FOR_EMPLOYEE_MISSING_MSG.format(employee=values[0]))
 
