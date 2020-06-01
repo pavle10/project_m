@@ -52,17 +52,17 @@ class ViewManager:
         elif action == Actions.employee_salaries_2:
             return self._get_employee_salaries_2(values)
         elif action == Actions.update_employee:
-            return self._controller.actions(Actions.update_employee, values)
+            return self._update_employee(values)
         elif action == Actions.update_position:
-            return self._controller.actions(Actions.update_position, values)
+            return self._update_position(values)
         elif action == Actions.update_child:
-            return self._controller.actions(Actions.update_child, values)
+            return self._update_child(values)
         elif action == Actions.update_uniform:
-            return self._controller.actions(Actions.update_uniform, values)
+            return self._update_uniform(values)
         elif action == Actions.update_uniform_piece:
-            return self._controller.actions(Actions.update_uniform_piece, values)
+            return self._update_uniform_piece(values)
         elif action == Actions.update_free_days:
-            return self._controller.actions(Actions.update_free_days, values)
+            return self._update_free_days(values)
         elif action == Actions.update_wage:
             return self._update_wage(values)
         elif action == Actions.update_salary_1:
@@ -70,17 +70,17 @@ class ViewManager:
         elif action == Actions.update_salary_2:
             return self._update_salary_2(values)
         elif action == Actions.delete_employee:
-            return self._controller.actions(Actions.delete_employee, values)
+            return self._delete_employee(values)
         elif action == Actions.delete_position:
-            return self._controller.actions(Actions.delete_position, values)
+            return self._delete_position(values)
         elif action == Actions.delete_child:
-            return self._controller.actions(Actions.delete_child, values)
+            return self._delete_child(values)
         elif action == Actions.delete_uniform:
-            return self._controller.actions(Actions.delete_uniform, values)
+            return self._delete_uniform(values)
         elif action == Actions.delete_uniform_piece:
-            return self._controller.actions(Actions.delete_uniform_piece, values)
+            return self._delete_uniform_piece(values)
         elif action == Actions.delete_free_days:
-            return self._controller.actions(Actions.delete_free_days, values)
+            return self._delete_free_days(values)
         elif action == Actions.delete_wage:
             return self._delete_wage(values)
         elif action == Actions.delete_salary_1:
@@ -104,7 +104,7 @@ class ViewManager:
         response = self._controller.actions(Actions.add_position, values)
 
         if response.get_status() == ResponseStatus.success:
-            self.main_wind.update_present_tab()
+            self.main_wind.update_tabs_views()
 
         return response
 
@@ -112,7 +112,7 @@ class ViewManager:
         response = self._controller.actions(Actions.add_employee, values)
 
         if response.get_status() == ResponseStatus.success:
-            self.main_wind.update_present_tab()
+            self.main_wind.update_tabs_views()
 
         return response
 
@@ -120,7 +120,7 @@ class ViewManager:
         response = self._controller.actions(Actions.add_uniform, values)
 
         if response.get_status() == ResponseStatus.success:
-            self.main_wind.update_present_tab()
+            self.main_wind.update_tabs_views()
 
         return response
 
@@ -128,7 +128,7 @@ class ViewManager:
         response = self._controller.actions(Actions.add_uniform_piece, values)
 
         if response.get_status() == ResponseStatus.success:
-            self.main_wind.update_present_tab()
+            self.main_wind.update_tabs_views()
 
         return response
 
@@ -136,7 +136,7 @@ class ViewManager:
         response = self._controller.actions(Actions.add_child, values)
 
         if response.get_status() == ResponseStatus.success:
-            self.main_wind.update_present_tab()
+            self.main_wind.update_tabs_views()
 
         return response
 
@@ -144,7 +144,7 @@ class ViewManager:
         response = self._controller.actions(Actions.add_free_days, values)
 
         if response.get_status() == ResponseStatus.success:
-            self.main_wind.update_present_tab()
+            self.main_wind.update_tabs_views()
 
         return response
 
@@ -152,7 +152,7 @@ class ViewManager:
         response = self._controller.actions(Actions.add_wage, values)
 
         if response.get_status() == ResponseStatus.success:
-            self.main_wind.update_present_tab()
+            self.main_wind.update_tabs_views()
 
         return response
 
@@ -160,7 +160,7 @@ class ViewManager:
         response = self._controller.actions(Actions.add_salary_1, values)
 
         if response.get_status() == ResponseStatus.success:
-            self.main_wind.update_present_tab()
+            self.main_wind.update_tabs_views()
 
         return response
 
@@ -168,7 +168,7 @@ class ViewManager:
         response = self._controller.actions(Actions.add_salary_2, values)
 
         if response.get_status() == ResponseStatus.success:
-            self.main_wind.update_present_tab()
+            self.main_wind.update_tabs_views()
 
         return response
 
@@ -193,6 +193,39 @@ class ViewManager:
     def _get_employee_salaries_2(self, values):
         return self._controller.actions(Actions.employee_salaries_2, values)
 
+    def _update_position(self, values):
+        response = self._controller.actions(Actions.update_position, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_tabs_views()
+
+        return response
+
+    def _update_employee(self, values):
+        response = self._controller.actions(Actions.update_employee, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_tabs_views()
+
+        return response
+
+    def _update_child(self, values):
+        return self._controller.actions(Actions.update_child, values)
+
+    def _update_uniform(self, values):
+        response = self._controller.actions(Actions.update_uniform, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_tabs_views()
+
+        return response
+
+    def _update_uniform_piece(self, values):
+        return self._controller.actions(Actions.update_uniform_piece, values)
+
+    def _update_free_days(self, values):
+        return self._controller.actions(Actions.update_free_days, values)
+
     def _update_wage(self, values):
         return self._controller.actions(Actions.update_wage, values)
 
@@ -201,6 +234,39 @@ class ViewManager:
 
     def _update_salary_2(self, values):
         return self._controller.actions(Actions.update_salary_2, values)
+
+    def _delete_position(self, values):
+        response = self._controller.actions(Actions.delete_position, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_tabs_views()
+
+        return response
+
+    def _delete_employee(self, values):
+        response = self._controller.actions(Actions.delete_employee, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_tabs_views()
+
+        return response
+
+    def _delete_child(self, values):
+        return self._controller.actions(Actions.delete_child, values)
+
+    def _delete_uniform(self, values):
+        response = self._controller.actions(Actions.delete_uniform, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_tabs_views()
+
+        return response
+
+    def _delete_uniform_piece(self, values):
+        return self._controller.actions(Actions.delete_uniform_piece, values)
+
+    def _delete_free_days(self, values):
+        return self._controller.actions(Actions.delete_free_days, values)
 
     def _delete_wage(self, values):
         return self._controller.actions(Actions.delete_wage, values)

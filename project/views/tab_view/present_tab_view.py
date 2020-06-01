@@ -73,5 +73,4 @@ class PresentTab(TabView):
 
     def update_views(self):
         for view in self.views:
-            print(view.get_name())
             view.update()

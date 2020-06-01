@@ -15,9 +15,7 @@ class AddFreeDaysView(AddView):
 
     def _init_ui(self):
         employee_label = MyLabel(strs.EMPLOYEE, is_required=True)
-        self.employee_box = MyComboBox()
-        for index, employee in enumerate(self._get_employees()):
-            self.employee_box.insertItem(index, funcs.employee_unique_name(employee))
+        self.employee_box = MyComboBox(self._generate_items())
         employee_label.setBuddy(self.employee_box)
 
         reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[3], is_required=True)
@@ -42,6 +40,9 @@ class AddFreeDaysView(AddView):
         layout.addRow(end_date_label, self.end_date_line)
         layout.addWidget(add_button)
         self.setLayout(layout)
+
+    def _generate_items(self):
+        return [funcs.employee_unique_name(employee) for employee in self._get_employees()]
 
     def _get_employees(self):
         return self._manager.actions(Actions.all_employees)
@@ -68,4 +69,7 @@ class AddFreeDaysView(AddView):
 
     def get_name(self):
         return self._name
+
+    def update(self):
+        self.employee_box.update_items(self._generate_items())
 

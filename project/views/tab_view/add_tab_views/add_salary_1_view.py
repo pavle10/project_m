@@ -15,9 +15,7 @@ class AddSalary1View(AddView):
 
     def _init_ui(self):
         employee_label = MyLabel(strs.EMPLOYEE, is_required=True)
-        self.employee_box = MyComboBox()
-        for index, employee in enumerate(self._get_employees()):
-            self.employee_box.insertItem(index, funcs.employee_unique_name(employee))
+        self.employee_box = MyComboBox(self._generate_items())
         employee_label.setBuddy(self.employee_box)
 
         net_label = MyLabel(strs.PRESENT_SALARY_1_HDR[0], is_required=True)
@@ -43,6 +41,9 @@ class AddSalary1View(AddView):
         layout.addWidget(add_button)
         self.setLayout(layout)
 
+    def _generate_items(self):
+        return [funcs.employee_unique_name(employee) for employee in self._get_employees()]
+
     def _get_employees(self):
         return self._manager.actions(Actions.all_employees)
 
@@ -65,3 +66,6 @@ class AddSalary1View(AddView):
 
     def get_name(self):
         return self._name
+
+    def update(self):
+        self.employee_box.update_items(self._generate_items())

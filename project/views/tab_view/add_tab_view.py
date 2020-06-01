@@ -70,3 +70,7 @@ class AddTab(TabView):
 
     def get_name(self):
         return self._name
+
+    def update_views(self):
+        for view in self.views:
+            view.update()

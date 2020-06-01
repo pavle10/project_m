@@ -20,10 +20,7 @@ class PresentUniformPieceView(PresentView):
 
     def _init_ui(self):
         employee_label = MyLabel(strs.EMPLOYEE)
-        self.employee_box = MyComboBox()
-        self.employee_box.insertItem(0, strs.EMPTY)
-        for index, employee in enumerate(self._get_employees()):
-            self.employee_box.insertItem(index + 1, funcs.employee_unique_name(employee))
+        self.employee_box = MyComboBox(self._generate_items())
         self.employee_box.currentTextChanged.connect(self._change_label)
         employee_label.setBuddy(self.employee_box)
 
@@ -66,6 +63,16 @@ class PresentUniformPieceView(PresentView):
         layout.addLayout(buttons_layout)
         self.setLayout(layout)
 
+    def _generate_items(self):
+        items = list()
+
+        items.append(strs.ALL)
+
+        for employee in self._get_employees():
+            items.append(funcs.employee_unique_name(employee))
+
+        return items
+
     def _get_employees(self):
         return self._manager.actions(Actions.all_employees)
 
@@ -88,8 +95,7 @@ class PresentUniformPieceView(PresentView):
             self.table.setItem(row, 4, QTableWidgetItem(date))
 
     def update(self):
-        if self.employee_box.count() > 0:
-            self.employee_box.setCurrentIndex(0)
+        self.employee_box.update_items(self._generate_items())
 
         self._change_label()
 

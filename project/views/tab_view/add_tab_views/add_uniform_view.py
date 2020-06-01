@@ -39,3 +39,6 @@ class AddUniformView(AddView):
 
     def get_name(self):
         return self._name
+
+    def update(self):
+        pass

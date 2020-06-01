@@ -15,15 +15,11 @@ class AddUniformPieceView(AddView):
 
     def _init_ui(self):
         uniform_label = MyLabel(strs.UNIFORM, is_required=True)
-        self.uniform_box = MyComboBox()
-        for index, uniform in enumerate(self._get_uniforms()):
-            self.uniform_box.insertItem(index, f"{uniform.get_name()}")
+        self.uniform_box = MyComboBox(self._generate_items(strs.UNIFORM))
         uniform_label.setBuddy(self.uniform_box)
 
         employee_label = MyLabel(strs.EMPLOYEE, is_required=True)
-        self.employee_box = MyComboBox()
-        for index, employee in enumerate(self._get_employees()):
-            self.employee_box.insertItem(index, funcs.employee_unique_name(employee))
+        self.employee_box = MyComboBox(self._generate_items(strs.EMPLOYEE))
         employee_label.setBuddy(self.employee_box)
 
         size_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[1], is_required=True)
@@ -55,6 +51,13 @@ class AddUniformPieceView(AddView):
         layout.addWidget(add_button)
         self.setLayout(layout)
 
+    def _generate_items(self, item_name):
+        if item_name == strs.UNIFORM:
+            return [uniform.get_name() for uniform in self._get_uniforms()]
+        elif item_name == strs.EMPLOYEE:
+            return [funcs.employee_unique_name(employee) for employee in self._get_employees()]
+        return []
+
     def _get_uniforms(self):
         return self._manager.actions(Actions.all_uniforms)
 
@@ -82,3 +85,7 @@ class AddUniformPieceView(AddView):
 
     def get_name(self):
         return self._name
+
+    def update(self):
+        self.uniform_box.update_items(self._generate_items(strs.UNIFORM))
+        self.employee_box.update_items(self._generate_items(strs.EMPLOYEE))

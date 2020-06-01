@@ -4,7 +4,6 @@ from PyQt5.QtGui import QIcon
 from project.utils import strings as strs, constants as cons
 from project.views.tab_view.add_tab_view import AddTab
 from project.views.tab_view.present_tab_view import PresentTab
-from project.utils.enums import Actions
 from project.models.my_widgets import MyTab
 
 
@@ -43,7 +42,6 @@ class MainWind(QMainWindow):
         frame_geometry.moveCenter(centerPoint)
         self.move(frame_geometry.topLeft())
 
-    def update_present_tab(self):
-        tab = self.tabs.get_tabs()[1]
-
-        tab.update_views()
+    def update_tabs_views(self):
+        for tab in self.tabs.get_tabs():
+            tab.update_views()

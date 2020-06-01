@@ -78,11 +78,20 @@ class MyEditLineShort(QLineEdit):
 
 class MyComboBox(QComboBox):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, items, *args, **kwargs):
         super(MyComboBox, self).__init__(*args, **kwargs)
 
         self.setFixedSize(cons.LINES_WIDTH, cons.LINES_HEIGHT)
         self.setFont(cons.LINES_FONT)
+
+        for index, item in enumerate(items):
+            self.insertItem(index, item)
+
+    def update_items(self, items):
+        self.clear()
+
+        for index, item in enumerate(items):
+            self.insertItem(index, item)
 
 
 class MyEditDate(QDateEdit):

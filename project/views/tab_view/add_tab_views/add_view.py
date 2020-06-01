@@ -15,3 +15,7 @@ class AddView(QWidget):
     @abstractmethod
     def get_name(self):
         pass
+
+    @abstractmethod
+    def _clear(self):
+        pass

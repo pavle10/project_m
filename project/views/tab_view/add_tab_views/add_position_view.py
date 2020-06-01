@@ -19,9 +19,7 @@ class AddPositionView(AddView):
         name_label.setBuddy(self.name_line)
 
         saturday_label = MyLabel(strs.PRESENT_POSITION_HDR[1])
-        self.saturday = MyComboBox()
-        self.saturday.addItem(strs.YES)
-        self.saturday.addItem(strs.NO)
+        self.saturday = MyComboBox(self._generate_items())
         saturday_label.setBuddy(self.saturday)
 
         add_button = MyButton(strs.ADD_BTN)
@@ -45,5 +43,11 @@ class AddPositionView(AddView):
         self.name_line.clear()
         self.saturday.setCurrentIndex(0)
 
+    def _generate_items(self):
+        return [strs.YES, strs.NO]
+
     def get_name(self):
         return self._name
+
+    def update(self):
+        pass

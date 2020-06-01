@@ -39,10 +39,7 @@ class AddEmployeeView(AddView):
         qualification_label.setBuddy(self.qualification_line)
 
         position_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[6], is_required=True)
-        self.position_box = MyComboBox()
-        for index, position in enumerate(self._get_positions()):
-            self.position_box.insertItem(index, position.get_name())
-        position_label.setBuddy(self.position_box)
+        self.position_box = MyComboBox(self._generate_items())
 
         saint_day_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[7])
         self.saint_day_line = MyEditLine()
@@ -124,6 +121,9 @@ class AddEmployeeView(AddView):
         if response.get_status() == ResponseStatus.success:
             self._clear()
 
+    def _generate_items(self):
+        return [item.get_name() for item in self._get_positions()]
+
     def _get_positions(self):
         return self._manager.actions(Actions.all_positions)
 
@@ -148,3 +148,6 @@ class AddEmployeeView(AddView):
 
     def get_name(self):
         return self._name
+
+    def update(self):
+        self.position_box.update_items(self._generate_items())

@@ -32,17 +32,11 @@ class AddChildView(AddView):
 
         mother_label = MyLabel(strs.PRESENT_CHILD_HDR[4])
         # TODO Think about better MyComboBox initialization
-        self.mother_box = MyComboBox()
-        self.mother_box.insertItem(0, strs.EMPTY)
-        for index, employee in enumerate(self._get_employees()):
-            self.mother_box.insertItem(index+1, funcs.employee_unique_name(employee))
+        self.mother_box = MyComboBox(self._generate_items())
         mother_label.setBuddy(self.mother_box)
 
         father_label = MyLabel(strs.PRESENT_CHILD_HDR[5])
-        self.father_box = MyComboBox()
-        self.father_box.insertItem(0, strs.EMPTY)
-        for index, employee in enumerate(self._get_employees()):
-            self.father_box.insertItem(index+1, funcs.employee_unique_name(employee))
+        self.father_box = MyComboBox(self._generate_items())
         father_label.setBuddy(self.father_box)
 
         add_button = MyButton(strs.ADD_BTN)
@@ -57,6 +51,14 @@ class AddChildView(AddView):
         layout.addRow(father_label, self.father_box)
         layout.addWidget(add_button)
         self.setLayout(layout)
+
+    def _generate_items(self):
+        items = list()
+        items.append(strs.EMPTY)
+        for employee in self._get_employees():
+            items.append(funcs.employee_unique_name(employee))
+
+        return items
 
     def _get_employees(self):
         return self._manager.actions(Actions.all_employees)
@@ -82,4 +84,8 @@ class AddChildView(AddView):
 
     def get_name(self):
         return self._name
+
+    def update(self):
+        self.mother_box.update_items(self._generate_items())
+        self.father_box.update_items(self._generate_items())
 
