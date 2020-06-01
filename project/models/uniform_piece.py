@@ -5,6 +5,7 @@ class UniformPiece:
         self.uniform_id = uniform_id
         self.uniform_name = ""
         self.employee_id = employee_id
+        self.employee_name = ""
         self.size = size
         self.quantity = quantity
         self.additional = additional
@@ -34,6 +35,12 @@ class UniformPiece:
 
     def set_employee_id(self, value):
         self.employee_id = value
+
+    def get_employee_name(self):
+        return self.employee_name
+
+    def set_employee_name(self, value):
+        self.employee_name = value
 
     def get_size(self):
         return self.size

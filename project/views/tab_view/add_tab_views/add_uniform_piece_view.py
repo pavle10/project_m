@@ -22,19 +22,19 @@ class AddUniformPieceView(AddView):
         self.employee_box = MyComboBox(self._generate_items(strs.EMPLOYEE))
         employee_label.setBuddy(self.employee_box)
 
-        size_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[1], is_required=True)
+        size_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[2], is_required=True)
         self.size_line = MyEditLine()
         size_label.setBuddy(self.size_line)
 
-        quantity_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[2], is_required=True)
+        quantity_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[3], is_required=True)
         self.quantity_line = MyEditLine()
         quantity_label.setBuddy(self.quantity_line)
 
-        additional_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[3])
+        additional_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[4])
         self.additional_line = MyEditLine()
         additional_label.setBuddy(self.additional_line)
 
-        date_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[4], is_required=True)
+        date_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[5], is_required=True)
         self.date_line = MyEditDate()
         date_label.setBuddy(self.date_line)
 

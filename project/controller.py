@@ -53,6 +53,7 @@ class Controller:
 
         self._update_uniform_pieces_name()
         self._update_children_parents()
+        self._update_uniform_pieces_employees_names()
         self._update_free_days_employees_names()
         self._update_wages_employees_names()
 
@@ -148,6 +149,7 @@ class Controller:
 
         for index in indices:
             piece = self._uniform_pieces[index]
+
             for uniform in self._uniforms:
                 if uniform.get_uniform_id() == piece.get_uniform_id():
                     piece.set_uniform_name(uniform.get_name())
@@ -166,6 +168,13 @@ class Controller:
                     child.set_mother_name(funcs.employee_unique_name(employee))
                 elif employee.get_employee_id() == father_id:
                     child.set_father_name(funcs.employee_unique_name(employee))
+
+    def _update_uniform_pieces_employees_names(self, indices=None):
+        indices = range(len(self._uniform_pieces)) if indices is None else indices
+
+        for index in indices:
+            uni_piece = self._uniform_pieces[index]
+            uni_piece.set_employee_name(self._get_employee_unique_name(uni_piece.get_employee_id()))
 
     def _update_free_days_employees_names(self, indices=None):
         indices = range(len(self._wages)) if indices is None else indices
@@ -288,6 +297,7 @@ class Controller:
         if response.get_status() == ResponseStatus.success:
             self._uniform_pieces.append(response.get_data())
             self._update_uniform_pieces_name([-1])
+            self._update_uniform_pieces_employees_names([-1])
 
         return response
 
@@ -492,18 +502,29 @@ class Controller:
         return ""
 
     def _get_employee_uniform_pieces(self, values):
-        employee_id = self._get_employee_id(values[0])
+        start_date = values[1]
+        end_date = values[2]
+
+        if start_date > end_date:
+            return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
+
         result = list()
 
-        if employee_id is not None:
-            start_date = values[1]
-            end_date = values[2]
+        if values[0] == strs.ALL:
+            for piece in self._uniform_pieces:
+                if start_date <= piece.get_date() <= end_date:
+                    result.append(piece)
+        else:
+            employee_id = self._get_employee_id(values[0])
+
+            if employee_id is None:
+                return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
             for piece in self._uniform_pieces:
                 if piece.get_employee_id() == employee_id and start_date <= piece.get_date() <= end_date:
                     result.append(piece)
 
-        return result
+        return Response(ResponseStatus.success, strs.UNIFORM_PIECE_EMP_SUCC_MSG, result)
 
     def _get_employee_free_days(self, values):
         result = list()

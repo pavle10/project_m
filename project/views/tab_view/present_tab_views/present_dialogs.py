@@ -1,6 +1,4 @@
-from PyQt5.QtWidgets import *
-
-from project.utils import constants as cons, strings as strs, funcs
+from project.utils import strings as strs, funcs
 from project.models.my_widgets import *
 
 
@@ -58,7 +56,7 @@ class UpdateEmployeeDialog(QDialog):
         qualification_label.setBuddy(self.qualification_line)
 
         position_label = MyLabel(strs.PRESENT_EMPLOYEE_HDR[6])
-        self.position_box = MyComboBox()
+        self.position_box = MyComboBox([position.get_name() for position in positions])
         current_index = 0
         for index, position in enumerate(positions):
             self.position_box.insertItem(index, position.get_name())
@@ -160,14 +158,12 @@ class UpdatePositionDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        name_label = MyLabel(strs.PRESENT_CHILD_HDR[0])
+        name_label = MyLabel(strs.PRESENT_POSITION_HDR[0])
         self.name_line = MyEditLine(selected_data[1])
         name_label.setBuddy(self.name_line)
 
         saturday_label = MyLabel(strs.PRESENT_POSITION_HDR[1])
-        self.saturday = MyComboBox()
-        self.saturday.addItem(strs.YES)
-        self.saturday.addItem(strs.NO)
+        self.saturday = MyComboBox([strs.YES, strs.NO])
         self.saturday.setCurrentIndex(selected_data[2])
         saturday_label.setBuddy(self.saturday)
 
@@ -213,7 +209,7 @@ class UpdateChildDialog(QDialog):
         birthday_label.setBuddy(self.birthday_line)
 
         mother_label = MyLabel(strs.PRESENT_CHILD_HDR[4])
-        self.mother_box = MyComboBox()
+        self.mother_box = MyComboBox([])
         self.mother_box.insertItem(0, "")
         select_index = 0
         for index, employee in enumerate(employees):
@@ -223,7 +219,7 @@ class UpdateChildDialog(QDialog):
         mother_label.setBuddy(self.mother_box)
 
         father_label = MyLabel(strs.PRESENT_CHILD_HDR[5])
-        self.father_box = MyComboBox()
+        self.father_box = MyComboBox([])
         self.father_box.insertItem(0, "")
         select_index = 0
         for index, employee in enumerate(employees):
@@ -294,13 +290,12 @@ class UpdateUniformPieceDialog(QDialog):
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
         uniform_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[0])
-        self.uniform_box = MyComboBox()
-        current_index = 0
-        for index, uniform in enumerate(self.uniforms):
-            self.uniform_box.insertItem(index, uniform.get_name())
+        self.uniform_box = MyComboBox([uniform.get_name() for uniform in uniforms])
+        curr_index = 0
+        for ind, uniform in enumerate(uniforms):
             if uniform.get_uniform_id() == selected_data[1]:
-                current_index = index
-        self.uniform_box.setCurrentIndex(current_index)
+                curr_index = ind
+        self.uniform_box.setCurrentIndex(curr_index)
         uniform_label.setBuddy(self.uniform_box)
 
         size_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[1])

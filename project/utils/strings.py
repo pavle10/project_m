@@ -46,7 +46,7 @@ PRESENT_EMPLOYEE_HDR = ["Ime", "Prezime", "Ime oca", "JMBG", "Lična karta", "St
 PRESENT_POSITION_HDR = ["Naziv", "Radna subota"]
 PRESENT_CHILD_HDR = ["Ime", "Prezime", "JMBG", "Datum rodjenja", "Majka", "Otac"]
 PRESENT_UNIFORM_HDR = ["Naziv"]
-PRESENT_UNIFORM_PIECE_HDR = ["Naziv", "Veličina", "Količina", "Dodatno", "Datum"]
+PRESENT_UNIFORM_PIECE_HDR = ["Zaposleni", "Naziv", "Veličina", "Količina", "Dodatno", "Datum"]
 PRESENT_FREE_DAYS_HDR = ["Zaposleni", "Početak", "Završetak", "Ukupno dana", "Razlog"]
 PRESENT_WAGE_HDR = ["Zaposleni", "Dan", "Sat", "Obrok"]
 PRESENT_SALARY_1_HDR = ["Datum", "Zaposleni", "Neto", "Bruto"]
@@ -111,6 +111,7 @@ UNIFORM_PIECE_UPD_SUCC_MSG = "Uspešno je promenjeno zaduženje odeće!"
 UNIFORM_PIECE_UPD_FAIL_MSG = "Nije uspešno promenjeno zaduženje odeće! Probajte ponovo."
 UNIFORM_PIECE_DEL_SUCC_MSG = "Uspešno je izbrisano zaduženje odeće!"
 UNIFORM_PIECE_DEL_FAIL_MSG = "Nije uspešno izbrisano zaduženje odeće! Probajte ponovo."
+UNIFORM_PIECE_EMP_SUCC_MSG = "Pronadjena zadužena odeća za zadate parametre!"
 
 FREE_DAYS_ADD_SUCC_MSG = "Slobodni dani su uspešno dodati!"
 FREE_DAYS_ADD_FAIL_MSG = "Slobodni dani nisu uspešno dodati! Probajte opet."

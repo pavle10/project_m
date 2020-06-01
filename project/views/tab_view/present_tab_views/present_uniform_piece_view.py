@@ -38,6 +38,7 @@ class PresentUniformPieceView(PresentView):
         fields_layout.addRow(end_date_label, self.end_date_line)
 
         self.table = MyTable(strs.PRESENT_UNIFORM_PIECE_HDR)
+        self._change_label()
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
@@ -80,19 +81,25 @@ class PresentUniformPieceView(PresentView):
         # Get data
         values = [self.employee_box.currentText(), self.start_date_line.date(), self.end_date_line.date()]
 
-        self._uniform_pieces = self._manager.actions(Actions.employee_uniform_pieces, values)
+        response = self._manager.actions(Actions.employee_uniform_pieces, values)
 
-        self.table.setRowCount(len(self._uniform_pieces))
+        if response.get_status() == ResponseStatus.success:
+            self._uniform_pieces = response.get_data()
 
-        # Data rows
-        for row, uniform_piece in enumerate(self._uniform_pieces):
-            date = uniform_piece.get_date().strftime(cons.DATE_FORMAT_PYTHON)
+            self.table.setRowCount(len(self._uniform_pieces))
 
-            self.table.setItem(row, 0, QTableWidgetItem(uniform_piece.get_uniform_name()))
-            self.table.setItem(row, 1, QTableWidgetItem(str(uniform_piece.get_size())))
-            self.table.setItem(row, 2, QTableWidgetItem(str(uniform_piece.get_quantity())))
-            self.table.setItem(row, 3, QTableWidgetItem(uniform_piece.get_additional()))
-            self.table.setItem(row, 4, QTableWidgetItem(date))
+            # Data rows
+            for row, uniform_piece in enumerate(self._uniform_pieces):
+                date = uniform_piece.get_date().strftime(cons.DATE_FORMAT_PYTHON)
+
+                self.table.setItem(row, 0, QTableWidgetItem(uniform_piece.get_employee_name()))
+                self.table.setItem(row, 1, QTableWidgetItem(uniform_piece.get_uniform_name()))
+                self.table.setItem(row, 2, QTableWidgetItem(str(uniform_piece.get_size())))
+                self.table.setItem(row, 3, QTableWidgetItem(str(uniform_piece.get_quantity())))
+                self.table.setItem(row, 4, QTableWidgetItem(uniform_piece.get_additional()))
+                self.table.setItem(row, 5, QTableWidgetItem(date))
+        else:
+            funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
 
     def update(self):
         self.employee_box.update_items(self._generate_items())
@@ -145,7 +152,7 @@ class PresentUniformPieceView(PresentView):
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
 
-        if len(self.table.selectedItems()) != 5 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
+        if len(self.table.selectedItems()) != 6 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
             QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
             self.table.clearSelection()
 
