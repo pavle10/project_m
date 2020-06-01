@@ -97,6 +97,12 @@ def to_days(years, months, days):
     return days
 
 
+def print_days(before_m):
+    before_m = from_days(before_m)
+
+    return f"{before_m[0]}g {before_m[1]}m {before_m[2]}d"
+
+
 def check_required_fields(*args):
     for arg in args:
         if arg == "":

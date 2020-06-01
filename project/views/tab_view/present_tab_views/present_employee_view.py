@@ -64,7 +64,7 @@ class PresentEmployeeView(PresentView):
             self.table.setItem(row, 7, QTableWidgetItem(employee.get_saint_day()))
             self.table.setItem(row, 8, QTableWidgetItem(employee.get_address()))
             self.table.setItem(row, 9, QTableWidgetItem(employee.get_account()))
-            self.table.setItem(row, 10, QTableWidgetItem(employee.get_before_m()))
+            self.table.setItem(row, 10, QTableWidgetItem(funcs.print_days(employee.get_before_m())))
             self.table.setItem(row, 11, QTableWidgetItem(employee.get_start_date().strftime(cons.DATE_FORMAT_PYTHON)))
             self.table.setItem(row, 12, QTableWidgetItem(employee.get_home_number()))
             self.table.setItem(row, 13, QTableWidgetItem(employee.get_mobile_number()))
