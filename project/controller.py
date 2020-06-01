@@ -383,6 +383,7 @@ class Controller:
         return self._database_manager.actions(Actions.add_salary_1, values)
 
     def _add_salary_2(self, values):
+        print(values)
         # Input data validation
         if not funcs.convert_to_int(values, [2, 4, 6, 8, 9, 10, 11]):
             return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
@@ -407,10 +408,10 @@ class Controller:
             return Response(ResponseStatus.fail, strs.WAGE_FOR_EMPLOYEE_MISSING_MSG.format(employee=values[0]))
 
         values[0] = employee_id
-        values[3] = wage.get_day()
-        values[5] = wage.get_hour()
-        values[7] = wage.get_meal()
-
+        values[3] = wage[0].get_day()
+        values[5] = wage[0].get_hour()
+        values[7] = wage[0].get_meal()
+        print(values)
         return self._database_manager.actions(Actions.add_salary_2, values)
 
     def _get_all_positions(self):
@@ -566,8 +567,6 @@ class Controller:
 
         return response
 
-
-
     def _get_employee_salaries_2(self, values):
         start_date = values[1]
         end_date = values[2]
@@ -576,16 +575,27 @@ class Controller:
             return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
 
         if values[0] == strs.ALL:
-            return self._database_manager.actions(Actions.salaries_2_between_dates, [start_date, end_date])
+            response = self._database_manager.actions(Actions.salaries_2_between_dates, [start_date, end_date])
+        else:
+            employee_id = self._get_employee_id(values[0])
 
-        employee_id = self._get_employee_id(values[0])
+            if employee_id is None:
+                return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-        if employee_id is None:
-            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
+            values[0] = employee_id
 
-        values[0] = employee_id
+            response = self._database_manager.actions(Actions.employee_salaries_2, values)
 
-        return self._database_manager.actions(Actions.employee_salaries_2, values)
+        if response.get_status() == ResponseStatus.success:
+            result = list()
+
+            for data in response.get_data():
+                employee_name = self._get_employee_unique_name(data[1])
+                result.append(funcs.transform_salary_data(employee_name, data))
+
+            response.set_data(result)
+
+        return response
 
     def _update_employee(self, values):
         # Input data validation

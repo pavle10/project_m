@@ -50,8 +50,9 @@ PRESENT_UNIFORM_PIECE_HDR = ["Naziv", "Veličina", "Količina", "Dodatno", "Datu
 PRESENT_FREE_DAYS_HDR = ["Početak", "Završetak", "Ukupno dana", "Razlog"]
 PRESENT_WAGE_HDR = ["Zaposleni", "Dan", "Sat", "Obrok"]
 PRESENT_SALARY_1_HDR = ["Datum", "Zaposleni", "Neto", "Bruto"]
-PRESENT_SALARY_2_HDR = ["Datum", "Radnih dana", "Vrednost radnog dana", "Radnih sati", "Vrednost radnog sata", "Obroka",
-                        "Vrednost obroka", "Rate", "Dana odmora", "Vrednost dana odmora", "Fiksno"]
+PRESENT_SALARY_2_HDR = ["Datum", "Zaposleni", "Radnih dana", "Vrednost radnog dana", "Radnih sati",
+                        "Vrednost radnog sata", "Obroka", "Vrednost obroka", "Rate", "Dana odmora",
+                        "Vrednost dana odmora", "Fiksno"]
 
 # ===== MESSAGES =====
 

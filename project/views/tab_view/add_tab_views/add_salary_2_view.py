@@ -18,31 +18,31 @@ class AddSalary2View(AddView):
         self.employee_box = MyComboBox(self._generate_items())
         employee_label.setBuddy(self.employee_box)
 
-        day_label = MyLabel(strs.PRESENT_SALARY_2_HDR[1], is_required=True)
+        day_label = MyLabel(strs.PRESENT_SALARY_2_HDR[2], is_required=True)
         self.day_line = MyEditLine()
         day_label.setBuddy(self.day_line)
 
-        hour_label = MyLabel(strs.PRESENT_SALARY_2_HDR[3], is_required=True)
+        hour_label = MyLabel(strs.PRESENT_SALARY_2_HDR[4], is_required=True)
         self.hour_line = MyEditLine()
         hour_label.setBuddy(self.hour_line)
 
-        meal_label = MyLabel(strs.PRESENT_SALARY_2_HDR[5], is_required=True)
+        meal_label = MyLabel(strs.PRESENT_SALARY_2_HDR[6], is_required=True)
         self.meal_line = MyEditLine()
         meal_label.setBuddy(self.meal_line)
 
-        payment_label = MyLabel(strs.PRESENT_SALARY_2_HDR[7], is_required=True)
+        payment_label = MyLabel(strs.PRESENT_SALARY_2_HDR[8], is_required=True)
         self.payment_line = MyEditLine()
         payment_label.setBuddy(self.payment_line)
 
-        vacation_label = MyLabel(strs.PRESENT_SALARY_2_HDR[8], is_required=True)
+        vacation_label = MyLabel(strs.PRESENT_SALARY_2_HDR[9], is_required=True)
         self.vacation_line = MyEditLine()
         vacation_label.setBuddy(self.vacation_line)
 
-        vacation_value_label = MyLabel(strs.PRESENT_SALARY_2_HDR[9], is_required=True)
+        vacation_value_label = MyLabel(strs.PRESENT_SALARY_2_HDR[10], is_required=True)
         self.vacation_value_line = MyEditLine()
         vacation_value_label.setBuddy(self.vacation_value_line)
 
-        fix_label = MyLabel(strs.PRESENT_SALARY_2_HDR[10], is_required=True)
+        fix_label = MyLabel(strs.PRESENT_SALARY_2_HDR[11], is_required=True)
         self.fix_line = MyEditLine()
         fix_label.setBuddy(self.fix_line)
 

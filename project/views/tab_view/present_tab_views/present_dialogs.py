@@ -470,31 +470,31 @@ class UpdateSalary2RowDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        day_label = MyLabel(strs.PRESENT_SALARY_2_HDR[1])
+        day_label = MyLabel(strs.PRESENT_SALARY_2_HDR[2])
         self.day_line = MyEditLine(str(selected_data[3]))
         day_label.setBuddy(self.day_line)
 
-        hour_label = MyLabel(strs.PRESENT_SALARY_2_HDR[3])
+        hour_label = MyLabel(strs.PRESENT_SALARY_2_HDR[4])
         self.hour_line = MyEditLine(str(selected_data[5]))
         hour_label.setBuddy(self.hour_line)
 
-        meal_label = MyLabel(strs.PRESENT_SALARY_2_HDR[5])
+        meal_label = MyLabel(strs.PRESENT_SALARY_2_HDR[6])
         self.meal_line = MyEditLine(str(selected_data[7]))
         meal_label.setBuddy(self.meal_line)
 
-        payment_label = MyLabel(strs.PRESENT_SALARY_2_HDR[7])
+        payment_label = MyLabel(strs.PRESENT_SALARY_2_HDR[8])
         self.payment_line = MyEditLine(str(selected_data[9]))
         payment_label.setBuddy(self.payment_line)
 
-        vacation_label = MyLabel(strs.PRESENT_SALARY_2_HDR[8])
+        vacation_label = MyLabel(strs.PRESENT_SALARY_2_HDR[9])
         self.vacation_line = MyEditLine(str(selected_data[10]))
         vacation_label.setBuddy(self.vacation_line)
 
-        vacation_value_label = MyLabel(strs.PRESENT_SALARY_2_HDR[9])
+        vacation_value_label = MyLabel(strs.PRESENT_SALARY_2_HDR[10])
         self.vacation_value_line = MyEditLine(str(selected_data[11]))
         vacation_value_label.setBuddy(self.vacation_value_line)
 
-        fix_label = MyLabel(strs.PRESENT_SALARY_2_HDR[10])
+        fix_label = MyLabel(strs.PRESENT_SALARY_2_HDR[11])
         self.fix_line = MyEditLine(str(selected_data[12]))
         fix_label.setBuddy(self.fix_line)
 
