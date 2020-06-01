@@ -246,7 +246,7 @@ class UpdateChildDialog(QDialog):
         self.data[1] = self.first_name_line.text()
         self.data[2] = self.last_name_line.text()
         self.data[3] = self.identity_number_line.text()
-        self.data[4] = self.birthday_line.text()
+        self.data[4] = self.birthday_line.date().toPyDate()
         self.data[6] = self.mother_box.currentText()
         self.data[8] = self.father_box.currentText()
 

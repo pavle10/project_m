@@ -65,8 +65,6 @@ class PresentChildView(PresentView):
             values = child.data_to_array()
             employees = self._manager.actions(Actions.all_employees)
 
-            print(values)
-
             dialog = UpdateChildDialog(values, employees)
 
             if dialog.exec():
