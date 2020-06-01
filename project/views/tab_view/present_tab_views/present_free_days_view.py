@@ -38,7 +38,7 @@ class PresentFreeDaysView(PresentView):
         fields_layout.addRow(end_date_label, self.end_date_line)
 
         self.table = MyTable(strs.PRESENT_FREE_DAYS_HDR)
-        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self._change_label()
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
@@ -78,29 +78,23 @@ class PresentFreeDaysView(PresentView):
         return self._manager.actions(Actions.all_employees)
 
     def _change_label(self):
-        # Get data
         values = [self.employee_box.currentText(), self.start_date_line.date(), self.end_date_line.date()]
 
         response = self._manager.actions(Actions.employee_free_days, values)
-
-        if response.get_status() == ResponseStatus.fail:
-            funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
-
-            return
 
         self._free_days = response.get_data()
 
         self.table.setRowCount(len(self._free_days))
 
-        # Data rows
         for row, free_days in enumerate(self._free_days):
             start_date = free_days.get_start_date().strftime(cons.DATE_FORMAT_PYTHON)
             end_date = free_days.get_end_date().strftime(cons.DATE_FORMAT_PYTHON)
 
-            self.table.setItem(row, 0, QTableWidgetItem(start_date))
-            self.table.setItem(row, 1, QTableWidgetItem(end_date))
-            self.table.setItem(row, 2, QTableWidgetItem(str(free_days.get_total_days())))
-            self.table.setItem(row, 3, QTableWidgetItem(free_days.get_reason()))
+            self.table.setItem(row, 0, QTableWidgetItem(free_days.get_employee_name()))
+            self.table.setItem(row, 1, QTableWidgetItem(start_date))
+            self.table.setItem(row, 2, QTableWidgetItem(end_date))
+            self.table.setItem(row, 3, QTableWidgetItem(str(free_days.get_total_days())))
+            self.table.setItem(row, 4, QTableWidgetItem(free_days.get_reason()))
 
     def update(self):
         self.employee_box.update_items(self._generate_items())
@@ -150,7 +144,7 @@ class PresentFreeDaysView(PresentView):
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
 
-        if len(self.table.selectedItems()) != 4 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
+        if len(self.table.selectedItems()) != 5 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
             QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
             self.table.clearSelection()
 

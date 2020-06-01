@@ -53,6 +53,7 @@ class Controller:
 
         self._update_uniform_pieces_name()
         self._update_children_parents()
+        self._update_free_days_employees_names()
         self._update_wages_employees_names()
 
     def run(self):
@@ -165,6 +166,13 @@ class Controller:
                     child.set_mother_name(funcs.employee_unique_name(employee))
                 elif employee.get_employee_id() == father_id:
                     child.set_father_name(funcs.employee_unique_name(employee))
+
+    def _update_free_days_employees_names(self, indices=None):
+        indices = range(len(self._wages)) if indices is None else indices
+
+        for index in indices:
+            free_days = self._all_free_days[index]
+            free_days.set_employee_name(self._get_employee_unique_name(free_days.get_employee_id()))
 
     def _update_wages_employees_names(self, indices=None):
         indices = range(len(self._wages)) if indices is None else indices
@@ -326,6 +334,7 @@ class Controller:
 
         if response.get_status() == ResponseStatus.success:
             self._all_free_days.append(response.get_data())
+            self._update_free_days_employees_names([-1])
 
         return response
 
@@ -383,7 +392,6 @@ class Controller:
         return self._database_manager.actions(Actions.add_salary_1, values)
 
     def _add_salary_2(self, values):
-        print(values)
         # Input data validation
         if not funcs.convert_to_int(values, [2, 4, 6, 8, 9, 10, 11]):
             return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
@@ -411,7 +419,7 @@ class Controller:
         values[3] = wage[0].get_day()
         values[5] = wage[0].get_hour()
         values[7] = wage[0].get_meal()
-        print(values)
+
         return self._database_manager.actions(Actions.add_salary_2, values)
 
     def _get_all_positions(self):
@@ -510,18 +518,17 @@ class Controller:
                 if start_date <= free_days.get_start_date() and free_days.get_end_date() <= end_date:
                     result.append(free_days)
 
-            return Response(ResponseStatus.success, strs.FREE_DAYS_EMP_SUCC_MSG, result)
+        else:
+            employee_id = self._get_employee_id(values[0])
 
-        employee_id = self._get_employee_id(values[0])
+            if employee_id is None:
+                return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
-        if employee_id is None:
-            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
-
-        for free_days in self._all_free_days:
-            if free_days.get_employee_id() == employee_id \
-                    and start_date <= free_days.get_start_date() \
-                    and free_days.get_end_date() <= end_date:
-                result.append(free_days)
+            for free_days in self._all_free_days:
+                if free_days.get_employee_id() == employee_id \
+                        and start_date <= free_days.get_start_date() \
+                        and free_days.get_end_date() <= end_date:
+                    result.append(free_days)
 
         return Response(ResponseStatus.success, strs.FREE_DAYS_EMP_SUCC_MSG, result)
 

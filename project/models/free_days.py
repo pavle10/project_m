@@ -3,6 +3,7 @@ class FreeDays:
     def __init__(self, free_days_id, employee_id, start_date, end_date, total_days, reason):
         self.free_days_id = free_days_id
         self.employee_id = employee_id
+        self.employee_name = ""
         self.start_date = start_date
         self.end_date = end_date
         self.total_days = total_days
@@ -17,6 +18,12 @@ class FreeDays:
 
     def get_employee_id(self):
         return self.employee_id
+
+    def get_employee_name(self):
+        return self.employee_name
+
+    def set_employee_name(self, value):
+        self.employee_name = value
 
     def get_start_date(self):
         return self.start_date

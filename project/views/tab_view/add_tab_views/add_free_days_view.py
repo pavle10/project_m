@@ -18,15 +18,15 @@ class AddFreeDaysView(AddView):
         self.employee_box = MyComboBox(self._generate_items())
         employee_label.setBuddy(self.employee_box)
 
-        reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[3], is_required=True)
+        reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[4], is_required=True)
         self.reason_line = MyEditLine()
         reason_label.setBuddy(self.reason_line)
 
-        start_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[0], is_required=True)
+        start_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[1], is_required=True)
         self.start_date_line = MyEditDate(cons.DEFAULT_START_DATE)
         start_date_label.setBuddy(self.start_date_line)
 
-        end_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[1], is_required=True)
+        end_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[2], is_required=True)
         self.end_date_line = MyEditDate()
         end_date_label.setBuddy(self.end_date_line)
 
