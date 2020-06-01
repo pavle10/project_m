@@ -96,8 +96,7 @@ class PresentUniformPieceView(PresentView):
 
         if row_index is not None:
             piece = self._uniform_pieces[row_index]
-            values = [piece.get_uniform_piece_id(), piece.get_uniform_id(), piece.get_employee_id(),
-                      piece.get_size(), piece.get_quantity(), piece.get_additional(), piece.get_date()]
+            values = piece.data_to_array()
             uniforms = self._manager.actions(Actions.all_uniforms)
 
             dialog = UpdateUniformPieceDialog(values, uniforms)
@@ -107,11 +106,10 @@ class PresentUniformPieceView(PresentView):
 
                 response = self._manager.actions(Actions.update_uniform_piece, new_values)
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.UNIFORM_PIECE_UPD_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self._change_label()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.UNIFORM_PIECE_UPD_FAIL_MSG)
 
     def _delete(self):
         row_index = self._check_selection()
@@ -124,11 +122,10 @@ class PresentUniformPieceView(PresentView):
 
                 response = self._manager.actions(Actions.delete_uniform_piece, values)
 
-                if response == ResponseStatus.success:
-                    QMessageBox.information(self, strs.PRESENT_VIEW_MSG, strs.UNIFORM_PIECE_DEL_SUCC_MSG)
+                funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
+
+                if response.get_status() == ResponseStatus.success:
                     self._change_label()
-                else:
-                    QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.UNIFORM_PIECE_DEL_FAIL_MSG)
 
     def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)

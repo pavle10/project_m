@@ -64,3 +64,15 @@ class UniformPiece:
 
     def __hash__(self):
         return hash(self.uniform_piece_id)
+
+    def data_to_array(self):
+        return [self.uniform_piece_id, self.uniform_id, self.employee_id,
+                self.size, self.quantity, self.additional, self.date]
+
+    def update_data(self, values):
+        self.uniform_id = values[1]
+        self.employee_id = values[2]
+        self.size = values[3]
+        self.quantity = values[4]
+        self.additional = values[5]
+        self.date = values[6]

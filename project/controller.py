@@ -17,8 +17,6 @@ class Controller:
 
         self._database_manager = DatabaseManager()
 
-        self._action_manager = ActionManager()
-
         self._init_models()
 
         self._view_manager = ViewManager(self)
@@ -650,21 +648,33 @@ class Controller:
         return response
 
     def _update_uniform_piece(self, values):
-        response = self._action_manager.actions(Actions.update_uniform_piece, values)
+        # Input data validation
+        # Check required fields
+        if not funcs.check_required_fields(values[1], values[3], values[4], values[6]):
+            return Response(ResponseStatus.fail, strs.REQUIRED_FIELDS_NOT_FILLED_MSG)
 
-        if not response.endswith('0'):
+        if not funcs.convert_to_int(values, [3, 4]):
+            return Response(ResponseStatus.fail, strs.NOT_INTEGER_MSG)
+
+        if values[3] < 0 or values[4] < 0:
+            return Response(ResponseStatus.fail, strs.INVALID_MEASURE_MSG)
+
+        uniform_name = self._get_uniform_name(values[1])
+
+        if uniform_name is None:
+            # TODO write to log
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
+
+        response = self._database_manager.actions(Actions.update_uniform_piece, values)
+
+        if response.get_status() == ResponseStatus.success:
             for uniform_piece in self._uniform_pieces:
                 if uniform_piece.get_uniform_piece_id() == values[0]:
-                    uniform_piece.set_uniform_id(values[1])
-                    uniform_piece.set_uniform_name(self._get_uniform_name(values[1]))
-                    uniform_piece.set_size(values[3])
-                    uniform_piece.set_quantity(values[4])
-                    uniform_piece.set_additional(values[5])
-                    uniform_piece.set_date(values[6])
+                    uniform_piece.update_data(values)
+                    uniform_piece.set_uniform_name(uniform_name)
+                    break
 
-                    return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return response
 
     def _update_free_days(self, values):
         # Input data validation
@@ -797,16 +807,15 @@ class Controller:
         return response
 
     def _delete_uniform_piece(self, values):
-        response = self._action_manager.actions(Actions.delete_uniform_piece, values)
+        response = self._database_manager.actions(Actions.delete_uniform_piece, values)
 
-        if not response.endswith('0'):
+        if response.get_status() == ResponseStatus.success:
             for uniform_piece in self._uniform_pieces:
                 if uniform_piece.get_uniform_piece_id() == values[0]:
                     self._uniform_pieces.remove(uniform_piece)
+                    break
 
-                    return ResponseStatus.success
-
-        return ResponseStatus.fail
+        return response
 
     def _delete_free_days(self, values):
         response = self._database_manager.actions(Actions.delete_free_days, values)
