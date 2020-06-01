@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QApplication
 
 from project.managers.database_manager import DatabaseManager
 from project.managers.view_manager import ViewManager
-from project.managers.action_manager import ActionManager
 from project.utils.enums import Actions, ResponseStatus
 from project.models.user import User
 from project.models.response import Response
