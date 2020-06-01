@@ -88,10 +88,12 @@ class MyComboBox(QComboBox):
             self.insertItem(index, item)
 
     def update_items(self, items):
+        self.blockSignals(True)
         self.clear()
 
         for index, item in enumerate(items):
             self.insertItem(index, item)
+        self.blockSignals(False)
 
 
 class MyEditDate(QDateEdit):

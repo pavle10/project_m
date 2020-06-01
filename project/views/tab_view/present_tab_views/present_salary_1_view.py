@@ -21,6 +21,7 @@ class PresentSalary1View(PresentView):
     def _init_ui(self):
         employee_label = MyLabel(strs.EMPLOYEE)
         self.employee_box = MyComboBox(self._generate_items())
+        self.employee_box.currentIndexChanged.connect(self._change_label)
         employee_label.setBuddy(self.employee_box)
 
         start_date_label = MyLabel(strs.FROM_DATE_LBL)
@@ -119,8 +120,6 @@ class PresentSalary1View(PresentView):
             dialog = UpdateSalary1RowDialog(values)
             if dialog.exec():
                 new_values = dialog.get_value()
-
-                print(new_values)
 
                 response = self._manager.actions(Actions.update_salary_1, new_values)
 
