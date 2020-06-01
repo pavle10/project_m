@@ -70,3 +70,8 @@ class PresentTab(TabView):
 
     def get_name(self):
         return self._name
+
+    def update_views(self):
+        for view in self.views:
+            print(view.get_name())
+            view.update()

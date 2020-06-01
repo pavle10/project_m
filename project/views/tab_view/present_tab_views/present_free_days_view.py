@@ -95,6 +95,12 @@ class PresentFreeDaysView(PresentView):
             self.table.setItem(row, 2, QTableWidgetItem(str(free_days.get_total_days())))
             self.table.setItem(row, 3, QTableWidgetItem(free_days.get_reason()))
 
+    def update(self):
+        if self.employee_box.count() > 0:
+            self.employee_box.setCurrentIndex(0)
+
+        self._change_label()
+
     def keyReleaseEvent(self, event):
         if event.key() in [Qt.Key_Enter, Qt.Key_Return] and isinstance(self.focusWidget(), QDateEdit):
             self._change_label()

@@ -49,6 +49,9 @@ class PresentUniformView(PresentView):
         for row, uniform in enumerate(uniforms):
             self.table.setItem(row, 0, QTableWidgetItem(uniform.get_name()))
 
+    def update(self):
+        self.update_table()
+
     def _update(self):
         row_index = self._check_selection()
 

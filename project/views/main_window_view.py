@@ -28,12 +28,12 @@ class MainWind(QMainWindow):
         add_tab = AddTab(self._view_manager)
         present_tab = PresentTab(self._view_manager)
 
-        tabs = MyTab()
-        tabs.addTab(add_tab, add_tab.get_name())
-        tabs.addTab(present_tab, present_tab.get_name())
-        self.setCentralWidget(tabs)
+        self.tabs = MyTab()
+        self.tabs.addTab(add_tab, add_tab.get_name())
+        self.tabs.addTab(present_tab, present_tab.get_name())
+        self.setCentralWidget(self.tabs)
 
-        layout.addWidget(tabs)
+        layout.addWidget(self.tabs)
         self.setLayout(layout)
 
     def _center(self):
@@ -43,5 +43,7 @@ class MainWind(QMainWindow):
         frame_geometry.moveCenter(centerPoint)
         self.move(frame_geometry.topLeft())
 
-    def add_position(self, values):
-        self._view_manager.actions(Actions.add_employee, values)
+    def update_present_tab(self):
+        tab = self.tabs.get_tabs()[1]
+
+        tab.update_views()

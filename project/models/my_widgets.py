@@ -7,9 +7,18 @@ class MyTab(QTabWidget):
 
     def __init__(self, *args, **kwargs):
         super(MyTab, self).__init__(*args, **kwargs)
+        self._tabs_list = list()
 
         self.setFont(cons.TABS_FONT)
         self.resize(cons.MIN_TAB_WIDTH, cons.MIN_TAB_HEIGHT)
+
+    def addTab(self, tab, tab_name):
+        QTabWidget.addTab(self, tab, tab_name)
+
+        self._tabs_list.append(tab)
+
+    def get_tabs(self):
+        return self._tabs_list
 
 
 class MyList(QListWidget):

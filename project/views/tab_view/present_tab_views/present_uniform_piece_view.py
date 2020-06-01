@@ -87,6 +87,12 @@ class PresentUniformPieceView(PresentView):
             self.table.setItem(row, 3, QTableWidgetItem(uniform_piece.get_additional()))
             self.table.setItem(row, 4, QTableWidgetItem(date))
 
+    def update(self):
+        if self.employee_box.count() > 0:
+            self.employee_box.setCurrentIndex(0)
+
+        self._change_label()
+
     def keyReleaseEvent(self, event):
         if event.key() in [Qt.Key_Enter, Qt.Key_Return] and isinstance(self.focusWidget(), QDateEdit):
             self._change_label()

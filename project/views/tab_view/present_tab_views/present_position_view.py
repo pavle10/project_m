@@ -16,7 +16,7 @@ class PresentPositionView(PresentView):
 
     def _init_ui(self):
         self.table = MyTable(strs.PRESENT_POSITION_HDR)
-        self.update_table()
+        self._update_table()
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
@@ -41,7 +41,7 @@ class PresentPositionView(PresentView):
         layout.addLayout(buttons_layout)
         self.setLayout(layout)
 
-    def update_table(self):
+    def _update_table(self):
         positions = self._manager.actions(Actions.all_positions)
 
         self.table.setRowCount(len(positions))
@@ -51,6 +51,9 @@ class PresentPositionView(PresentView):
 
             self.table.setItem(row, 0, QTableWidgetItem(position.get_name()))
             self.table.setItem(row, 1, QTableWidgetItem(saturday_value))
+
+    def update(self):
+        self._update_table()
 
     def _update(self):
         row_index = self._check_selection()
@@ -68,7 +71,7 @@ class PresentPositionView(PresentView):
                 funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
 
                 if response.get_status() == ResponseStatus.success:
-                    self.update_table()
+                    self._update_table()
 
     def _delete(self):
         row_index = self._check_selection()
@@ -84,7 +87,7 @@ class PresentPositionView(PresentView):
                 funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
 
                 if response.get_status() == ResponseStatus.success:
-                    self.update_table()
+                    self._update_table()
 
     def _print(self):
         QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)

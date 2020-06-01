@@ -95,6 +95,12 @@ class PresentSalary2View(PresentView):
                     else:
                         self.table.setItem(row, column, QTableWidgetItem(str(item)))
 
+    def update(self):
+        if self.employee_box.count() > 0:
+            self.employee_box.setCurrentIndex(0)
+
+        self._change_label()
+
     def keyReleaseEvent(self, event):
 
         if event.key() in [Qt.Key_Enter, Qt.Key_Return] and isinstance(self.focusWidget(), QDateEdit):

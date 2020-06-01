@@ -77,6 +77,12 @@ class PresentWageView(PresentView):
                 self.table.setItem(row, 1, QTableWidgetItem(str(wage.get_hour())))
                 self.table.setItem(row, 2, QTableWidgetItem(str(wage.get_meal())))
 
+    def update(self):
+        if self.employee_box.count() > 0:
+            self.employee_box.setCurrentIndex(0)
+
+        self._change_label()
+
     def _update(self):
         row_index = self._check_selection()
 

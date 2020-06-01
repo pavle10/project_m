@@ -101,34 +101,76 @@ class ViewManager:
             self.main_wind.show()
 
     def _add_position(self, values):
-        return self._controller.actions(Actions.add_position, values)
+        response = self._controller.actions(Actions.add_position, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_present_tab()
+
+        return response
 
     def _add_employee(self, values):
-        return self._controller.actions(Actions.add_employee, values)
+        response = self._controller.actions(Actions.add_employee, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_present_tab()
+
+        return response
 
     def _add_uniform(self, values):
-        # TODO Update present uniform view
         response = self._controller.actions(Actions.add_uniform, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_present_tab()
 
         return response
 
     def _add_uniform_piece(self, values):
-        return self._controller.actions(Actions.add_uniform_piece, values)
+        response = self._controller.actions(Actions.add_uniform_piece, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_present_tab()
+
+        return response
 
     def _add_child(self, values):
-        return self._controller.actions(Actions.add_child, values)
+        response = self._controller.actions(Actions.add_child, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_present_tab()
+
+        return response
 
     def _add_free_days(self, values):
-        return self._controller.actions(Actions.add_free_days, values)
+        response = self._controller.actions(Actions.add_free_days, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_present_tab()
+
+        return response
 
     def _add_wage(self, values):
-        return self._controller.actions(Actions.add_wage, values)
+        response = self._controller.actions(Actions.add_wage, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_present_tab()
+
+        return response
 
     def _add_salary_1(self, values):
-        return self._controller.actions(Actions.add_salary_1, values)
+        response = self._controller.actions(Actions.add_salary_1, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_present_tab()
+
+        return response
 
     def _add_salary_2(self, values):
-        return self._controller.actions(Actions.add_salary_2, values)
+        response = self._controller.actions(Actions.add_salary_2, values)
+
+        if response.get_status() == ResponseStatus.success:
+            self.main_wind.update_present_tab()
+
+        return response
 
     def _get_all_positions(self):
         return self._controller.actions(Actions.all_positions)

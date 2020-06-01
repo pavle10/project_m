@@ -141,15 +141,21 @@ class Controller:
         elif action == Actions.delete_salary_2:
             return self._delete_salary_2(values)
 
-    def _update_uniform_pieces_name(self):
-        for piece in self._uniform_pieces:
+    def _update_uniform_pieces_name(self, indices=None):
+        indices = range(len(self._uniform_pieces)) if indices is None else indices
+
+        for index in indices:
+            piece = self._uniform_pieces[index]
             for uniform in self._uniforms:
                 if uniform.get_uniform_id() == piece.get_uniform_id():
                     piece.set_uniform_name(uniform.get_name())
                     break
 
-    def _update_children_parents(self):
-        for child in self._children:
+    def _update_children_parents(self, indices=None):
+        indices = range(len(self._children)) if indices is None else indices
+
+        for index in indices:
+            child = self._children[index]
             mother_id = child.get_mother_id()
             father_id = child.get_father_id()
 
@@ -184,7 +190,7 @@ class Controller:
         response = self._database_manager.actions(Actions.add_position, values)
 
         if response.get_status() == ResponseStatus.success:
-            self._positions.append(response)
+            self._positions.append(response.get_data())
 
         return response
 
@@ -265,6 +271,7 @@ class Controller:
 
         if response.get_status() == ResponseStatus.success:
             self._uniform_pieces.append(response.get_data())
+            self._update_uniform_pieces_name([-1])
 
         return response
 
@@ -287,6 +294,7 @@ class Controller:
 
         if response.get_status() == ResponseStatus.success:
             self._children.append(response.get_data())
+            self._update_children_parents([-1])
 
         return response
 
@@ -472,7 +480,7 @@ class Controller:
     def _get_employee_free_days(self, values):
         employee_id = self._get_employee_id(values[0])
 
-        if employee_id is None:
+        if employee_id is None and values[0] not in [strs.EMPTY, strs.ALL]:
             return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
         result = list()
