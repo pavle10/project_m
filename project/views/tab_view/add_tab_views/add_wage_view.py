@@ -18,15 +18,15 @@ class AddWageView(AddView):
         self.employee_box = MyComboBox(self._generate_items())
         employee_label.setBuddy(self.employee_box)
 
-        day_label = MyLabel(strs.PRESENT_WAGE_HDR[0], is_required=True)
+        day_label = MyLabel(strs.PRESENT_WAGE_HDR[1], is_required=True)
         self.day_line = MyEditLine()
         day_label.setBuddy(self.day_line)
 
-        hour_label = MyLabel(strs.PRESENT_WAGE_HDR[1], is_required=True)
+        hour_label = MyLabel(strs.PRESENT_WAGE_HDR[2], is_required=True)
         self.hour_line = MyEditLine()
         hour_label.setBuddy(self.hour_line)
 
-        meal_label = MyLabel(strs.PRESENT_WAGE_HDR[2], is_required=True)
+        meal_label = MyLabel(strs.PRESENT_WAGE_HDR[3], is_required=True)
         self.meal_line = MyEditLine()
         meal_label.setBuddy(self.meal_line)
 

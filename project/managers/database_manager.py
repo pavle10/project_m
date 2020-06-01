@@ -95,6 +95,10 @@ class DatabaseManager:
             return self._delete_salary_1(values)
         elif action == Actions.delete_salary_2:
             return self._delete_salary_2(values)
+        elif action == Actions.salaries_1_between_dates:
+            return self._get_salaries_1_between_dates(values)
+        elif action == Actions.salaries_2_between_dates:
+            return self._get_salaries_2_between_dates(values)
 
     def _read_config(self, section=DEFAULT_SECTION):
         parser = ConfigParser()
@@ -232,6 +236,12 @@ class DatabaseManager:
             response.set_data(data)
 
         return response
+
+    def _get_salaries_1_between_dates(self, values):
+        return self._execute_query(sql.SELECT_SALARIES_1_BETWEEN_DATES, QueryType.select, values)
+
+    def _get_salaries_2_between_dates(self, values):
+        return self._execute_query(sql.SELECT_SALARIES_2_BETWEEN_DATES, QueryType.select, values)
 
     def _add_employee(self, values):
         response = self._execute_query(sql.INSERT_EMPLOYEE, QueryType.insert, values)

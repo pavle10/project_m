@@ -48,7 +48,7 @@ PRESENT_CHILD_HDR = ["Ime", "Prezime", "JMBG", "Datum rodjenja", "Majka", "Otac"
 PRESENT_UNIFORM_HDR = ["Naziv"]
 PRESENT_UNIFORM_PIECE_HDR = ["Naziv", "Veličina", "Količina", "Dodatno", "Datum"]
 PRESENT_FREE_DAYS_HDR = ["Početak", "Završetak", "Ukupno dana", "Razlog"]
-PRESENT_WAGE_HDR = ["Dan", "Sat", "Obrok"]
+PRESENT_WAGE_HDR = ["Zaposleni", "Dan", "Sat", "Obrok"]
 PRESENT_SALARY_1_HDR = ["Neto", "Bruto", "Datum"]
 PRESENT_SALARY_2_HDR = ["Datum", "Radnih dana", "Vrednost radnog dana", "Radnih sati", "Vrednost radnog sata", "Obroka",
                         "Vrednost obroka", "Rate", "Dana odmora", "Vrednost dana odmora", "Fiksno"]

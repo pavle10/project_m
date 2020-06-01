@@ -44,7 +44,9 @@ class Actions(Enum):
     delete_free_days = 39,
     delete_wage = 40,
     delete_salary_1 = 41,
-    delete_salary_2 = 42
+    delete_salary_2 = 42,
+    salaries_1_between_dates = 43,
+    salaries_2_between_dates = 44
 
 
 class Levels(Enum):

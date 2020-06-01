@@ -53,6 +53,7 @@ class Controller:
 
         self._update_uniform_pieces_name()
         self._update_children_parents()
+        self._update_wages_employees_names()
 
     def run(self):
         self._view_manager.actions(Actions.show)
@@ -164,6 +165,13 @@ class Controller:
                     child.set_mother_name(funcs.employee_unique_name(employee))
                 elif employee.get_employee_id() == father_id:
                     child.set_father_name(funcs.employee_unique_name(employee))
+
+    def _update_wages_employees_names(self, indices=None):
+        indices = range(len(self._wages)) if indices is None else indices
+
+        for index in indices:
+            wage = self._wages[index]
+            wage.set_employee_name(self._get_employee_unique_name(wage.get_employee_id()))
 
     def _login(self, values):
         # Input data validation
@@ -345,6 +353,7 @@ class Controller:
 
         if response.get_status() == ResponseStatus.success:
             self._wages.append(response.get_data())
+            self._update_wages_employees_names([-1])
 
         return response
 
@@ -417,6 +426,13 @@ class Controller:
     def _get_all_employees(self):
         return self._employees
 
+    def _get_employee_unique_name(self, employee_id):
+        for employee in self._employees:
+            if employee.get_employee_id() == employee_id:
+                return f"{employee.get_first_name()} {employee.get_last_name()} {employee.get_identity_number()}"
+
+        return None
+
     def _get_employee_id(self, value):
         if value is None:
             return None
@@ -481,17 +497,24 @@ class Controller:
         return result
 
     def _get_employee_free_days(self, values):
-        employee_id = self._get_employee_id(values[0])
-
-        if employee_id is None and values[0] not in [strs.EMPTY, strs.ALL]:
-            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
-
         result = list()
         start_date = values[1]
         end_date = values[2]
 
         if start_date > end_date:
             return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
+
+        if values[0] == strs.ALL:
+            for free_days in self._all_free_days:
+                if start_date <= free_days.get_start_date() and free_days.get_end_date() <= end_date:
+                    result.append(free_days)
+
+            return Response(ResponseStatus.success, strs.FREE_DAYS_EMP_SUCC_MSG, result)
+
+        employee_id = self._get_employee_id(values[0])
+
+        if employee_id is None:
+            return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
         for free_days in self._all_free_days:
             if free_days.get_employee_id() == employee_id \
@@ -502,11 +525,14 @@ class Controller:
         return Response(ResponseStatus.success, strs.FREE_DAYS_EMP_SUCC_MSG, result)
 
     def _get_employee_wage(self, values):
+        if values[0] == strs.ALL:
+            return Response(ResponseStatus.success, strs.WAGE_EMP_SUCC_MSG, self._wages)
+
         employee_id = self._get_employee_id(values[0])
 
         for wage in self._wages:
             if wage.get_employee_id() == employee_id:
-                return Response(ResponseStatus.success, strs.WAGE_EMP_SUCC_MSG, wage)
+                return Response(ResponseStatus.success, strs.WAGE_EMP_SUCC_MSG, [wage])
 
         return Response(ResponseStatus.fail, strs.WAGE_EMP_FAIL_MSG)
 
@@ -517,9 +543,12 @@ class Controller:
         if start_date > end_date:
             return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
 
+        if values[0] == strs.ALL:
+            return self._database_manager.actions(Actions.salaries_1_between_dates, [start_date, end_date])
+
         employee_id = self._get_employee_id(values[0])
 
-        if employee_id is None and values[0] not in [strs.EMPTY, strs.ALL]:
+        if employee_id is None:
             return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
         values[0] = employee_id
@@ -533,9 +562,12 @@ class Controller:
         if start_date > end_date:
             return Response(ResponseStatus.fail, strs.INVALID_DATES_MSG)
 
+        if values[0] == strs.ALL:
+            return self._database_manager.actions(Actions.salaries_2_between_dates, [start_date, end_date])
+
         employee_id = self._get_employee_id(values[0])
 
-        if employee_id is None and values[0] not in [strs.EMPTY, strs.ALL]:
+        if employee_id is None:
             return Response(ResponseStatus.fail, strs.INTERNAL_ERROR_MSG)
 
         values[0] = employee_id

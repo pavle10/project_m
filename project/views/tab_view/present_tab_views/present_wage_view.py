@@ -26,6 +26,7 @@ class PresentWageView(PresentView):
         fields_layout.addRow(employee_label, self.employee_box)
 
         self.table = MyTable(strs.PRESENT_WAGE_HDR)
+        self._change_label()
 
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
@@ -75,14 +76,13 @@ class PresentWageView(PresentView):
             self.table.clearContents()
             self.table.setRowCount(0)
         else:
-            self._wages = [self._wages]
             self.table.setRowCount(len(self._wages))
 
-            # Data rows
             for row, wage in enumerate(self._wages):
-                self.table.setItem(row, 0, QTableWidgetItem(str(wage.get_day())))
-                self.table.setItem(row, 1, QTableWidgetItem(str(wage.get_hour())))
-                self.table.setItem(row, 2, QTableWidgetItem(str(wage.get_meal())))
+                self.table.setItem(row, 0, QTableWidgetItem(wage.get_employee_name()))
+                self.table.setItem(row, 1, QTableWidgetItem(str(wage.get_day())))
+                self.table.setItem(row, 2, QTableWidgetItem(str(wage.get_hour())))
+                self.table.setItem(row, 3, QTableWidgetItem(str(wage.get_meal())))
 
     def update(self):
         self.employee_box.update_items(self._generate_items())
@@ -130,7 +130,7 @@ class PresentWageView(PresentView):
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
 
-        if len(self.table.selectedItems()) != 3 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
+        if len(self.table.selectedItems()) != 4 or len(selected_ranges) != 1 or selected_ranges[0].rowCount() != 1:
             QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.MUST_SELECT_ONE_ROW_MSG)
             self.table.clearSelection()
 

@@ -3,6 +3,7 @@ class Wage:
     def __init__(self, wage_id, employee_id, day, hour, meal):
         self.wage_id = wage_id
         self.employee_id = employee_id
+        self.employee_name = ""
         self.day = day
         self.hour = hour
         self.meal = meal
@@ -16,6 +17,12 @@ class Wage:
 
     def get_employee_id(self):
         return self.employee_id
+
+    def get_employee_name(self):
+        return self.employee_name
+
+    def set_employee_name(self, value):
+        self.employee_name = value
 
     def get_day(self):
         return self.day
