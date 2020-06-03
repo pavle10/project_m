@@ -121,3 +121,56 @@ def is_query_successful(response):
 
 def count_free_days(start_date, end_date):
     return int(np.busday_count(start_date, end_date))
+
+
+def append_style(table_style):
+    text = "<style>"
+    text += "@media print { body { margin: 1cm; } }"
+    text += "h1 { text-align:center; margin-bottom: 15px; text-decoration: underline; }"
+
+    if table_style:
+        text += "table, td, th { border-collapse: separate; border-color: red; border-style: solid; " \
+                "border-width: 5px; text-align:center } "
+        text += "th { background-color: powderblue; font-weight: bold; padding: 2px}"
+        text += "td { padding: 2px }"
+
+    text += "</style>"
+
+    return text
+
+
+def append_row(words, row_type, index=-1):
+    text = "<tr>"
+
+    if row_type == "Header":
+        text += "<th></th>"
+
+        for word in words:
+            text += f"<th>{word}</th>"
+    else:
+        text += f"<td>{index}</td>"
+        for data in words:
+            text += f"<td>{data}</td>"
+
+    text += "</tr>"
+
+    return text
+
+
+def create_html(title, data, table=False, table_header=None):
+    text = "<html>"
+    text += append_style(table)
+    text += "<body>"
+
+    text += f"<h1>{title}</h1>"
+    if table:
+        text += "<table>"
+        text += append_row(table_header, "Header")
+        for index, entry in enumerate(data):
+            text += append_row(entry, "Data", index+1)
+        text += "</table>"
+
+    text += "</body>"
+    text += "</html>"
+
+    return text

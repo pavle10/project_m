@@ -112,7 +112,7 @@ class MyButton(QPushButton):
     def __init__(self, text, *args, **kwargs):
         super(MyButton, self).__init__(*args, **kwargs)
 
-        self.setText(f"{text}:")
+        self.setText(f"{text}")
         self.setFixedSize(cons.BUTTONS_WIDTH, cons.BUTTONS_HEIGHT)
         self.setFont(cons.BUTTONS_FONT)
 

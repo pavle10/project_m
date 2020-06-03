@@ -39,6 +39,7 @@ ADD_BTN = "Dodaj"
 UPDATE_BTN = "Promeni"
 DELETE_BTN = "Obriši"
 PRINT_BTN = "Štampaj"
+EXPORT_BTN = "Sačuvaj"
 
 # ===== HEADERS =====
 PRESENT_EMPLOYEE_HDR = ["Ime", "Prezime", "Ime oca", "JMBG", "Lična karta", "Stručna sprema", "Radno mesto", "Slava",
@@ -159,3 +160,11 @@ WAGE_FOR_EMPLOYEE_MISSING_MSG = "Dnevnice za zaposlenog {employee} nisu unete!"
 # Other
 NOT_IMPLEMENTED_MSG = "Nije implementirano!"
 INTERNAL_ERROR_MSG = "Interna greška! Pitaj Pavla."
+
+# ===== REPORTS =====
+
+EXPORT_CAPTION = "Sačuvaj kao PDF"
+SAVE_FILE_FILTER = "PDF files (*.pdf);;All Files()"
+
+# Employees
+EMPLOYEE_LIST_TITLE = "Spisak zaposlenih"
