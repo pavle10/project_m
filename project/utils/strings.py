@@ -168,3 +168,4 @@ SAVE_FILE_FILTER = "PDF files (*.pdf);;All Files()"
 
 # Employees
 EMPLOYEE_LIST_TITLE = "Spisak zaposlenih"
+POSITIONS_LIST_TITLE = "Spisak radnih pozicija"
