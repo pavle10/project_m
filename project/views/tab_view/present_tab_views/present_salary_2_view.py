@@ -1,3 +1,5 @@
+from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
+from PyQt5.QtCore import QFileInfo
 from PyQt5.QtCore import Qt
 
 from project.views.tab_view.present_tab_views.present_view import PresentView
@@ -13,6 +15,13 @@ class PresentSalary2View(PresentView):
         super(PresentSalary2View, self).__init__(*args, **kwargs)
         self._name = name
         self._manager = manager
+        self._content = QTextEdit(self)
+        self._content.hide()
+
+        self._printer = QPrinter(QPrinter.HighResolution)
+        self._printer.setFullPage(True)
+        self._printer.setPageMargins(2, 5, 2, 5, QPrinter.Millimeter)
+        self._printer.setOrientation(QPrinter.Landscape)
 
         self._salaries = None
 
@@ -54,10 +63,14 @@ class PresentSalary2View(PresentView):
         print_button = MyButton(strs.PRINT_BTN)
         print_button.clicked.connect(self._print)
 
+        export_button = MyButton(strs.EXPORT_BTN)
+        export_button.clicked.connect(self._export_pdf)
+
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(update_button)
         buttons_layout.addWidget(delete_button)
         buttons_layout.addWidget(print_button)
+        buttons_layout.addWidget(export_button)
 
         layout = QVBoxLayout()
         layout.addLayout(fields_layout)
@@ -92,22 +105,16 @@ class PresentSalary2View(PresentView):
             self.table.clearContents()
             self.table.setRowCount(0)
         else:
+            self.table.empty_data()
             self.table.setRowCount(len(self._salaries))
 
             # Data rows
             for row, salary in enumerate(self._salaries):
-                self.table.setItem(row, 0, QTableWidgetItem(salary[2].strftime(cons.DATE_FORMAT_PYTHON)))
-                self.table.setItem(row, 1, QTableWidgetItem(salary[-1]))
-                self.table.setItem(row, 2, QTableWidgetItem(str(salary[3])))
-                self.table.setItem(row, 3, QTableWidgetItem(str(salary[4])))
-                self.table.setItem(row, 4, QTableWidgetItem(str(salary[5])))
-                self.table.setItem(row, 5, QTableWidgetItem(str(salary[6])))
-                self.table.setItem(row, 6, QTableWidgetItem(str(salary[7])))
-                self.table.setItem(row, 7, QTableWidgetItem(str(salary[8])))
-                self.table.setItem(row, 8, QTableWidgetItem(str(salary[9])))
-                self.table.setItem(row, 9, QTableWidgetItem(str(salary[10])))
-                self.table.setItem(row, 10, QTableWidgetItem(str(salary[11])))
-                self.table.setItem(row, 11, QTableWidgetItem(str(salary[12])))
+                row_data = [salary[2].strftime(cons.DATE_FORMAT_PYTHON), salary[-1], str(salary[3]), str(salary[4]),
+                            str(salary[5]), str(salary[6]), str(salary[7]), str(salary[8]), str(salary[9]),
+                            str(salary[10]), str(salary[11]), str(salary[12])]
+
+                self.table.add_row(row, row_data)
 
     def update(self):
         self.employee_box.update_items(self._generate_items())
@@ -153,7 +160,35 @@ class PresentSalary2View(PresentView):
                     self._change_label()
 
     def _print(self):
-        QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
+        preview_dialog = QPrintPreviewDialog(self._printer, self)
+
+        preview_dialog.setMinimumSize(cons.PRINT_PREVIEW_DIALOG_WIDTH, cons.PRINT_PREVIEW_DIALOG_HEIGHT)
+        preview_dialog.paintRequested.connect(self._print_preview)
+        preview_dialog.exec_()
+
+    def _print_preview(self):
+        data = self._prepare_data()
+        self._printer.setOutputFormat(QPrinter.NativeFormat)
+
+        self._content.clear()
+        self._content.insertHtml(funcs.create_html(strs.SALARY_2_LIST_TITLE, data,
+                                                   strs.PRESENT_SALARY_2_HDR, "Salary 2"))
+        self._content.document().print_(self._printer)
+
+    def _export_pdf(self):
+        data = self._prepare_data()
+        self._printer.setOutputFormat(QPrinter.PdfFormat)
+        fn, _ = QFileDialog.getSaveFileName(self, strs.EXPORT_CAPTION, cons.EXPORT_DEFAULT_PATH, strs.SAVE_FILE_FILTER)
+
+        if fn != "":
+            fn = fn + ".pdf" if QFileInfo(fn).suffix() == "" else fn
+
+            self._printer.setOutputFileName(fn)
+
+            self._content.clear()
+            self._content.insertHtml(funcs.create_html(strs.SALARY_2_LIST_TITLE, data,
+                                                       strs.PRESENT_SALARY_2_HDR, "Salary 2"))
+            self._content.document().print_(self._printer)
 
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
@@ -165,6 +200,39 @@ class PresentSalary2View(PresentView):
             return None
 
         return selected_ranges[0].topRow()
+
+    def _prepare_data(self):
+        table_data = self.table.get_data()
+        data = dict()
+
+        data["dates"] = [[self.start_date_line.date().toPyDate().strftime(cons.DATE_FORMAT_PYTHON),
+                          self.end_date_line.date().toPyDate().strftime(cons.DATE_FORMAT_PYTHON)]]
+
+        for index, row in enumerate(table_data):
+            date = row[0]
+            employee = row[1]
+
+            funcs.convert_to_int(row, [2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+
+            day_pay = row[2] * row[3]
+            hour_pay = row[4] * row[5]
+            meal_pay = row[6] * row[7]
+            vacation_pay = row[9] * row[10] * (-1)
+            rate_pay = row[8] * (-1)
+            fix_pay = row[11]
+            overall_pay = day_pay + hour_pay + meal_pay + vacation_pay + rate_pay + fix_pay
+
+            day = ("Dan", str(row[2]), str(row[3]), str(day_pay))
+            hour = ("Sat", str(row[4]), str(row[5]), str(hour_pay))
+            meal = ("Obrok", str(row[6]), str(row[7]), str(meal_pay))
+            vacation = ("Odmor", str(row[9]), str(row[10]), str(vacation_pay))
+            rate = ("Rate", "", "", str(rate_pay))
+            fix = ("Fiksno", "", "", str(fix_pay))
+            overall = ("Ukupno", "", "", str(overall_pay))
+
+            data[index] = [date, employee, day, hour, meal, vacation, rate, fix, overall]
+
+        return data
 
     def get_name(self):
         return self._name

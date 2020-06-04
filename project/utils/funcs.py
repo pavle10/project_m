@@ -170,6 +170,20 @@ def append_table(data, table_header=None):
     return text
 
 
+def append_salary_2_table(data):
+    text = "<table>"
+
+    text += f"<tr><td>Datum</td><td colspan=3>{data[0]}</td></tr>"
+    text += f"<tr><td>Zaposleni</td><td colspan=3>{data[1]}</td></tr>"
+
+    for entry in data[2:]:
+        text += f"<tr><td>{entry[0]}</td><td>{entry[1]}</td><td>{entry[2]}</td><td>{entry[3]}</td></tr>"
+
+    text += "</table>"
+
+    return text
+
+
 def append_salaries_1(data):
     table_header = ["Datum", "Neto", "Bruto"]
     title = strs.SALARY_1_LIST_TITLE.format(start_date=data["dates"][0][0], end_date=data["dates"][0][1])
@@ -187,6 +201,20 @@ def append_salaries_1(data):
     return text
 
 
+def append_salary_2(data):
+    title = strs.SALARY_2_LIST_TITLE.format(start_date=data["dates"][0][0], end_date=data["dates"][0][1])
+
+    text = f"<h1>{title}</h1>"
+    text += "<br>"
+
+    for key, values in data.items():
+        if key != "dates":
+            text += append_salary_2_table(values)
+            text += "<br>"
+
+    return text
+
+
 def create_html(title, data, table_header=None, report_type="Standard"):
     text = "<html>"
     text += append_style()
@@ -194,9 +222,12 @@ def create_html(title, data, table_header=None, report_type="Standard"):
 
     if report_type == "Standard":
         text += f"<h1>{title}</h1>"
+        text += "<br>"
         text += append_table(data, table_header)
     elif report_type == "Salary 1":
         text += append_salaries_1(data)
+    elif report_type == "Salary 2":
+        text += append_salary_2(data)
 
     text += "</body>"
     text += "</html>"
