@@ -85,3 +85,6 @@ class Child:
         self.mother_name = values[6]
         self.father_id = values[7]
         self.father_name = values[8]
+
+    def data_for_report(self):
+        return [self.first_name, self.last_name, self.identity_number, self.birthday, self.mother_name, self.father_name]
