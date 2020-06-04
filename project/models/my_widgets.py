@@ -121,6 +121,7 @@ class MyTable(QTableWidget):
 
     def __init__(self, header=None, *args, **kwargs):
         super(MyTable, self).__init__(*args, **kwargs)
+        self._rows = list()
 
         self.setEditTriggers(QTableWidget.NoEditTriggers)
 
@@ -128,4 +129,12 @@ class MyTable(QTableWidget):
             self.setColumnCount(len(header))
             self.setHorizontalHeaderLabels(header)
 
+    def add_row(self, row, data):
+        self._rows.append(data)
+
+        for column, entry in enumerate(data):
+            self.setItem(row, column, QTableWidgetItem(entry))
+
+    def get_data(self):
+        return self._rows
 
