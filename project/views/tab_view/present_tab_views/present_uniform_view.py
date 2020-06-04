@@ -1,3 +1,6 @@
+from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
+from PyQt5.QtCore import QFileInfo
+
 from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, ResponseStatus
@@ -11,6 +14,12 @@ class PresentUniformView(PresentView):
         super(PresentUniformView, self).__init__(*args, **kwargs)
         self._name = name
         self._manager = manager
+        self._content = QTextEdit(self)
+        self._content.hide()
+
+        self._printer = QPrinter(QPrinter.HighResolution)
+        self._printer.setFullPage(True)
+        self._printer.setPageMargins(2, 5, 2, 5, QPrinter.Millimeter)
 
         self._init_ui()
 
@@ -31,10 +40,14 @@ class PresentUniformView(PresentView):
         print_button = MyButton(strs.PRINT_BTN)
         print_button.clicked.connect(self._print)
 
+        export_button = MyButton(strs.EXPORT_BTN)
+        export_button.clicked.connect(self._export_pdf)
+
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(update_button)
         buttons_layout.addWidget(delete_button)
         buttons_layout.addWidget(print_button)
+        buttons_layout.addWidget(export_button)
 
         layout = QVBoxLayout()
         layout.addWidget(self.scroll_area)
@@ -87,7 +100,33 @@ class PresentUniformView(PresentView):
                     self.update_table()
 
     def _print(self):
-        QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
+        preview_dialog = QPrintPreviewDialog(self._printer, self)
+
+        preview_dialog.setMinimumSize(cons.PRINT_PREVIEW_DIALOG_WIDTH, cons.PRINT_PREVIEW_DIALOG_HEIGHT)
+        preview_dialog.paintRequested.connect(self._print_preview)
+        preview_dialog.exec_()
+
+    def _print_preview(self):
+        data = self._prepare_data()
+        self._printer.setOutputFormat(QPrinter.NativeFormat)
+
+        self._content.clear()
+        self._content.insertHtml(funcs.create_html(strs.UNIFORMS_LIST_TITLE, data, True, strs.PRESENT_UNIFORM_HDR))
+        self._content.document().print_(self._printer)
+
+    def _export_pdf(self):
+        data = self._prepare_data()
+        self._printer.setOutputFormat(QPrinter.PdfFormat)
+        fn, _ = QFileDialog.getSaveFileName(self, strs.EXPORT_CAPTION, cons.EXPORT_DEFAULT_PATH, strs.SAVE_FILE_FILTER)
+
+        if fn != "":
+            fn = fn + ".pdf" if QFileInfo(fn).suffix() == "" else fn
+
+            self._printer.setOutputFileName(fn)
+
+            self._content.clear()
+            self._content.insertHtml(funcs.create_html(strs.UNIFORMS_LIST_TITLE, data, True, strs.PRESENT_UNIFORM_HDR))
+            self._content.document().print_(self._printer)
 
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
@@ -99,6 +138,9 @@ class PresentUniformView(PresentView):
             return None
 
         return selected_ranges[0].topRow()
+
+    def _prepare_data(self):
+        return [[uniform.get_name()] for uniform in self._manager.actions(Actions.all_uniforms)]
 
     def get_name(self):
         return self._name
