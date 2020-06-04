@@ -1,3 +1,6 @@
+from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
+from PyQt5.QtCore import QFileInfo
+
 from project.views.tab_view.present_tab_views.present_view import PresentView
 from project.views.tab_view.present_tab_views.present_dialogs import *
 from project.utils.enums import Actions, ResponseStatus
@@ -11,6 +14,12 @@ class PresentWageView(PresentView):
         super(PresentWageView, self).__init__(*args, **kwargs)
         self._name = name
         self._manager = manager
+        self._content = QTextEdit(self)
+        self._content.hide()
+
+        self._printer = QPrinter(QPrinter.HighResolution)
+        self._printer.setFullPage(True)
+        self._printer.setPageMargins(2, 5, 2, 5, QPrinter.Millimeter)
 
         self._wages = None
 
@@ -41,10 +50,14 @@ class PresentWageView(PresentView):
         print_button = MyButton(strs.PRINT_BTN)
         print_button.clicked.connect(self._print)
 
+        export_button = MyButton(strs.EXPORT_BTN)
+        export_button.clicked.connect(self._export_pdf)
+
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(update_button)
         buttons_layout.addWidget(delete_button)
         buttons_layout.addWidget(print_button)
+        buttons_layout.addWidget(export_button)
 
         layout = QVBoxLayout()
         layout.addLayout(fields_layout)
@@ -76,13 +89,13 @@ class PresentWageView(PresentView):
             self.table.clearContents()
             self.table.setRowCount(0)
         else:
+            self.table.empty_data()
             self.table.setRowCount(len(self._wages))
 
             for row, wage in enumerate(self._wages):
-                self.table.setItem(row, 0, QTableWidgetItem(wage.get_employee_name()))
-                self.table.setItem(row, 1, QTableWidgetItem(str(wage.get_day())))
-                self.table.setItem(row, 2, QTableWidgetItem(str(wage.get_hour())))
-                self.table.setItem(row, 3, QTableWidgetItem(str(wage.get_meal())))
+                data = [wage.get_employee_name(), str(wage.get_day()), str(wage.get_hour()), str(wage.get_meal())]
+
+                self.table.add_row(row, data)
 
     def update(self):
         self.employee_box.update_items(self._generate_items())
@@ -125,7 +138,33 @@ class PresentWageView(PresentView):
                     self._change_label()
 
     def _print(self):
-        QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
+        preview_dialog = QPrintPreviewDialog(self._printer, self)
+
+        preview_dialog.setMinimumSize(cons.PRINT_PREVIEW_DIALOG_WIDTH, cons.PRINT_PREVIEW_DIALOG_HEIGHT)
+        preview_dialog.paintRequested.connect(self._print_preview)
+        preview_dialog.exec_()
+
+    def _print_preview(self):
+        data = self.table.get_data()
+        self._printer.setOutputFormat(QPrinter.NativeFormat)
+
+        self._content.clear()
+        self._content.insertHtml(funcs.create_html(strs.WAGE_LIST_TITLE, data, True, strs.PRESENT_WAGE_HDR))
+        self._content.document().print_(self._printer)
+
+    def _export_pdf(self):
+        data = self.table.get_data()
+        self._printer.setOutputFormat(QPrinter.PdfFormat)
+        fn, _ = QFileDialog.getSaveFileName(self, strs.EXPORT_CAPTION, cons.EXPORT_DEFAULT_PATH, strs.SAVE_FILE_FILTER)
+
+        if fn != "":
+            fn = fn + ".pdf" if QFileInfo(fn).suffix() == "" else fn
+
+            self._printer.setOutputFileName(fn)
+
+            self._content.clear()
+            self._content.insertHtml(funcs.create_html(strs.WAGE_LIST_TITLE, data, True, strs.PRESENT_WAGE_HDR))
+            self._content.document().print_(self._printer)
 
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
