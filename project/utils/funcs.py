@@ -123,16 +123,15 @@ def count_free_days(start_date, end_date):
     return int(np.busday_count(start_date, end_date))
 
 
-def append_style(table_style):
+def append_style():
     text = "<style>"
     text += "@media print { body { margin: 1cm; } }"
     text += "h1 { text-align:center; margin-bottom: 15px; text-decoration: underline; }"
 
-    if table_style:
-        text += "table, td, th { border-collapse: separate; border-color: red; border-style: solid; " \
-                "border-width: 5px; text-align:center } "
-        text += "th { background-color: powderblue; font-weight: bold; padding: 2px}"
-        text += "td { padding: 2px }"
+    text += "table, td, th { border-collapse: separate; border-color: red; border-style: solid; " \
+            "border-width: 5px; text-align:center } "
+    text += "th { background-color: powderblue; font-weight: bold; padding: 2px}"
+    text += "td { padding: 2px }"
 
     text += "</style>"
 
@@ -157,20 +156,60 @@ def append_row(words, row_type, index=-1):
     return text
 
 
-def create_html(title, data, table=False, table_header=None):
+def append_table(data, table_header=None):
+    text = "<table>"
+
+    if table_header is not None:
+        text += append_row(table_header, "Header")
+
+    for index, entry in enumerate(data):
+        text += append_row(entry, "Data", index+1)
+
+    text += "</table>"
+
+    return text
+
+
+def append_salaries_1(data):
+    table_header = ["Datum", "Neto", "Bruto"]
+    title = strs.SALARY_1_LIST_TITLE.format(start_date=data["dates"][0][0], end_date=data["dates"][0][1])
+
+    text = f"<h1>{title}</h1>"
+    text += "<br>"
+
+    for key, values in data.items():
+        if key != "dates":
+            data[key].append(calculate_average_salary(data[key]))
+            text += f"<h2>{key}</h2><br>"
+            text += append_table(data[key], table_header)
+            text += "<br>"
+
+    return text
+
+
+def create_html(title, data, table_header=None, report_type="Standard"):
     text = "<html>"
-    text += append_style(table)
+    text += append_style()
     text += "<body>"
 
-    text += f"<h1>{title}</h1>"
-    if table:
-        text += "<table>"
-        text += append_row(table_header, "Header")
-        for index, entry in enumerate(data):
-            text += append_row(entry, "Data", index+1)
-        text += "</table>"
+    if report_type == "Standard":
+        text += f"<h1>{title}</h1>"
+        text += append_table(data, table_header)
+    elif report_type == "Salary 1":
+        text += append_salaries_1(data)
 
     text += "</body>"
     text += "</html>"
 
     return text
+
+
+def calculate_average_salary(data):
+    avg_net = 0.0
+    avg_gross = 0.0
+
+    for entry in data:
+        avg_net += int(entry[1])
+        avg_gross += int(entry[2])
+
+    return ["", str(avg_net / len(data)), str(avg_gross / len(data))]

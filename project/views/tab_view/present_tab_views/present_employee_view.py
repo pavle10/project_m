@@ -132,7 +132,7 @@ class PresentEmployeeView(PresentView):
         self._printer.setOutputFormat(QPrinter.NativeFormat)
 
         self._content.clear()
-        self._content.insertHtml(funcs.create_html(strs.EMPLOYEE_LIST_TITLE, data, True, strs.PRESENT_EMPLOYEE_HDR))
+        self._content.insertHtml(funcs.create_html(strs.EMPLOYEE_LIST_TITLE, data, strs.PRESENT_EMPLOYEE_HDR))
         self._content.document().print_(self._printer)
 
     def _export_pdf(self):
@@ -146,7 +146,7 @@ class PresentEmployeeView(PresentView):
             self._printer.setOutputFileName(fn)
 
             self._content.clear()
-            self._content.insertHtml(funcs.create_html(strs.EMPLOYEE_LIST_TITLE, data, True, strs.PRESENT_EMPLOYEE_HDR))
+            self._content.insertHtml(funcs.create_html(strs.EMPLOYEE_LIST_TITLE, data, strs.PRESENT_EMPLOYEE_HDR))
             self._content.document().print_(self._printer)
 
     def _check_selection(self):

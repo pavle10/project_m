@@ -1,3 +1,5 @@
+from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
+from PyQt5.QtCore import QFileInfo
 from PyQt5.QtCore import Qt
 
 from project.views.tab_view.present_tab_views.present_view import PresentView
@@ -13,6 +15,13 @@ class PresentSalary1View(PresentView):
         super(PresentSalary1View, self).__init__(*args, **kwargs)
         self._name = name
         self._manager = manager
+        self._content = QTextEdit(self)
+        self._content.hide()
+
+        self._printer = QPrinter(QPrinter.HighResolution)
+        self._printer.setFullPage(True)
+        self._printer.setPageMargins(2, 5, 2, 5, QPrinter.Millimeter)
+        self._printer.setOrientation(QPrinter.Landscape)
 
         self._salaries = None
 
@@ -53,10 +62,14 @@ class PresentSalary1View(PresentView):
         print_button = MyButton(strs.PRINT_BTN)
         print_button.clicked.connect(self._print)
 
+        export_button = MyButton(strs.EXPORT_BTN)
+        export_button.clicked.connect(self._export_pdf)
+
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(update_button)
         buttons_layout.addWidget(delete_button)
         buttons_layout.addWidget(print_button)
+        buttons_layout.addWidget(export_button)
 
         layout = QVBoxLayout()
         layout.addLayout(fields_layout)
@@ -90,13 +103,13 @@ class PresentSalary1View(PresentView):
             self.table.clearContents()
             self.table.setRowCount(0)
         else:
+            self.table.empty_data()
             self.table.setRowCount(len(self._salaries))
 
             for row, salary in enumerate(self._salaries):
-                self.table.setItem(row, 0, QTableWidgetItem(salary[4].strftime(cons.DATE_FORMAT_PYTHON)))
-                self.table.setItem(row, 1, QTableWidgetItem(salary[5]))
-                self.table.setItem(row, 2, QTableWidgetItem(str(salary[2])))
-                self.table.setItem(row, 3, QTableWidgetItem(str(salary[3])))
+                row_data = [salary[4].strftime(cons.DATE_FORMAT_PYTHON), salary[5], str(salary[2]), str(salary[3])]
+
+                self.table.add_row(row, row_data)
 
     def update(self):
         self.employee_box.update_items(self._generate_items())
@@ -142,7 +155,35 @@ class PresentSalary1View(PresentView):
                     self._change_label()
 
     def _print(self):
-        QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
+        preview_dialog = QPrintPreviewDialog(self._printer, self)
+
+        preview_dialog.setMinimumSize(cons.PRINT_PREVIEW_DIALOG_WIDTH, cons.PRINT_PREVIEW_DIALOG_HEIGHT)
+        preview_dialog.paintRequested.connect(self._print_preview)
+        preview_dialog.exec_()
+
+    def _print_preview(self):
+        data = self._prepare_data()
+        self._printer.setOutputFormat(QPrinter.NativeFormat)
+
+        self._content.clear()
+        self._content.insertHtml(funcs.create_html(strs.SALARY_1_LIST_TITLE, data,
+                                                   strs.PRESENT_SALARY_1_HDR, "Salary 1"))
+        self._content.document().print_(self._printer)
+
+    def _export_pdf(self):
+        data = self._prepare_data()
+        self._printer.setOutputFormat(QPrinter.PdfFormat)
+        fn, _ = QFileDialog.getSaveFileName(self, strs.EXPORT_CAPTION, cons.EXPORT_DEFAULT_PATH, strs.SAVE_FILE_FILTER)
+
+        if fn != "":
+            fn = fn + ".pdf" if QFileInfo(fn).suffix() == "" else fn
+
+            self._printer.setOutputFileName(fn)
+
+            self._content.clear()
+            self._content.insertHtml(funcs.create_html(strs.SALARY_1_LIST_TITLE, data,
+                                                       strs.PRESENT_SALARY_1_HDR, "Salary 1"))
+            self._content.document().print_(self._printer)
 
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()
@@ -154,6 +195,21 @@ class PresentSalary1View(PresentView):
             return None
 
         return selected_ranges[0].topRow()
+
+    def _prepare_data(self):
+        table_data = self.table.get_data()
+        data = dict()
+
+        data["dates"] = [[self.start_date_line.date().toPyDate().strftime(cons.DATE_FORMAT_PYTHON),
+                         self.end_date_line.date().toPyDate().strftime(cons.DATE_FORMAT_PYTHON)]]
+
+        for row_data in table_data:
+            if row_data[1] not in data:
+                data[row_data[1]] = list()
+
+            data[row_data[1]].append([row_data[0], row_data[2], row_data[3]])
+
+        return data
 
     def get_name(self):
         return self._name

@@ -170,7 +170,7 @@ class PresentUniformPieceView(PresentView):
         self._printer.setOutputFormat(QPrinter.NativeFormat)
 
         self._content.clear()
-        self._content.insertHtml(funcs.create_html(strs.UNIFORM_PIECES_LIST_TITLE, data, True,
+        self._content.insertHtml(funcs.create_html(strs.UNIFORM_PIECES_LIST_TITLE, data,
                                                    strs.PRESENT_UNIFORM_PIECE_HDR))
         self._content.document().print_(self._printer)
 
@@ -185,7 +185,7 @@ class PresentUniformPieceView(PresentView):
             self._printer.setOutputFileName(fn)
 
             self._content.clear()
-            self._content.insertHtml(funcs.create_html(strs.UNIFORM_PIECES_LIST_TITLE, data, True,
+            self._content.insertHtml(funcs.create_html(strs.UNIFORM_PIECES_LIST_TITLE, data,
                                                        strs.PRESENT_UNIFORM_PIECE_HDR))
             self._content.document().print_(self._printer)
 
