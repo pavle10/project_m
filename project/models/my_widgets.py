@@ -138,3 +138,6 @@ class MyTable(QTableWidget):
     def get_data(self):
         return self._rows
 
+    def empty_data(self):
+        self._rows.clear()
+

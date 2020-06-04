@@ -1,3 +1,5 @@
+from PyQt5.QtPrintSupport import QPrinter, QPrintPreviewDialog
+from PyQt5.QtCore import QFileInfo
 from PyQt5.QtCore import Qt
 
 from project.views.tab_view.present_tab_views.present_view import PresentView
@@ -13,6 +15,13 @@ class PresentFreeDaysView(PresentView):
         super(PresentFreeDaysView, self).__init__(*args, **kwargs)
         self._name = name
         self._manager = manager
+        self._content = QTextEdit(self)
+        self._content.hide()
+
+        self._printer = QPrinter(QPrinter.HighResolution)
+        self._printer.setFullPage(True)
+        self._printer.setPageMargins(2, 5, 2, 5, QPrinter.Millimeter)
+        self._printer.setOrientation(QPrinter.Landscape)
 
         self._free_days = None
 
@@ -53,10 +62,14 @@ class PresentFreeDaysView(PresentView):
         print_button = MyButton(strs.PRINT_BTN)
         print_button.clicked.connect(self._print)
 
+        export_button = MyButton(strs.EXPORT_BTN)
+        export_button.clicked.connect(self._export_pdf)
+
         buttons_layout = QHBoxLayout()
         buttons_layout.addWidget(update_button)
         buttons_layout.addWidget(delete_button)
         buttons_layout.addWidget(print_button)
+        buttons_layout.addWidget(export_button)
 
         layout = QVBoxLayout()
         layout.addLayout(fields_layout)
@@ -84,17 +97,16 @@ class PresentFreeDaysView(PresentView):
 
         self._free_days = response.get_data()
 
+        self.table.empty_data()
         self.table.setRowCount(len(self._free_days))
 
         for row, free_days in enumerate(self._free_days):
             start_date = free_days.get_start_date().strftime(cons.DATE_FORMAT_PYTHON)
             end_date = free_days.get_end_date().strftime(cons.DATE_FORMAT_PYTHON)
+            row_data = [free_days.get_employee_name(), start_date, end_date,
+                        str(free_days.get_total_days()), free_days.get_reason()]
 
-            self.table.setItem(row, 0, QTableWidgetItem(free_days.get_employee_name()))
-            self.table.setItem(row, 1, QTableWidgetItem(start_date))
-            self.table.setItem(row, 2, QTableWidgetItem(end_date))
-            self.table.setItem(row, 3, QTableWidgetItem(str(free_days.get_total_days())))
-            self.table.setItem(row, 4, QTableWidgetItem(free_days.get_reason()))
+            self.table.add_row(row, row_data)
 
     def update(self):
         self.employee_box.update_items(self._generate_items())
@@ -139,7 +151,33 @@ class PresentFreeDaysView(PresentView):
                     self._change_label()
 
     def _print(self):
-        QMessageBox.warning(self, strs.PRESENT_VIEW_MSG, strs.NOT_IMPLEMENTED_MSG)
+        preview_dialog = QPrintPreviewDialog(self._printer, self)
+
+        preview_dialog.setMinimumSize(cons.PRINT_PREVIEW_DIALOG_WIDTH, cons.PRINT_PREVIEW_DIALOG_HEIGHT)
+        preview_dialog.paintRequested.connect(self._print_preview)
+        preview_dialog.exec_()
+
+    def _print_preview(self):
+        data = self.table.get_data()
+        self._printer.setOutputFormat(QPrinter.NativeFormat)
+
+        self._content.clear()
+        self._content.insertHtml(funcs.create_html(strs.FREE_DAYS_LIST_TITLE, data, True, strs.PRESENT_FREE_DAYS_HDR))
+        self._content.document().print_(self._printer)
+
+    def _export_pdf(self):
+        data = self.table.get_data()
+        self._printer.setOutputFormat(QPrinter.PdfFormat)
+        fn, _ = QFileDialog.getSaveFileName(self, strs.EXPORT_CAPTION, cons.EXPORT_DEFAULT_PATH, strs.SAVE_FILE_FILTER)
+
+        if fn != "":
+            fn = fn + ".pdf" if QFileInfo(fn).suffix() == "" else fn
+
+            self._printer.setOutputFileName(fn)
+
+            self._content.clear()
+            self._content.insertHtml(funcs.create_html(strs.FREE_DAYS_LIST_TITLE, data, True, strs.PRESENT_FREE_DAYS_HDR))
+            self._content.document().print_(self._printer)
 
     def _check_selection(self):
         selected_ranges = self.table.selectedRanges()

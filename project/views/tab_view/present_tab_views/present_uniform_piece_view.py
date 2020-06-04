@@ -99,6 +99,7 @@ class PresentUniformPieceView(PresentView):
         if response.get_status() == ResponseStatus.success:
             self._uniform_pieces = response.get_data()
 
+            self.table.empty_data()
             self.table.setRowCount(len(self._uniform_pieces))
 
             # Data rows
@@ -109,13 +110,6 @@ class PresentUniformPieceView(PresentView):
                             uniform_piece.get_additional(), date]
 
                 self.table.add_row(row, row_data)
-
-                #self.table.setItem(row, 0, QTableWidgetItem())
-                #self.table.setItem(row, 1, QTableWidgetItem())
-                #self.table.setItem(row, 2, QTableWidgetItem())
-                #self.table.setItem(row, 3, QTableWidgetItem())
-                #self.table.setItem(row, 4, QTableWidgetItem())
-                #self.table.setItem(row, 5, QTableWidgetItem())
         else:
             funcs.show_message(self, response.get_status(), strs.PRESENT_VIEW_MSG, response.get_message())
 

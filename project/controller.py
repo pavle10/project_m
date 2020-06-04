@@ -177,7 +177,7 @@ class Controller:
             uni_piece.set_employee_name(self._get_employee_unique_name(uni_piece.get_employee_id()))
 
     def _update_free_days_employees_names(self, indices=None):
-        indices = range(len(self._wages)) if indices is None else indices
+        indices = range(len(self._all_free_days)) if indices is None else indices
 
         for index in indices:
             free_days = self._all_free_days[index]
