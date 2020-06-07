@@ -10,7 +10,7 @@ from project.views.tab_view.present_tab_views.present_free_days_view import Pres
 from project.views.tab_view.present_tab_views.present_wage_view import PresentWageView
 from project.views.tab_view.present_tab_views.present_salary_1_view import PresentSalary1View
 from project.views.tab_view.present_tab_views.present_salary_2_view import PresentSalary2View
-from project.utils import strings as strs, constants as cons
+from project.utils import strings as strs, constants as cons, enums
 from project.views.tab_view.tab_view import TabView
 from project.models.my_widgets import MyList
 
@@ -25,26 +25,18 @@ class PresentTab(TabView):
         self._init_ui()
 
     def _init_ui(self):
-        present_employee_view = PresentEmployeeView(strs.EMPLOYEE, self._manager)
-        present_position_view = PresentPositionView(strs.POSITION, self._manager)
-        present_child_view = PresentChildView(strs.CHILD, self._manager)
-        present_uniform_view = PresentUniformView(strs.UNIFORM, self._manager)
-        present_uniform_piece_view = PresentUniformPieceView(strs.UNIFORM_PIECE, self._manager)
-        present_free_days_view = PresentFreeDaysView(strs.FREE_DAY, self._manager)
-        present_wage_view = PresentWageView(strs.WAGE, self._manager)
-        present_salary_1_view = PresentSalary1View(strs.SALARY_1, self._manager)
-        present_salary_2_view = PresentSalary2View(strs.SALARY_2, self._manager)
-
         self.views = list()
-        self.views.append(present_employee_view)
-        self.views.append(present_position_view)
-        self.views.append(present_child_view)
-        self.views.append(present_uniform_view)
-        self.views.append(present_uniform_piece_view)
-        self.views.append(present_free_days_view)
-        self.views.append(present_wage_view)
-        self.views.append(present_salary_1_view)
-        self.views.append(present_salary_2_view)
+        self.views.append(PresentEmployeeView(strs.EMPLOYEE, self._manager))
+        self.views.append(PresentPositionView(strs.POSITION, self._manager))
+        self.views.append(PresentChildView(strs.CHILD, self._manager))
+        self.views.append(PresentUniformView(strs.UNIFORM, self._manager))
+        self.views.append(PresentUniformPieceView(strs.UNIFORM_PIECE, self._manager))
+        self.views.append(PresentFreeDaysView(strs.FREE_DAY, self._manager))
+        self.views.append(PresentWageView(strs.WAGE, self._manager))
+        self.views.append(PresentSalary1View(strs.SALARY_1, self._manager))
+
+        if self._manager.get_privilege() == enums.Levels.everything:
+            self.views.append(PresentSalary2View(strs.SALARY_2, self._manager))
 
         self.options_list = MyList(self.views)
         self.options_list.clicked.connect(self._change_view)

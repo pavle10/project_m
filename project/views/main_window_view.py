@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 
 from project.utils import strings as strs, constants as cons
 from project.views.tab_view.add_tab_view import AddTab
@@ -19,7 +20,7 @@ class MainWind(QMainWindow):
         self.setWindowTitle(strs.WINDOWS_TITLE)
         self.setWindowIcon(QIcon(cons.APP_ICON_PATH))
 
-        self.setFixedSize(cons.MAIN_WIN_WIDTH, cons.MAIN_WIN_HEIGHT)
+        self.setWindowState(Qt.WindowMaximized)
         self._center()
 
         layout = QVBoxLayout()

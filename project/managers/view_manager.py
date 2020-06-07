@@ -8,7 +8,6 @@ class ViewManager:
     def __init__(self, controller):
         self._controller = controller
         self.login = LoginView(self)
-        self.main_wind = MainWind(self)
 
     def actions(self, action, values=None):
         if action == Actions.show:
@@ -88,6 +87,9 @@ class ViewManager:
         elif action == Actions.delete_salary_2:
             return self._delete_salary_2(values)
 
+    def get_privilege(self):
+        return self._controller.get_user_privilege()
+
     def _show_login(self):
         self.login.show()
 
@@ -98,6 +100,8 @@ class ViewManager:
 
         if response.get_status() == ResponseStatus.success:
             self.login.close()
+
+            self.main_wind = MainWind(self)
             self.main_wind.show()
 
     def _add_position(self, values):

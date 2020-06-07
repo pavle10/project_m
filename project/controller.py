@@ -68,6 +68,9 @@ class Controller:
     def get_username(self):
         return self._user.get_username()
 
+    def get_user_privilege(self):
+        return self._user.get_level()
+
     def actions(self, action, values=None):
         if action == Actions.login:
             return self._login(values)

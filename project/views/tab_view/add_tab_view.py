@@ -3,7 +3,7 @@ from PyQt5.QtCore import Qt
 
 from project.views.tab_view.tab_view import TabView
 from project.models.my_widgets import MyList
-from project.utils import strings as strs, constants as cons
+from project.utils import strings as strs, constants as cons, enums
 from project.views.tab_view.add_tab_views.add_employee_view import AddEmployeeView
 from project.views.tab_view.add_tab_views.add_position_view import AddPositionView
 from project.views.tab_view.add_tab_views.add_uniform_view import AddUniformView
@@ -25,26 +25,18 @@ class AddTab(TabView):
         self._init_ui()
 
     def _init_ui(self):
-        add_employee = AddEmployeeView(strs.EMPLOYEE, self._manager)
-        add_position = AddPositionView(strs.POSITION, self._manager)
-        add_child = AddChildView(strs.CHILD, self._manager)
-        add_uniform = AddUniformView(strs.UNIFORM, self._manager)
-        add_uniform_piece = AddUniformPieceView(strs.UNIFORM_PIECE, self._manager)
-        add_free_days = AddFreeDaysView(strs.FREE_DAY, self._manager)
-        add_wage = AddWageView(strs.WAGE, self._manager)
-        add_salary_1 = AddSalary1View(strs.SALARY_1, self._manager)
-        add_salary_2 = AddSalary2View(strs.SALARY_2, self._manager)
-
         self.views = list()
-        self.views.append(add_employee)
-        self.views.append(add_position)
-        self.views.append(add_child)
-        self.views.append(add_uniform)
-        self.views.append(add_uniform_piece)
-        self.views.append(add_free_days)
-        self.views.append(add_wage)
-        self.views.append(add_salary_1)
-        self.views.append(add_salary_2)
+        self.views.append(AddEmployeeView(strs.EMPLOYEE, self._manager))
+        self.views.append(AddPositionView(strs.POSITION, self._manager))
+        self.views.append(AddChildView(strs.CHILD, self._manager))
+        self.views.append(AddUniformView(strs.UNIFORM, self._manager))
+        self.views.append(AddUniformPieceView(strs.UNIFORM_PIECE, self._manager))
+        self.views.append(AddFreeDaysView(strs.FREE_DAY, self._manager))
+        self.views.append(AddWageView(strs.WAGE, self._manager))
+        self.views.append(AddSalary1View(strs.SALARY_1, self._manager))
+
+        if self._manager.get_privilege() == enums.Levels.everything:
+            self.views.append(AddSalary2View(strs.SALARY_2, self._manager))
 
         self.options_list = MyList(self.views)
         self.options_list.clicked.connect(self._change_view)
