@@ -224,9 +224,9 @@ def create_html(title, data, table_header=None, report_type="Standard"):
         text += f"<h1>{title}</h1>"
         text += "<br>"
         text += append_table(data, table_header)
-    elif report_type == "Salary 1":
+    elif report_type == strs.SALARY_1:
         text += append_salaries_1(data)
-    elif report_type == "Salary 2":
+    elif report_type == strs.SALARY_2:
         text += append_salary_2(data)
 
     text += "</body>"

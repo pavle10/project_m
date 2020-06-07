@@ -167,7 +167,7 @@ class PresentSalary1View(PresentView):
 
         self._content.clear()
         self._content.insertHtml(funcs.create_html(strs.SALARY_1_LIST_TITLE, data,
-                                                   strs.PRESENT_SALARY_1_HDR, "Salary 1"))
+                                                   strs.PRESENT_SALARY_1_HDR, strs.SALARY_1))
         self._content.document().print_(self._printer)
 
     def _export_pdf(self):
@@ -182,7 +182,7 @@ class PresentSalary1View(PresentView):
 
             self._content.clear()
             self._content.insertHtml(funcs.create_html(strs.SALARY_1_LIST_TITLE, data,
-                                                       strs.PRESENT_SALARY_1_HDR, "Salary 1"))
+                                                       strs.PRESENT_SALARY_1_HDR, strs.SALARY_1))
             self._content.document().print_(self._printer)
 
     def _check_selection(self):
