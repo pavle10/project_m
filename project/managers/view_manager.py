@@ -87,6 +87,9 @@ class ViewManager:
         elif action == Actions.delete_salary_2:
             return self._delete_salary_2(values)
 
+    def get_username(self):
+        return self._controller.get_username()
+
     def get_privilege(self):
         return self._controller.get_user_privilege()
 

@@ -33,8 +33,14 @@ class MainWind(QMainWindow):
         self.tabs.addTab(present_tab, present_tab.get_name())
         self.setCentralWidget(self.tabs)
 
+        self.status_bar = QStatusBar()
+        status_bar_label = QLabel(strs.ACTIVE_USER.format(user=self._view_manager.get_username()))
+        status_bar_label.setFont(cons.STATUS_BAR_FONT)
+        self.status_bar.addWidget(status_bar_label)
+
         layout.addWidget(self.tabs)
         self.setLayout(layout)
+        self.setStatusBar(self.status_bar)
 
     def _center(self):
         frame_geometry = self.frameGeometry()

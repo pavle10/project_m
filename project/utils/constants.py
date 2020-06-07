@@ -47,6 +47,7 @@ LABELS_FONT = QFont("Times", pointSize=12, weight=QFont.Bold)
 SHORT_LABELS_FONT = QFont("Times", pointSize=12, weight=QFont.Medium)
 LINES_FONT = QFont("Times", pointSize=12, weight=QFont.Medium)
 BUTTONS_FONT = QFont("Times", pointSize=12, weight=QFont.Medium)
+STATUS_BAR_FONT = QFont("Times", pointSize=10, weight=QFont.Medium)
 
 DATE_FORMAT_PYTHON = "%d.%m.%y."
 DATE_FORMAT_PYQT = "dd.MM.yyyy."

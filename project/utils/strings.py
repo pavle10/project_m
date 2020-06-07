@@ -32,6 +32,7 @@ TO_DATE_LBL = "Do datuma"
 YEARS = "Godine"
 MONTHS = "Meseci"
 DAYS = "Dani"
+ACTIVE_USER = "Korisnik: {user}"
 
 # ===== BUTTONS =====
 LOGIN_BTN = "Uloguj se"
