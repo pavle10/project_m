@@ -18,37 +18,35 @@ EXPORT_DEFAULT_PATH = "D:\\"
 # ===== SIZES =====
 LOGIN_WIN_WIDTH = 600
 LOGIN_WIN_HEIGHT = 500
-MAIN_WIN_WIDTH = 1400
-MAIN_WIN_HEIGHT = 600
 PRINT_PREVIEW_DIALOG_WIDTH = 1000
 PRINT_PREVIEW_DIALOG_HEIGHT = 400
 
-MIN_TAB_WIDTH = 1390
-MIN_TAB_HEIGHT = 570
-LIST_AREA_WIDTH = 225
-LIST_AREA_HEIGHT = 510
-SCROLL_AREA_WIDTH = 220
-SCROLL_AREA_HEIGHT = 510
+MIN_TAB_WIDTH = 1900
+MIN_TAB_HEIGHT = 980
+LIST_AREA_WIDTH = 295
+LIST_AREA_HEIGHT = 900
+SCROLL_AREA_WIDTH = 300
+SCROLL_AREA_HEIGHT = 900
 TABLE_WIDTH = 1111
 TABLE_HEIGHT = 451
 DIALOGS_WIDTH = 300
 DIALOGS_HEIGHT = 150
 LABELS_WIDTH = 150
-LABELS_HEIGHT = 25
+LABELS_HEIGHT = 35
 SHORT_LABELS_WIDTH = 50
-SHORT_LABELS_HEIGHT = 25
+SHORT_LABELS_HEIGHT = 35
 LINES_WIDTH = 300
-LINES_HEIGHT = 25
+LINES_HEIGHT = 35
 BUTTONS_WIDTH = 150
-BUTTONS_HEIGHT = 28
+BUTTONS_HEIGHT = 30
 
 # ===== STYLE =====
-TABS_FONT = QFont("Times", pointSize=11, weight=QFont.Normal)
-LIST_FONT = QFont("Times", pointSize=11, weight=QFont.Normal)
-LABELS_FONT = QFont("Times", pointSize=10, weight=QFont.Bold)
-SHORT_LABELS_FONT = QFont("Times", pointSize=10, weight=QFont.Medium)
-LINES_FONT = QFont("Times", pointSize=10, weight=QFont.Medium)
-BUTTONS_FONT = QFont("Times", pointSize=10, weight=QFont.Medium)
+TABS_FONT = QFont("Times", pointSize=13, weight=QFont.Normal)
+LIST_FONT = QFont("Times", pointSize=13, weight=QFont.Normal)
+LABELS_FONT = QFont("Times", pointSize=12, weight=QFont.Bold)
+SHORT_LABELS_FONT = QFont("Times", pointSize=12, weight=QFont.Medium)
+LINES_FONT = QFont("Times", pointSize=12, weight=QFont.Medium)
+BUTTONS_FONT = QFont("Times", pointSize=12, weight=QFont.Medium)
 
 DATE_FORMAT_PYTHON = "%d.%m.%y."
 DATE_FORMAT_PYQT = "dd.MM.yyyy."
