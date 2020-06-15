@@ -35,6 +35,13 @@ def employee_unique_name(employee):
     return f"{employee.get_first_name()} {employee.get_last_name()} {employee.get_identity_number()}"
 
 
+def printing_employee_name(name):
+    if name is None:
+        return name
+
+    return " ".join(name.split(' ')[:2])
+
+
 def transform_salary_data(employee_name, values):
     data = list(values)
     data.append(employee_name)

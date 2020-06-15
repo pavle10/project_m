@@ -1,3 +1,6 @@
+from project.utils import funcs
+
+
 class Child:
 
     def __init__(self, child_id, first_name, last_name, identity_number, birthday, mother_id, father_id):
@@ -87,4 +90,5 @@ class Child:
         self.father_name = values[8]
 
     def data_for_report(self):
-        return [self.first_name, self.last_name, self.identity_number, self.birthday, self.mother_name, self.father_name]
+        return [self.first_name, self.last_name, self.identity_number, self.birthday,
+                funcs.printing_employee_name(self.mother_name), funcs.printing_employee_name(self.father_name)]
