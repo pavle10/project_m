@@ -290,7 +290,7 @@ class UpdateUniformPieceDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        uniform_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[0])
+        uniform_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[1])
         self.uniform_box = MyComboBox([uniform.get_name() for uniform in uniforms])
         curr_index = 0
         for ind, uniform in enumerate(uniforms):
@@ -299,19 +299,19 @@ class UpdateUniformPieceDialog(QDialog):
         self.uniform_box.setCurrentIndex(curr_index)
         uniform_label.setBuddy(self.uniform_box)
 
-        size_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[1])
+        size_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[2])
         self.size_line = MyEditLine(str(selected_data[3]))
         size_label.setBuddy(self.size_line)
 
-        quantity_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[2])
+        quantity_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[3])
         self.quantity_line = MyEditLine(str(selected_data[4]))
         quantity_label.setBuddy(self.quantity_line)
 
-        additional_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[3])
+        additional_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[4])
         self.additional_line = MyEditLine(selected_data[5])
         additional_label.setBuddy(self.additional_line)
 
-        date_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[4])
+        date_label = MyLabel(strs.PRESENT_UNIFORM_PIECE_HDR[5])
         self.date_line = MyEditDate(selected_data[6])
         date_label.setBuddy(self.date_line)
 
@@ -348,15 +348,15 @@ class UpdateFreeDaysRowDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        start_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[0])
+        start_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[1])
         self.start_date_line = MyEditDate(selected_data[2])
         start_date_label.setBuddy(self.start_date_line)
 
-        end_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[1])
+        end_date_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[2])
         self.end_date_line = MyEditDate(selected_data[3])
         end_date_label.setBuddy(self.end_date_line)
 
-        reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[3])
+        reason_label = MyLabel(strs.PRESENT_FREE_DAYS_HDR[4])
         self.reason_line = MyEditLine(selected_data[5])
         reason_label.setBuddy(self.reason_line)
 
@@ -388,15 +388,15 @@ class UpdateWageRowDialog(QDialog):
 
         self.setWindowTitle(strs.PRESENT_VIEW_MSG)
 
-        day_label = MyLabel(strs.PRESENT_WAGE_HDR[0])
+        day_label = MyLabel(strs.PRESENT_WAGE_HDR[1])
         self.day_line = MyEditLine(str(selected_data[2]))
         day_label.setBuddy(self.day_line)
 
-        hour_label = MyLabel(strs.PRESENT_WAGE_HDR[1])
+        hour_label = MyLabel(strs.PRESENT_WAGE_HDR[2])
         self.hour_line = MyEditLine(str(selected_data[3]))
         hour_label.setBuddy(self.hour_line)
 
-        meal_label = MyLabel(strs.PRESENT_WAGE_HDR[2])
+        meal_label = MyLabel(strs.PRESENT_WAGE_HDR[3])
         self.meal_line = MyEditLine(str(selected_data[4]))
         meal_label.setBuddy(self.meal_line)
 
